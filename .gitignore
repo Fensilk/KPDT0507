@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+
+# Data
+data/*.npz
+!data/omnifall_preprocessed.npz
+!data/omnifall_pose.npz
+data/*.tar.gz
+data/*.csv
+data/features/
+data/pose_features/
+data/cifar-10-batches-py/
+
+# Dataset
+DATASET-omnifall/
+
+# Logs
+logs/*
+!logs/imp2_baseline/
+!logs/imp2_diff/
+!logs/imp2_diff_pose/
+!logs/imp2_pose/
+
+# IDE
+.vscode/
+
+# Claude
+.claude/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db
