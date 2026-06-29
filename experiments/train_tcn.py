@@ -106,6 +106,14 @@ def parse_args():
     parser.add_argument("--exp_tag", type=str, default=None,
                         help="实验标签 (用于 log 目录命名, 覆盖 --log_dir)")
 
+    # Phase 3: 可配置损失权重
+    parser.add_argument("--w_cls", type=float, default=1.0,
+                        help="分类损失权重 (default: 1.0)")
+    parser.add_argument("--w_fall", type=float, default=0.5,
+                        help="Fall 检测损失权重 (default: 0.5)")
+    parser.add_argument("--w_fallen", type=float, default=0.5,
+                        help="Fallen 检测损失权重 (default: 0.5)")
+
     # 系统
     parser.add_argument("--num_workers", type=int, default=0,
                         help="DataLoader workers (Windows 建议 0)")
@@ -216,6 +224,9 @@ def train_epoch(
     criterions: dict,
     optimizer: optim.Optimizer,
     device: torch.device,
+    w_cls: float = 1.0,
+    w_fall: float = 0.5,
+    w_fallen: float = 0.5,
 ) -> float:
     model.train()
     total_loss = 0.0
@@ -250,8 +261,8 @@ def train_epoch(
             fallen_gt.reshape(B * T).float(),
         )
 
-        # 总损失: 老师指定的权重
-        loss = loss_cls + 0.5 * loss_fall + 0.5 * loss_fallen
+        # 总损失: 可配置权重 (Phase 3)
+        loss = w_cls * loss_cls + w_fall * loss_fall + w_fallen * loss_fallen
 
         # 反向传播
         optimizer.zero_grad()
@@ -279,6 +290,9 @@ def validate_epoch(
     loader,
     criterions: dict,
     device: torch.device,
+    w_cls: float = 1.0,
+    w_fall: float = 0.5,
+    w_fallen: float = 0.5,
 ) -> dict:
     model.eval()
 
@@ -313,7 +327,7 @@ def validate_epoch(
         loss_fallen = criterions["fallen"](
             logits_fallen.reshape(B * T), fallen_gt.reshape(B * T).float()
         )
-        loss = loss_cls + 0.5 * loss_fall + 0.5 * loss_fallen
+        loss = w_cls * loss_cls + w_fall * loss_fall + w_fallen * loss_fallen
         total_loss += loss.item()
 
         # 预测
@@ -489,10 +503,12 @@ def main():
 
     for epoch in range(1, args.epochs + 1):
         # 训练
-        train_loss = train_epoch(model, train_loader, criterions, optimizer, device)
+        train_loss = train_epoch(model, train_loader, criterions, optimizer, device,
+                                  w_cls=args.w_cls, w_fall=args.w_fall, w_fallen=args.w_fallen)
 
         # 验证
-        val_metrics = validate_epoch(model, val_loader, criterions, device)
+        val_metrics = validate_epoch(model, val_loader, criterions, device,
+                                      w_cls=args.w_cls, w_fall=args.w_fall, w_fallen=args.w_fallen)
 
         # 学习率调度
         current_lr = optimizer.param_groups[0]["lr"]
@@ -587,7 +603,8 @@ def main():
     model.load_state_dict(checkpoint["model_state_dict"])
     model.eval()
 
-    test_metrics = validate_epoch(model, test_loader, criterions, device)
+    test_metrics = validate_epoch(model, test_loader, criterions, device,
+                                  w_cls=args.w_cls, w_fall=args.w_fall, w_fallen=args.w_fallen)
 
     print(f"\n{'='*60}")
     print("TEST RESULTS")
@@ -611,6 +628,20 @@ def main():
             if k != "cls_report"
         }
         results_to_save["cls_report"] = test_metrics["cls_report"]
+        results_to_save["config"] = {
+            "w_cls": args.w_cls,
+            "w_fall": args.w_fall,
+            "w_fallen": args.w_fallen,
+            "input_dim": train_loader.dataset.feature_dim,
+            "use_diff": args.use_diff,
+            "pose_npz": args.pose_npz is not None,
+            "window_size": args.window_size,
+            "batch_size": args.batch_size,
+            "lr": args.lr,
+            "epochs_run": len(history["train_loss"]),
+            "best_epoch": best_epoch,
+            "patience": args.patience,
+        }
         json.dump(results_to_save, f, indent=2, default=str)
 
     # ============================================================
