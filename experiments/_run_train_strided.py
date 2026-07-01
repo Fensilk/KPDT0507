@@ -10,7 +10,7 @@ os.chdir(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 T = int(sys.argv[1])
 stride = int(sys.argv[2])
 batch = 32 if T <= 16 else 16
-log_dir = f'logs/tcn_t{T}_s{stride}'
+log_dir = f'logs/phase1/tcn_t{T}_s{stride}'
 os.makedirs(log_dir, exist_ok=True)
 
 import torch, torch.nn as nn, torch.optim as optim

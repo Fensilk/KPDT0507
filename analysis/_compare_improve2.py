@@ -3,7 +3,7 @@ Compare improvement-2 experiment results against baseline.
 
 Usage:
     python _compare_improve2.py
-    python _compare_improve2.py --logs logs/imp2_*
+    python _compare_improve2.py --logs logs/phase2/imp2_*
 """
 
 import os, sys, json, glob, argparse
@@ -31,9 +31,9 @@ def main():
         log_dirs = args.logs
     else:
         # Auto-discover imp2 experiment logs + baseline references
-        log_dirs = sorted(glob.glob("logs/imp2_*"))
+        log_dirs = sorted(glob.glob("logs/phase2/imp2_*"))
         # Also include reference baselines
-        for ref in ["logs/tcn_full", "logs/tcn_syn_001"]:
+        for ref in ["logs/phase1/tcn_full", "logs/phase1/tcn_syn_001"]:
             if os.path.exists(ref) and ref not in log_dirs:
                 log_dirs.append(ref)
 

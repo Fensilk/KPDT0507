@@ -70,7 +70,7 @@ def parse_args():
     # 日志
     parser.add_argument(
         "--log_dir", type=str,
-        default="logs/tcn_syn_001",
+        default="logs/phase1/tcn_syn_001",
         help="TensorBoard + checkpoint 输出目录",
     )
 
@@ -114,6 +114,10 @@ def parse_args():
     parser.add_argument("--w_fallen", type=float, default=0.5,
                         help="Fallen 检测损失权重 (default: 0.5)")
 
+    # 速度模式
+    parser.add_argument("--fast", action="store_true",
+                        help="启用 cuDNN benchmark 加速训练 (可提速 1.5-2x, 轻微牺牲可复现性)")
+
     # 系统
     parser.add_argument("--num_workers", type=int, default=0,
                         help="DataLoader workers (Windows 建议 0)")
@@ -126,15 +130,21 @@ def parse_args():
     return parser.parse_args()
 
 
-def set_seed(seed: int):
+def set_seed(seed: int, fast: bool = False):
     """固定随机种子."""
     torch.manual_seed(seed)
     np.random.seed(seed)
     if torch.cuda.is_available():
         torch.cuda.manual_seed(seed)
         torch.cuda.manual_seed_all(seed)
-        torch.backends.cudnn.deterministic = True
-        torch.backends.cudnn.benchmark = False
+        if fast:
+            # 速度优先: cuDNN 自动搜索最快算法, 轻微牺牲可复现性
+            torch.backends.cudnn.deterministic = False
+            torch.backends.cudnn.benchmark = True
+        else:
+            # 可复现优先: 固定卷积算法路径
+            torch.backends.cudnn.deterministic = True
+            torch.backends.cudnn.benchmark = False
 
 
 def get_device(device_arg: str) -> torch.device:
@@ -382,7 +392,7 @@ def main():
     # 设备
     device = get_device(args.device)
     print(f"[INFO] Using device: {device}")
-    set_seed(args.seed)
+    set_seed(args.seed, fast=args.fast)
 
     # --- 数据加载 ---
     print("\n" + "=" * 60)

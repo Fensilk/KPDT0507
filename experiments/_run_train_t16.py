@@ -5,7 +5,7 @@ Bypasses train_tcn.py stdout buffering issues.
 import sys, os, json, time
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 os.chdir(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-os.makedirs('logs/tcn_t16_s1', exist_ok=True)
+os.makedirs('logs/phase1/tcn_t16_s1', exist_ok=True)
 
 import torch, torch.nn as nn, torch.optim as optim
 import numpy as np
@@ -135,7 +135,7 @@ for epoch in range(1, 11):
         best_epoch = epoch
         patience = 0
         torch.save({'epoch':epoch, 'model_state_dict':model.state_dict(), 'best_fall_f1':best_fall_f1, 'val_metrics':metrics},
-                   'logs/tcn_t16_s1/tcn_best.pt')
+                   'logs/phase1/tcn_t16_s1/tcn_best.pt')
         print(f'  [BEST] saved!')
     else:
         patience += 1
@@ -145,7 +145,7 @@ for epoch in range(1, 11):
 
 # Test
 print(f'\n[5/5] Testing (best epoch={best_epoch})...')
-ckpt = torch.load('logs/tcn_t16_s1/tcn_best.pt', map_location=device)
+ckpt = torch.load('logs/phase1/tcn_t16_s1/tcn_best.pt', map_location=device)
 model.load_state_dict(ckpt['model_state_dict'])
 model.eval()
 
@@ -178,9 +178,9 @@ test_metrics = compute_all_metrics(
 test_metrics['loss'] = test_loss / len(test_loader)
 
 # Save results
-with open('logs/tcn_t16_s1/training_history.json','w') as f:
+with open('logs/phase1/tcn_t16_s1/training_history.json','w') as f:
     json.dump(history, f, indent=2)
-with open('logs/tcn_t16_s1/test_results.json','w') as f:
+with open('logs/phase1/tcn_t16_s1/test_results.json','w') as f:
     r = {k:v for k,v in test_metrics.items() if k!='cls_report'}
     r['cls_report'] = test_metrics['cls_report']
     json.dump(r, f, indent=2)

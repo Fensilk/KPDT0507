@@ -18,10 +18,9 @@ DATASET-omnifall/
 
 # Logs
 logs/*
-!logs/imp2_baseline/
-!logs/imp2_diff/
-!logs/imp2_diff_pose/
-!logs/imp2_pose/
+!logs/phase1/
+!logs/phase2/
+!logs/phase3/
 
 # IDE
 .vscode/
