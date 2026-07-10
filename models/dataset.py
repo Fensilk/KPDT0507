@@ -345,6 +345,8 @@ class LongSequenceDataset(Dataset):
         split_csv_path: str,
         window_size: int = 16,
         stride: int = 1,
+        use_diff: bool = False,
+        pose_npz_path: str = None,
     ):
         """
         Args:
@@ -352,17 +354,37 @@ class LongSequenceDataset(Dataset):
             split_csv_path: train/val/test.csv path.
             window_size: T — number of frames per sequence.
             stride: Sliding window stride (default 1 = max overlap).
+            use_diff: If True, concat frame-to-frame diff features (Δframe).
+            pose_npz_path: Optional frame-level pose NPZ path.
         """
         self.window_size = window_size
         self.stride = stride
+        self.use_diff = use_diff
 
         # --- Load NPZ ---
         print(f"[INFO] Loading frame-level NPZ from {npz_path}...")
         data = np.load(npz_path, allow_pickle=True, mmap_mode='r')
-        self.features_all = data["features"]             # (960000, 512)
-        self.labels_16_all = data["labels_16"]            # (960000,)
-        self.fall_labels_all = data["fall_labels"]        # (960000,)
-        self.fallen_labels_all = data["fallen_labels"]    # (960000,)
+        self.features_all = data["features"]             # (N_frames, D)
+        self.labels_16_all = data["labels_16"]            # (N_frames,)
+        self.fall_labels_all = data["fall_labels"]        # (N_frames,)
+        self.fallen_labels_all = data["fallen_labels"]    # (N_frames,)
+
+        self.base_feature_dim = self.features_all.shape[1]
+        self.feature_dim = self.base_feature_dim
+
+        # --- Load pose features (optional) ---
+        self.pose_all = None
+        if pose_npz_path is not None:
+            print(f"[INFO] Loading frame-level pose NPZ from {pose_npz_path}...")
+            pose_data = np.load(pose_npz_path, allow_pickle=True, mmap_mode='r')
+            self.pose_all = pose_data["pose_features"]  # (N_frames, pose_dim)
+            self.feature_dim += self.pose_all.shape[1]
+            print(f"[INFO] Pose dim: {self.pose_all.shape[1]}, "
+                  f"total input dim: {self.feature_dim}")
+
+        if use_diff:
+            self.feature_dim += self.base_feature_dim  # diff duplicates base dim
+            print(f"[INFO] Using Δframe diff features, total input dim: {self.feature_dim}")
 
         video_start_indices = data["video_start_indices"]
         video_clip_counts = data["video_clip_counts"]
@@ -427,7 +449,7 @@ class LongSequenceDataset(Dataset):
     def __getitem__(self, idx: int) -> dict:
         """
         Returns:
-            features: (T, 512) float32
+            features: (T, feature_dim) float32
             labels_16: (T,) int64
             fall_labels: (T,) int64
             fallen_labels: (T,) int64
@@ -436,10 +458,26 @@ class LongSequenceDataset(Dataset):
         s = npz_start + offset
         e = s + self.window_size
 
+        # Base features
+        feat = torch.from_numpy(
+            self.features_all[s:e].copy()
+        ).float()
+
+        # Optional: frame-to-frame diff (Δframe)
+        if self.use_diff:
+            diff = torch.zeros_like(feat)
+            diff[1:] = feat[1:] - feat[:-1]
+            feat = torch.cat([feat, diff], dim=-1)
+
+        # Optional: pose features
+        if self.pose_all is not None:
+            pose_feat = torch.from_numpy(
+                self.pose_all[s:e].copy()
+            ).float()
+            feat = torch.cat([feat, pose_feat], dim=-1)
+
         return {
-            "features": torch.from_numpy(
-                self.features_all[s:e].copy()
-            ).float(),
+            "features": feat,
             "labels_16": torch.from_numpy(
                 self.labels_16_all[s:e].copy()
             ).long(),
@@ -489,6 +527,8 @@ def create_longseq_dataloaders(
     batch_size: int = 64,
     num_workers: int = 0,
     use_weighted_sampler: bool = True,
+    use_diff: bool = False,
+    pose_npz_path: str = None,
 ) -> tuple[DataLoader, DataLoader, DataLoader]:
     """
     Create train/val/test DataLoaders with sliding window.
@@ -501,6 +541,8 @@ def create_longseq_dataloaders(
         batch_size: Batch size.
         num_workers: DataLoader workers (0 recommended for Windows).
         use_weighted_sampler: Use WeightedRandomSampler on train.
+        use_diff: If True, concat frame-to-frame diff features.
+        pose_npz_path: Optional frame-level pose NPZ path.
 
     Returns:
         (train_loader, val_loader, test_loader)
@@ -512,18 +554,24 @@ def create_longseq_dataloaders(
         split_csv_path=_os.path.join(splits_dir, "train.csv"),
         window_size=window_size,
         stride=stride,
+        use_diff=use_diff,
+        pose_npz_path=pose_npz_path,
     )
     val_dataset = LongSequenceDataset(
         npz_path=npz_path,
         split_csv_path=_os.path.join(splits_dir, "val.csv"),
         window_size=window_size,
         stride=stride,
+        use_diff=use_diff,
+        pose_npz_path=pose_npz_path,
     )
     test_dataset = LongSequenceDataset(
         npz_path=npz_path,
         split_csv_path=_os.path.join(splits_dir, "test.csv"),
         window_size=window_size,
         stride=stride,
+        use_diff=use_diff,
+        pose_npz_path=pose_npz_path,
     )
 
     # Training set with weighted sampling
