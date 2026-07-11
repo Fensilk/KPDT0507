@@ -1,18 +1,18 @@
 """
 Step 7: Extract DINOv2 ViT-L/14 frame-level features from OF-Syn videos.
 
-Uses facebook/dinov2-large (ViT-L/14, 1024-dim) to extract per-frame CLS token.
-Each video (80 frames) → [80, 1024] feature matrix.
+Uses facebook/dinov2-giant (ViT-g/14, 1536-dim) to extract per-frame CLS token.
+Each video (80 frames) → [80, 1536] feature matrix.
 Aggregates to frame-level NPZ compatible with LongSequenceDataset.
 
-Output per-video: data/dinov2_features/{category}/{video}.pt
-    features:   (80, 1024) float16
+Output per-video: data/dinov2_giant_features/{category}/{video}.pt
+    features:   (80, 1536) float16
     labels:     (80,) int64
     fall_label: (80,) int64
     fallen_label:(80,) int64
 
-Aggregated NPZ: data/omnifall_dinov2_frame.npz
-    features:           (960000, 1024) float16
+Aggregated NPZ: data/omnifall_dinov2_giant_frame.npz
+    features:           (960000, 1536) float16
     labels_16:          (960000,) int64
     fall_labels:        (960000,) int64
     fallen_labels:      (960000,) int64
@@ -20,7 +20,7 @@ Aggregated NPZ: data/omnifall_dinov2_frame.npz
     video_clip_counts:  (12000,) int64 (all 80)
     video_start_indices:(12000,) int64
 
-Checkpointing: skips videos already in data/dinov2_features/.
+Checkpointing: skips videos already in data/dinov2_giant_features/.
 
 Usage:
     python preprocessing/step7_extract_dinov2.py
@@ -41,13 +41,13 @@ import cv2
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 VIDEO_DIR = os.path.join(ROOT, "DATASET-omnifall", "data_files", "extracted")
-PT_OUTPUT_DIR = os.path.join(ROOT, "data", "dinov2_features")
-NPZ_OUTPUT_PATH = os.path.join(ROOT, "data", "omnifall_dinov2_frame.npz")
+PT_OUTPUT_DIR = os.path.join(ROOT, "data", "dinov2_giant_features")
+NPZ_OUTPUT_PATH = os.path.join(ROOT, "data", "omnifall_dinov2_giant_frame.npz")
 FRAME_CSV_PATH = os.path.join(ROOT, "data", "ofsyn_frame_labels.csv")
 N_FRAMES = 80  # frames per video
 
 # Default args (module-level for multiprocessing compatibility)
-DEFAULT_MODEL_NAME = "facebook/dinov2-large"
+DEFAULT_MODEL_NAME = "facebook/dinov2-giant"
 
 
 # DINOv2 preprocessing constants (bypasses AutoImageProcessor, network-independent)

@@ -251,7 +251,7 @@ def train_epoch(model, loader, criterions, optimizer, device,
 @torch.no_grad()
 def validate_epoch(model, loader, criterions, device,
                    w_cls=1.0, w_fall=0.5, w_fallen=0.5,
-                   remap_fn=None) -> dict:
+                   remap_fn=None, class_names=None) -> dict:
     model.eval()
 
     total_loss = 0.0
@@ -299,7 +299,8 @@ def validate_epoch(model, loader, criterions, device,
 
     metrics = compute_all_metrics(
         pred_cls, pred_fall, pred_fallen,
-        gt_cls, gt_fall, gt_fallen, CLASS_NAMES)
+        gt_cls, gt_fall, gt_fallen,
+        class_names if class_names is not None else CLASS_NAMES)
     metrics["loss"] = total_loss / n_batches
 
     return metrics
@@ -358,6 +359,8 @@ def main():
     # Label remapping: rare classes (10-15) → 10, 16→11 classes
     if args.remap_rare:
         args.num_classes = 11
+        CLS_NAMES = ['walk','fall','fallen','sit_down','sitting','lie_down',
+                     'lying','stand_up','standing','other','rare']
         def remap_labels(labels):
             """Remap classes 10-15 → 10 (rare→other), classes 0-9 unchanged."""
             mask = labels >= 11
@@ -365,6 +368,7 @@ def main():
             labels[mask] = 10
             return labels
     else:
+        CLS_NAMES = CLASS_NAMES
         def remap_labels(labels):
             return labels
 
@@ -428,7 +432,7 @@ def main():
         val_metrics = validate_epoch(
             model, val_loader, criterions, device,
             w_cls=args.w_cls, w_fall=args.w_fall, w_fallen=args.w_fallen,
-            remap_fn=remap_labels)
+            remap_fn=remap_labels, class_names=CLS_NAMES)
 
         current_lr = optimizer.param_groups[0]["lr"]
         scheduler.step(val_metrics["fall_f1"])
@@ -510,7 +514,8 @@ def main():
 
     test_metrics = validate_epoch(
         model, test_loader, criterions, device,
-        w_cls=args.w_cls, w_fall=args.w_fall, w_fallen=args.w_fallen)
+        w_cls=args.w_cls, w_fall=args.w_fall, w_fallen=args.w_fallen,
+        remap_fn=remap_labels, class_names=CLS_NAMES)
 
     print(f"\n{'='*60}")
     print("TEST RESULTS")
