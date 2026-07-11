@@ -84,6 +84,10 @@ def parse_args():
     parser.add_argument("--num_layers", type=int, default=1)
     parser.add_argument("--num_heads", type=int, default=6)
     parser.add_argument("--dropout", type=float, default=0.3)
+    parser.add_argument("--num_classes", type=int, default=16,
+                        help="输出类别数 (default: 16; 11 if --remap_rare)")
+    parser.add_argument("--remap_rare", action="store_true",
+                        help="将稀有类 (10-15) 合并为第10类, 16类→11类")
 
     # 损失权重
     parser.add_argument("--w_cls", type=float, default=1.0)
@@ -127,7 +131,7 @@ def get_device(device_arg: str) -> torch.device:
 # 损失函数
 # ============================================================
 
-def build_criterions(train_dataset, device: torch.device) -> dict:
+def build_criterions(train_dataset, device: torch.device, remap: bool = False) -> dict:
     """Build weighted loss functions from training label distribution."""
     # Sample subset for efficiency
     print("[INFO] Sampling training labels for loss weights...")
@@ -143,10 +147,16 @@ def build_criterions(train_dataset, device: torch.device) -> dict:
     all_fall = torch.cat(fall_list).numpy()
     all_fallen = torch.cat(fallen_list).numpy()
 
-    # 16-class weights (inverse frequency)
-    class_counts = np.bincount(all_labels_16, minlength=16).astype(np.float32)
+    # Remap rare classes if requested
+    if remap:
+        REMAP = {11: 10, 12: 10, 13: 10, 14: 10, 15: 10}
+        for k, v in REMAP.items():
+            all_labels_16[all_labels_16 == k] = v
+
+    num_cls = 11 if remap else 16
+    class_counts = np.bincount(all_labels_16, minlength=num_cls).astype(np.float32)
     class_counts = np.where(class_counts == 0, 1.0, class_counts)
-    cls_weights = len(all_labels_16) / (16 * class_counts)
+    cls_weights = len(all_labels_16) / (num_cls * class_counts)
     cls_weights = torch.FloatTensor(cls_weights).to(device)
 
     # Fall pos_weight
@@ -178,7 +188,7 @@ def build_criterions(train_dataset, device: torch.device) -> dict:
 
 def train_epoch(model, loader, criterions, optimizer, device,
                 w_cls=1.0, w_fall=0.5, w_fallen=0.5, use_fp16=True,
-                scaler=None) -> float:
+                scaler=None, remap_fn=None) -> float:
     model.train()
     total_loss = 0.0
     n_batches = len(loader)
@@ -189,6 +199,8 @@ def train_epoch(model, loader, criterions, optimizer, device,
     for i, batch in enumerate(loader):
         features = batch["features"].to(device)
         labels_16 = batch["labels_16"].to(device)
+        if remap_fn is not None:
+            labels_16 = remap_fn(labels_16)
         fall_gt = batch["fall_labels"].to(device)
         fallen_gt = batch["fallen_labels"].to(device)
         B, T = labels_16.shape
@@ -238,7 +250,8 @@ def train_epoch(model, loader, criterions, optimizer, device,
 
 @torch.no_grad()
 def validate_epoch(model, loader, criterions, device,
-                   w_cls=1.0, w_fall=0.5, w_fallen=0.5) -> dict:
+                   w_cls=1.0, w_fall=0.5, w_fallen=0.5,
+                   remap_fn=None) -> dict:
     model.eval()
 
     total_loss = 0.0
@@ -249,6 +262,8 @@ def validate_epoch(model, loader, criterions, device,
     for batch in loader:
         features = batch["features"].to(device)
         labels_16 = batch["labels_16"].to(device)
+        if remap_fn is not None:
+            labels_16 = remap_fn(labels_16)
         fall_gt = batch["fall_labels"].to(device)
         fallen_gt = batch["fallen_labels"].to(device)
         B, T = labels_16.shape
@@ -340,6 +355,19 @@ def main():
     input_dim = train_loader.dataset.feature_dim
     print(f"[INFO] Input dim: {input_dim} (from dataset)")
 
+    # Label remapping: rare classes (10-15) → 10, 16→11 classes
+    if args.remap_rare:
+        args.num_classes = 11
+        def remap_labels(labels):
+            """Remap classes 10-15 → 10 (rare→other), classes 0-9 unchanged."""
+            mask = labels >= 11
+            labels = labels.clone()
+            labels[mask] = 10
+            return labels
+    else:
+        def remap_labels(labels):
+            return labels
+
     model = MultimodalFeatureTransformer(
         input_dim=input_dim,
         hidden_dim=args.hidden_dim,
@@ -347,16 +375,18 @@ def main():
         num_heads=args.num_heads,
         dropout=args.dropout,
         max_len=args.window_size + 10,
+        num_classes=args.num_classes,
     ).to(device)
 
     n_params = sum(p.numel() for p in model.parameters())
     print(f"[INFO] Model params: {n_params:,}")
     print(f"[INFO] Architecture: {args.num_layers}L/{args.hidden_dim}d, "
           f"{args.num_heads} heads, dropout={args.dropout}")
+    print(f"[INFO] Classes: {args.num_classes}" + (" (remapped 16→11)" if args.remap_rare else ""))
     print(f"[INFO] Window: T={args.window_size}, stride={args.stride}")
 
     # --- 损失函数 ---
-    criterions = build_criterions(train_loader.dataset, device)
+    criterions = build_criterions(train_loader.dataset, device, remap=args.remap_rare)
 
     # --- 优化器 ---
     optimizer = optim.AdamW(
@@ -393,11 +423,12 @@ def main():
         train_loss = train_epoch(
             model, train_loader, criterions, optimizer, device,
             w_cls=args.w_cls, w_fall=args.w_fall, w_fallen=args.w_fallen,
-            use_fp16=use_fp16, scaler=scaler)
+            use_fp16=use_fp16, scaler=scaler, remap_fn=remap_labels)
 
         val_metrics = validate_epoch(
             model, val_loader, criterions, device,
-            w_cls=args.w_cls, w_fall=args.w_fall, w_fallen=args.w_fallen)
+            w_cls=args.w_cls, w_fall=args.w_fall, w_fallen=args.w_fallen,
+            remap_fn=remap_labels)
 
         current_lr = optimizer.param_groups[0]["lr"]
         scheduler.step(val_metrics["fall_f1"])
