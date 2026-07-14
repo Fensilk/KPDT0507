@@ -126,6 +126,8 @@ def parse_args():
                         help="设备: auto / cuda / cpu")
     parser.add_argument("--no_weighted_sampler", action="store_true",
                         help="禁用加权采样")
+    parser.add_argument("--no_fp16", action="store_true",
+                        help="禁用 FP16 autocast")
 
     return parser.parse_args()
 
@@ -237,6 +239,8 @@ def train_epoch(
     w_cls: float = 1.0,
     w_fall: float = 0.5,
     w_fallen: float = 0.5,
+    use_fp16: bool = True,
+    scaler=None,
 ) -> float:
     model.train()
     total_loss = 0.0
@@ -246,39 +250,44 @@ def train_epoch(
     import time as _time
     t_start = _time.time()
     for i, batch in enumerate(loader):
-        features = batch["features"].to(device)          # (B, T, 512)
+        features = batch["features"].to(device)          # (B, T, D)
         labels_16 = batch["labels_16"].to(device)        # (B, T)
         fall_gt = batch["fall_labels"].to(device)         # (B, T)
         fallen_gt = batch["fallen_labels"].to(device)     # (B, T)
 
         B, T = labels_16.shape
 
-        # 前向传播
-        logits_cls, logits_fall, logits_fallen = model(features)
-        # logits_cls: (B, T, 16), logits_fall: (B, T, 1), logits_fallen: (B, T, 1)
-
-        # 损失计算
-        loss_cls = criterions["cls"](
-            logits_cls.reshape(B * T, -1),    # (B*T, 16)
-            labels_16.reshape(B * T),          # (B*T,)
-        )
-        loss_fall = criterions["fall"](
-            logits_fall.reshape(B * T),        # (B*T,)
-            fall_gt.reshape(B * T).float(),    # (B*T,)
-        )
-        loss_fallen = criterions["fallen"](
-            logits_fallen.reshape(B * T),
-            fallen_gt.reshape(B * T).float(),
-        )
-
-        # 总损失: 可配置权重 (Phase 3)
-        loss = w_cls * loss_cls + w_fall * loss_fall + w_fallen * loss_fallen
-
-        # 反向传播
         optimizer.zero_grad()
-        loss.backward()
-        nn.utils.clip_grad_norm_(model.parameters(), 1.0)
-        optimizer.step()
+
+        if use_fp16 and scaler is not None:
+            with torch.cuda.amp.autocast():
+                logits_cls, logits_fall, logits_fallen = model(features)
+                loss_cls = criterions["cls"](
+                    logits_cls.reshape(B * T, -1), labels_16.reshape(B * T))
+                loss_fall = criterions["fall"](
+                    logits_fall.reshape(B * T), fall_gt.reshape(B * T).float())
+                loss_fallen = criterions["fallen"](
+                    logits_fallen.reshape(B * T), fallen_gt.reshape(B * T).float())
+                loss = w_cls * loss_cls + w_fall * loss_fall + w_fallen * loss_fallen
+
+            scaler.scale(loss).backward()
+            scaler.unscale_(optimizer)
+            nn.utils.clip_grad_norm_(model.parameters(), 1.0)
+            scaler.step(optimizer)
+            scaler.update()
+        else:
+            logits_cls, logits_fall, logits_fallen = model(features)
+            loss_cls = criterions["cls"](
+                logits_cls.reshape(B * T, -1), labels_16.reshape(B * T))
+            loss_fall = criterions["fall"](
+                logits_fall.reshape(B * T), fall_gt.reshape(B * T).float())
+            loss_fallen = criterions["fallen"](
+                logits_fallen.reshape(B * T), fallen_gt.reshape(B * T).float())
+            loss = w_cls * loss_cls + w_fall * loss_fall + w_fallen * loss_fallen
+
+            loss.backward()
+            nn.utils.clip_grad_norm_(model.parameters(), 1.0)
+            optimizer.step()
 
         total_loss += loss.item()
 
@@ -303,6 +312,8 @@ def validate_epoch(
     w_cls: float = 1.0,
     w_fall: float = 0.5,
     w_fallen: float = 0.5,
+    use_fp16: bool = True,
+    class_names: list | None = None,
 ) -> dict:
     model.eval()
 
@@ -325,19 +336,26 @@ def validate_epoch(
 
         B, T = labels_16.shape
 
-        logits_cls, logits_fall, logits_fallen = model(features)
+        if use_fp16:
+            with torch.cuda.amp.autocast():
+                logits_cls, logits_fall, logits_fallen = model(features)
+                loss_cls = criterions["cls"](
+                    logits_cls.reshape(B * T, -1), labels_16.reshape(B * T))
+                loss_fall = criterions["fall"](
+                    logits_fall.reshape(B * T), fall_gt.reshape(B * T).float())
+                loss_fallen = criterions["fallen"](
+                    logits_fallen.reshape(B * T), fallen_gt.reshape(B * T).float())
+                loss = w_cls * loss_cls + w_fall * loss_fall + w_fallen * loss_fallen
+        else:
+            logits_cls, logits_fall, logits_fallen = model(features)
+            loss_cls = criterions["cls"](
+                logits_cls.reshape(B * T, -1), labels_16.reshape(B * T))
+            loss_fall = criterions["fall"](
+                logits_fall.reshape(B * T), fall_gt.reshape(B * T).float())
+            loss_fallen = criterions["fallen"](
+                logits_fallen.reshape(B * T), fallen_gt.reshape(B * T).float())
+            loss = w_cls * loss_cls + w_fall * loss_fall + w_fallen * loss_fallen
 
-        # 损失
-        loss_cls = criterions["cls"](
-            logits_cls.reshape(B * T, -1), labels_16.reshape(B * T)
-        )
-        loss_fall = criterions["fall"](
-            logits_fall.reshape(B * T), fall_gt.reshape(B * T).float()
-        )
-        loss_fallen = criterions["fallen"](
-            logits_fallen.reshape(B * T), fallen_gt.reshape(B * T).float()
-        )
-        loss = w_cls * loss_cls + w_fall * loss_fall + w_fallen * loss_fallen
         total_loss += loss.item()
 
         # 预测
@@ -449,8 +467,10 @@ def main():
     print("=" * 60)
 
     if use_longseq:
+        input_dim = train_loader.dataset.feature_dim
+        print(f"[INFO] Detected feature dim: {input_dim}")
         model = TCNModel(
-            input_dim=512,
+            input_dim=input_dim,
             hidden_dim=args.hidden_dim,
             kernel_size=3,
             window_size=args.window_size,
@@ -491,6 +511,11 @@ def main():
         factor=0.5,
     )
 
+    # --- FP16 scaler ---
+    use_fp16 = not args.no_fp16 and device.type == "cuda"
+    scaler = torch.cuda.amp.GradScaler() if use_fp16 else None
+    print(f"[INFO] FP16 autocast: {'enabled' if use_fp16 else 'disabled'}")
+
     # --- 日志 ---
     writer = SummaryWriter(log_dir=args.log_dir)
     history = {
@@ -514,11 +539,13 @@ def main():
     for epoch in range(1, args.epochs + 1):
         # 训练
         train_loss = train_epoch(model, train_loader, criterions, optimizer, device,
-                                  w_cls=args.w_cls, w_fall=args.w_fall, w_fallen=args.w_fallen)
+                                  w_cls=args.w_cls, w_fall=args.w_fall, w_fallen=args.w_fallen,
+                                  use_fp16=use_fp16, scaler=scaler)
 
         # 验证
         val_metrics = validate_epoch(model, val_loader, criterions, device,
-                                      w_cls=args.w_cls, w_fall=args.w_fall, w_fallen=args.w_fallen)
+                                      w_cls=args.w_cls, w_fall=args.w_fall, w_fallen=args.w_fallen,
+                                      use_fp16=use_fp16)
 
         # 学习率调度
         current_lr = optimizer.param_groups[0]["lr"]
@@ -614,7 +641,8 @@ def main():
     model.eval()
 
     test_metrics = validate_epoch(model, test_loader, criterions, device,
-                                  w_cls=args.w_cls, w_fall=args.w_fall, w_fallen=args.w_fallen)
+                                  w_cls=args.w_cls, w_fall=args.w_fall, w_fallen=args.w_fallen,
+                                  use_fp16=use_fp16)
 
     print(f"\n{'='*60}")
     print("TEST RESULTS")
