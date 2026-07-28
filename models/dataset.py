@@ -476,17 +476,26 @@ class LongSequenceDataset(Dataset):
             ).float()
             feat = torch.cat([feat, pose_feat], dim=-1)
 
+        labels_16 = torch.from_numpy(
+            self.labels_16_all[s:e].copy()
+        ).long()
+
+        # Compute ternary labels on-the-fly for Phase 6
+        # 0=fall, 1=fallen, 2=normal
+        ternary_labels = torch.full_like(labels_16, fill_value=2)  # default: normal
+        ternary_labels[labels_16 == 1] = 0  # fall
+        ternary_labels[labels_16 == 2] = 1  # fallen
+
         return {
             "features": feat,
-            "labels_16": torch.from_numpy(
-                self.labels_16_all[s:e].copy()
-            ).long(),
+            "labels_16": labels_16,
             "fall_labels": torch.from_numpy(
                 self.fall_labels_all[s:e].copy()
             ).long(),
             "fallen_labels": torch.from_numpy(
                 self.fallen_labels_all[s:e].copy()
             ).long(),
+            "ternary_labels": ternary_labels,  # Phase 6: (T,) int64
         }
 
 
@@ -519,6 +528,41 @@ def _get_longseq_sample_weights(dataset: LongSequenceDataset) -> torch.Tensor:
     return weights
 
 
+def _get_longseq_sample_weights_ternary(dataset: LongSequenceDataset) -> torch.Tensor:
+    """
+    Calculate sample weights for WeightedRandomSampler using ternary labels.
+
+    Uses center-frame ternary label as proxy for window majority label.
+    Ternary classes: 0=fall, 1=fallen, 2=normal.
+
+    Args:
+        dataset: LongSequenceDataset instance.
+    Returns:
+        weights: (N,) float32 weights array.
+    """
+    n_total = len(dataset)
+    half = dataset.window_size // 2
+
+    labels = []
+    for npz_start, offset in dataset.window_index:
+        center_idx = npz_start + offset + half
+        lbl_16 = int(dataset.labels_16_all[center_idx])
+        # Map to ternary
+        if lbl_16 == 1:
+            ternary_lbl = 0
+        elif lbl_16 == 2:
+            ternary_lbl = 1
+        else:
+            ternary_lbl = 2
+        labels.append(ternary_lbl)
+
+    labels_t = torch.tensor(labels, dtype=torch.long)
+    class_counts = torch.bincount(labels_t, minlength=3).float()
+    class_weights = 1.0 / (class_counts + 1e-6)
+    weights = class_weights[labels_t]
+    return weights
+
+
 def create_longseq_dataloaders(
     npz_path: str,
     splits_dir: str,
@@ -529,6 +573,7 @@ def create_longseq_dataloaders(
     use_weighted_sampler: bool = True,
     use_diff: bool = False,
     pose_npz_path: str = None,
+    use_ternary_sampler: bool = False,
 ) -> tuple[DataLoader, DataLoader, DataLoader]:
     """
     Create train/val/test DataLoaders with sliding window.
@@ -543,6 +588,8 @@ def create_longseq_dataloaders(
         use_weighted_sampler: Use WeightedRandomSampler on train.
         use_diff: If True, concat frame-to-frame diff features.
         pose_npz_path: Optional frame-level pose NPZ path.
+        use_ternary_sampler: If True, use ternary (3-class) weights
+            instead of 16-class weights (Phase 6).
 
     Returns:
         (train_loader, val_loader, test_loader)
@@ -576,7 +623,10 @@ def create_longseq_dataloaders(
 
     # Training set with weighted sampling
     if use_weighted_sampler:
-        weights = _get_longseq_sample_weights(train_dataset)
+        if use_ternary_sampler:
+            weights = _get_longseq_sample_weights_ternary(train_dataset)
+        else:
+            weights = _get_longseq_sample_weights(train_dataset)
         sampler = WeightedRandomSampler(
             weights, num_samples=len(weights), replacement=True
         )

@@ -74,6 +74,68 @@ def compute_classification_report(
     )
 
 
+def compute_ternary_metrics(
+    pred_ternary: np.ndarray,
+    gt_ternary: np.ndarray,
+) -> dict:
+    """
+    Compute per-class metrics for ternary classification (Phase 6).
+
+    Classes: 0=fall, 1=fallen, 2=normal.
+
+    Args:
+        pred_ternary: (N,) int — predicted class (0, 1, 2).
+        gt_ternary: (N,) int — ground truth class (0, 1, 2).
+    Returns:
+        dict with per-class F1/precision/recall, macro_f1, confusion_matrix,
+        ternary_acc, and classification report.
+    """
+    TERNARY_CLASS_NAMES = ["fall", "fallen", "normal"]
+
+    # Per-class binary metrics (OvR)
+    def _binary_metrics(pred_mask, gt_mask):
+        return {
+            "precision": float(precision_score(gt_mask, pred_mask, zero_division=0)),
+            "recall": float(recall_score(gt_mask, pred_mask, zero_division=0)),
+            "f1": float(f1_score(gt_mask, pred_mask, zero_division=0)),
+        }
+
+    fall_m = _binary_metrics(pred_ternary == 0, gt_ternary == 0)
+    fallen_m = _binary_metrics(pred_ternary == 1, gt_ternary == 1)
+    normal_m = _binary_metrics(pred_ternary == 2, gt_ternary == 2)
+
+    # 3-class accuracy
+    ternary_acc = float(accuracy_score(gt_ternary, pred_ternary))
+
+    # 3x3 confusion matrix
+    cm = confusion_matrix(gt_ternary, pred_ternary, labels=[0, 1, 2])
+
+    # Classification report
+    report = classification_report(
+        gt_ternary, pred_ternary,
+        target_names=TERNARY_CLASS_NAMES,
+        zero_division=0,
+    )
+
+    results = {
+        "ternary_acc": ternary_acc,
+        "random_baseline": 1.0 / 3,
+        "fall_f1": fall_m["f1"],
+        "fall_precision": fall_m["precision"],
+        "fall_recall": fall_m["recall"],
+        "fallen_f1": fallen_m["f1"],
+        "fallen_precision": fallen_m["precision"],
+        "fallen_recall": fallen_m["recall"],
+        "normal_f1": normal_m["f1"],
+        "normal_precision": normal_m["precision"],
+        "normal_recall": normal_m["recall"],
+        "avg_f1": (fall_m["f1"] + fallen_m["f1"] + normal_m["f1"]) / 3.0,
+        "confusion_matrix": cm.tolist(),
+        "cls_report": report,
+    }
+    return results
+
+
 def compute_all_metrics(
     pred_cls: np.ndarray,
     pred_fall: np.ndarray,

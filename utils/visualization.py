@@ -12,6 +12,7 @@ import numpy as np
 import matplotlib
 matplotlib.use("Agg")  # 非交互式后端, 无 GUI 依赖
 import matplotlib.pyplot as plt
+from matplotlib.colors import LogNorm
 
 
 # 16 类名称 (与预处理一致)
@@ -22,6 +23,9 @@ CLASS_NAMES = [
     "kneel_down", "kneeling", "squat_down", "squatting",
     "crawl", "jump",
 ]
+
+# 三分类名称 (Phase 6)
+TERNARY_CLASS_NAMES = ["fall", "fallen", "normal"]
 
 
 def plot_timeline_comparison(
@@ -109,6 +113,7 @@ def plot_confusion_matrix(
     save_path: str,
     title: str = "Confusion Matrix",
     normalize: bool = True,
+    log_scale: bool = False,
 ):
     """
     绘制混淆矩阵热力图.
@@ -119,29 +124,43 @@ def plot_confusion_matrix(
         save_path: 保存路径.
         title: 图标题.
         normalize: 是否按行归一化.
+        log_scale: 是否使用对数色阶 (适用于原始计数, 解决类别不平衡导致的不可见问题).
     """
+    n = len(class_names)
+
     if normalize:
         row_sums = cm.sum(axis=1, keepdims=True)
-        row_sums = np.where(row_sums == 0, 1, row_sums)  # 避免除零
+        row_sums = np.where(row_sums == 0, 1, row_sums)
         display = cm.astype(float) / row_sums
         fmt = ".2f"
     else:
-        display = cm
+        display = cm.astype(float)  # float for LogNorm compatibility
         fmt = "d"
 
-    n = len(class_names)
     fig, ax = plt.subplots(figsize=(max(10, n * 0.6), max(8, n * 0.5)))
-    im = ax.imshow(display, cmap="Blues", aspect="auto")
+
+    # 对数色阶: 让稀有类的少量混淆也能看到
+    if log_scale and not normalize:
+        norm = LogNorm(vmin=1, vmax=max(cm.max(), 1))
+        im = ax.imshow(display, cmap="Blues", aspect="auto", norm=norm)
+    else:
+        im = ax.imshow(display, cmap="Blues", aspect="auto")
 
     # 标注数值
     for i in range(n):
         for j in range(n):
             val = display[i, j]
-            color = "white" if val > 0.5 else "black"
             if normalize:
+                color = "white" if val > 0.5 else "black"
                 text = f"{val:.2f}" if val > 0.01 else ""
+            elif log_scale:
+                # 对数色阶下, 用归一化后的值判断文字颜色
+                norm_val = np.log10(max(val, 1)) / np.log10(max(cm.max(), 1))
+                color = "white" if norm_val > 0.45 else "black"
+                text = str(int(val)) if val >= 1 else ""
             else:
-                text = str(int(cm[i, j])) if cm[i, j] > 0 else ""
+                color = "white" if val > cm.max() * 0.5 else "black"
+                text = str(int(val)) if val > 0 else ""
             ax.text(j, i, text, ha="center", va="center", color=color, fontsize=7)
 
     ax.set_xticks(range(n))
@@ -219,3 +238,89 @@ def plot_training_curves(
     plt.savefig(save_path, dpi=150, bbox_inches="tight")
     plt.close()
     print(f"[INFO] Training curves saved: {save_path}")
+
+
+def plot_training_curves_ternary(
+    history: dict,
+    save_path: str,
+):
+    """
+    Plot training curves for ternary classification (Phase 6).
+
+    Args:
+        history: dict with keys: train_loss, val_loss, ternary_acc,
+                 fall_f1, fallen_f1, normal_f1, avg_f1, lr.
+                 Each value is a list of per-epoch values.
+        save_path: Output PNG path.
+    """
+    epochs = range(1, len(history["train_loss"]) + 1)
+
+    # Dynamically choose layout: fall_f1 is always present
+    has_normal = "normal_f1" in history
+    has_ternary_acc = "ternary_acc" in history
+    n_plots = 2 + (1 if has_normal else 0) + (1 if has_ternary_acc else 0)
+    n_cols = min(3, n_plots)
+    n_rows = (n_plots + n_cols - 1) // n_cols
+
+    fig, axes = plt.subplots(n_rows, n_cols, figsize=(5 * n_cols, 4 * n_rows))
+    if n_rows * n_cols == 1:
+        axes = np.array([axes])
+    axes = axes.flatten()
+
+    idx = 0
+
+    # Loss
+    ax = axes[idx]; idx += 1
+    ax.plot(epochs, history["train_loss"], label="Train", color="blue")
+    ax.plot(epochs, history["val_loss"], label="Val", color="orange")
+    ax.set_xlabel("Epoch"); ax.set_ylabel("Loss")
+    ax.set_title("Total Loss"); ax.legend(); ax.grid(alpha=0.3)
+
+    # Ternary accuracy
+    if has_ternary_acc:
+        ax = axes[idx]; idx += 1
+        ax.plot(epochs, history["ternary_acc"], color="steelblue")
+        ax.axhline(y=1.0 / 3, color="red", linestyle="--", label="Random (33.3%)")
+        ax.set_xlabel("Epoch"); ax.set_ylabel("Accuracy")
+        ax.set_title("Ternary Accuracy (3-class)"); ax.grid(alpha=0.3)
+
+    # Per-class F1 scores
+    ax = axes[idx]; idx += 1
+    ax.plot(epochs, history["fall_f1"], label="Fall", color="red")
+    ax.plot(epochs, history["fallen_f1"], label="Fallen", color="orange")
+    if has_normal:
+        ax.plot(epochs, history["normal_f1"], label="Normal", color="green")
+    ax.set_xlabel("Epoch"); ax.set_ylabel("F1")
+    ax.set_title("Per-Class F1 Scores"); ax.legend(); ax.grid(alpha=0.3)
+
+    # Average F1
+    ax = axes[idx]; idx += 1
+    if "avg_f1" in history:
+        ax.plot(epochs, history["avg_f1"], color="teal", linewidth=2)
+    else:
+        # Compute on the fly: avg of fall, fallen, normal
+        f1s = [history["fall_f1"]]
+        f1s.append(history["fallen_f1"])
+        if has_normal:
+            f1s.append(history["normal_f1"])
+        avg = [sum(vals) / len(vals) for vals in zip(*f1s)]
+        ax.plot(epochs, avg, color="teal", linewidth=2)
+    ax.set_xlabel("Epoch"); ax.set_ylabel("Avg F1")
+    ax.set_title("Macro-Average F1 (3-class)"); ax.grid(alpha=0.3)
+
+    # Learning rate
+    if "lr" in history and idx < len(axes):
+        ax = axes[idx]; idx += 1
+        ax.plot(epochs, history["lr"], color="red")
+        ax.set_xlabel("Epoch"); ax.set_ylabel("LR")
+        ax.set_title("Learning Rate"); ax.grid(alpha=0.3)
+
+    # Hide unused axes
+    for j in range(idx, len(axes)):
+        axes[j].set_visible(False)
+
+    plt.tight_layout()
+    os.makedirs(os.path.dirname(save_path), exist_ok=True)
+    plt.savefig(save_path, dpi=150, bbox_inches="tight")
+    plt.close()
+    print(f"[INFO] Ternary training curves saved: {save_path}")

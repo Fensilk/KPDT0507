@@ -31,6 +31,12 @@ logs/*
 # Jupyter
 .ipynb_checkpoints/
 
+# Phase 6 large artifacts
+data/dinov2_features/
+data/dinov2_giant_features/
+phase6_results.tar.gz
+phase6_code.tar.gz
+
 # OS
 .DS_Store
 Thumbs.db
