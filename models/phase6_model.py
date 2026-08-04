@@ -366,6 +366,7 @@ class Phase6TernaryModel(nn.Module):
         dropout: float = 0.3,
         mlp_ratio: float = 4.0,
         max_len: int = 100,
+        num_classes: int = 3,  # 3=ternary, 2=binary event
     ):
         super().__init__()
 
@@ -373,6 +374,7 @@ class Phase6TernaryModel(nn.Module):
         self.hidden_dim = hidden_dim
         self.decoder_type = decoder_type
         self.causal = causal
+        self.num_classes = num_classes
 
         # Shared input projection
         self.input_proj = nn.Linear(input_dim, hidden_dim)
@@ -409,7 +411,7 @@ class Phase6TernaryModel(nn.Module):
             )
 
         # Output head
-        self.head = nn.Linear(hidden_dim, 3)  # fall, fallen, normal
+        self.head = nn.Linear(hidden_dim, num_classes)  # 3=ternary, 2=binary event
 
         self._init_weights()
 
@@ -426,14 +428,14 @@ class Phase6TernaryModel(nn.Module):
         Args:
             features: (B, T, D) input features.
         Returns:
-            logits: (B, T, 3) ternary classification logits.
+            logits: (B, T, num_classes) classification logits.
         """
         x = self.input_proj(features)       # (B, T, hidden_dim)
         x = self.input_norm(x)
         x = self.pos_encoder(x)
         x = self.emb_dropout(x)
         x = self.decoder(x)                  # (B, T, hidden_dim)
-        logits = self.head(x)                # (B, T, 3)
+        logits = self.head(x)                # (B, T, num_classes)
         return logits
 
 

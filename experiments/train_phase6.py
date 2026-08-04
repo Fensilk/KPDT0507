@@ -112,6 +112,8 @@ def parse_args():
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--device", type=str, default="auto")
     parser.add_argument("--no_weighted_sampler", action="store_true")
+    parser.add_argument("--use_diff", action="store_true",
+                        help="Use Δframe (frame-to-frame diff) features — doubles input dim")
     parser.add_argument("--no_fp16", action="store_true",
                         help="Disable FP16 autocast")
     parser.add_argument("--fast", action="store_true",
@@ -264,7 +266,7 @@ def main():
         batch_size=args.batch_size,
         num_workers=args.num_workers,
         use_weighted_sampler=not args.no_weighted_sampler,
-        use_diff=False,
+        use_diff=args.use_diff if hasattr(args, 'use_diff') else False,
         pose_npz_path=None,
         use_ternary_sampler=True,  # Phase 6: 3-class balanced sampling
     )
