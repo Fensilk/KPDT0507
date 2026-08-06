@@ -78,6 +78,8 @@ def parse_args():
                         help="Use causal masking (default: True)")
     parser.add_argument("--no_causal", action="store_false", dest="causal",
                         help="Disable causal masking → bidirectional")
+    parser.add_argument("--bidirectional", action="store_true", default=False,
+                        help="Use Bi-LSTM (only for decoder_type=lstm)")
     parser.add_argument("--hidden_dim", type=int, default=384)
     parser.add_argument("--num_layers", type=int, default=1,
                         help="Decoder layers (transformer:1, lstm/mamba:2)")
@@ -294,12 +296,18 @@ def main():
         dropout=args.dropout,
         mlp_ratio=4.0,
         max_len=args.window_size + 10,
+        bidirectional=args.bidirectional,
     ).to(device)
 
     n_params = sum(p.numel() for p in model.parameters())
-    causal_str = "causal" if args.causal else "bidirectional"
+    if args.decoder_type == "lstm" and args.bidirectional:
+        attention_str = "bidirectional (Bi-LSTM)"
+    elif args.causal:
+        attention_str = "causal"
+    else:
+        attention_str = "bidirectional"
     print(f"[INFO] Model params: {n_params:,}")
-    print(f"[INFO] Decoder: {args.decoder_type} | {causal_str} | "
+    print(f"[INFO] Decoder: {args.decoder_type} | {attention_str} | "
           f"{args.num_layers}L/{args.hidden_dim}d | dropout={args.dropout}")
     print(f"[INFO] Window: T={args.window_size}, stride={args.stride}")
 
@@ -532,7 +540,7 @@ def main():
     print("EXPERIMENT SUMMARY")
     print(f"{'='*60}")
     print(f"  Log directory:   {args.log_dir}")
-    print(f"  Decoder:         {args.decoder_type} ({causal_str})")
+    print(f"  Decoder:         {args.decoder_type} ({attention_str})")
     print(f"  Input dim:       {input_dim}")
     print(f"  Window:          T={args.window_size}, stride={args.stride}")
     print(f"  Train windows:   {len(train_loader.dataset):,}")

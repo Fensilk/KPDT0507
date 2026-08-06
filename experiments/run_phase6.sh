@@ -2,7 +2,8 @@
 # ================================================================
 # Phase 6: Ternary Classification + Temporal Decoder Comparison
 #
-# Bridge experiment (1) + 3 decoders x 3 gamma values (9) = 10 experiments
+# Original causal experiments (10): bridge + 3 decoders x 3 gamma
+# Bidirectional rerun (6): Bi-Transformer x 3 gamma + Bi-LSTM x 3 gamma
 #
 # Config:
 #   Feature: DINOv2 ViT-g (1536d)
@@ -11,11 +12,15 @@
 #   Train:   AdamW lr=1e-3, batch_size=32, epochs=100, patience=15
 #
 # Usage:
-#   bash experiments/run_phase6.sh bridge   # Bridge only
-#   bash experiments/run_phase6.sh ct       # Causal Transformer only
-#   bash experiments/run_phase6.sh lstm     # LSTM only
-#   bash experiments/run_phase6.sh mamba    # Mamba only
-#   bash experiments/run_phase6.sh all      # All 10 experiments
+#   bash experiments/run_phase6.sh bridge       # Bridge only
+#   bash experiments/run_phase6.sh ct            # Causal Transformer only
+#   bash experiments/run_phase6.sh lstm          # Causal LSTM only
+#   bash experiments/run_phase6.sh mamba         # Causal Mamba only
+#   bash experiments/run_phase6.sh bidir_trans   # Bidirectional Transformer
+#   bash experiments/run_phase6.sh bilstm        # Bi-LSTM
+#   bash experiments/run_phase6.sh bidir_all     # Bidirectional: trans + lstm (6)
+#   bash experiments/run_phase6.sh causal_all    # Original causal: all 10
+#   bash experiments/run_phase6.sh all           # Everything (bridge + 6 bidir + 9 causal)
 # ================================================================
 
 set -e
@@ -28,7 +33,7 @@ SHARED_ARGS="--window_size 64 --stride 8 --epochs 100 --patience 15 \
 
 echo "=============================================="
 echo "Phase 6: Ternary Classification"
-echo "Decoder: Causal Transformer | LSTM | Mamba"
+echo "Decoder: Transformer | Bi-LSTM (bidirectional)"
 echo "Loss: Focal Loss (gamma=2,3,5)"
 echo "=============================================="
 echo ""
@@ -45,8 +50,7 @@ python -c "from mamba_ssm import Mamba; print('mamba-ssm: available')" 2>/dev/nu
 echo ""
 
 # ============================================================
-# Bridge Experiment
-# Bidirectional Transformer + CE (no Focal Loss)
+# Bridge Experiment (Bidirectional Transformer + CE, already run)
 # ============================================================
 run_bridge() {
     echo "=============================================="
@@ -76,7 +80,7 @@ run_ct() {
 }
 
 # ============================================================
-# B. LSTM x gamma in {2, 3, 5}
+# B. Causal LSTM x gamma in {2, 3, 5}
 # ============================================================
 run_lstm() {
     for gamma in 2 3 5; do
@@ -93,7 +97,7 @@ run_lstm() {
 }
 
 # ============================================================
-# C. Mamba x gamma in {2, 3, 5}
+# C. Causal Mamba x gamma in {2, 3, 5}
 # ============================================================
 run_mamba() {
     for gamma in 2 3 5; do
@@ -110,9 +114,45 @@ run_mamba() {
 }
 
 # ============================================================
+# D. Bidirectional Transformer x gamma in {2, 3, 5}  [NEW]
+#    --no_causal = bidirectional attention (no future mask)
+# ============================================================
+run_bidir_trans() {
+    for gamma in 2 3 5; do
+        echo ""
+        echo "=============================================="
+        echo ">>> [bidir_trans/g${gamma}] p6d_bt_g${gamma}: Bidirectional Transformer + Focal(gamma=${gamma})"
+        echo "=============================================="
+        python experiments/train_phase6.py \
+            --exp_tag "phase6/p6d_bt_g${gamma}" \
+            --decoder_type transformer --num_layers 1 \
+            --no_causal --focal_gamma ${gamma} \
+            $SHARED_ARGS
+    done
+}
+
+# ============================================================
+# E. Bi-LSTM x gamma in {2, 3, 5}  [NEW]
+#    --no_causal + --bidirectional = Bi-LSTM
+# ============================================================
+run_bilstm() {
+    for gamma in 2 3 5; do
+        echo ""
+        echo "=============================================="
+        echo ">>> [bilstm/g${gamma}] p6e_bilstm_g${gamma}: Bi-LSTM 2L + Focal(gamma=${gamma})"
+        echo "=============================================="
+        python experiments/train_phase6.py \
+            --exp_tag "phase6/p6e_bilstm_g${gamma}" \
+            --decoder_type lstm --num_layers 2 \
+            --no_causal --bidirectional --focal_gamma ${gamma} \
+            $SHARED_ARGS
+    done
+}
+
+# ============================================================
 # Dispatch
 # ============================================================
-case "${1:-all}" in
+case "${1:-bidir_all}" in
     bridge)
         run_bridge
         ;;
@@ -125,8 +165,14 @@ case "${1:-all}" in
     mamba)
         run_mamba
         ;;
-    all)
-        echo "Running all 10 experiments in priority order:"
+    bidir_trans)
+        run_bidir_trans
+        ;;
+    bilstm)
+        run_bilstm
+        ;;
+    causal_all)
+        echo "Running all 10 causal experiments in priority order:"
         echo "  [1/10] Bridge"
         echo "  [2-4/10] Causal Transformer (gamma=2,3,5)"
         echo "  [5-7/10] Mamba (gamma=2,3,5)"
@@ -137,14 +183,42 @@ case "${1:-all}" in
         run_mamba
         run_lstm
         ;;
-    *)
-        echo "Usage: bash experiments/run_phase6.sh {bridge|ct|lstm|mamba|all}"
+    bidir_all)
+        echo "Running all 6 bidirectional experiments:"
+        echo "  [1-3/6] Bidirectional Transformer (gamma=2,3,5)"
+        echo "  [4-6/6] Bi-LSTM (gamma=2,3,5)"
         echo ""
-        echo "  bridge  — Bidirectional Transformer + CE (1 experiment)"
-        echo "  ct      — Causal Transformer x gamma=2,3,5 (3 experiments)"
-        echo "  lstm    — LSTM 2L x gamma=2,3,5 (3 experiments)"
-        echo "  mamba   — Mamba 2L x gamma=2,3,5 (3 experiments)"
-        echo "  all     — All 10 experiments"
+        run_bidir_trans
+        run_bilstm
+        ;;
+    all)
+        echo "Running everything (bridge + 6 bidir + 9 causal = 16 experiments):"
+        echo "  [1/16] Bridge"
+        echo "  [2-4/16] Bidirectional Transformer (gamma=2,3,5)"
+        echo "  [5-7/16] Bi-LSTM (gamma=2,3,5)"
+        echo "  [8-10/16] Causal Transformer (gamma=2,3,5)"
+        echo "  [11-13/16] Mamba (gamma=2,3,5)"
+        echo "  [14-16/16] Causal LSTM (gamma=2,3,5)"
+        echo ""
+        run_bridge
+        run_bidir_trans
+        run_bilstm
+        run_ct
+        run_mamba
+        run_lstm
+        ;;
+    *)
+        echo "Usage: bash experiments/run_phase6.sh {bridge|ct|lstm|mamba|bidir_trans|bilstm|bidir_all|causal_all|all}"
+        echo ""
+        echo "  bridge       — Bidirectional Transformer + CE (1 experiment)"
+        echo "  ct           — Causal Transformer x gamma=2,3,5 (3 experiments)"
+        echo "  lstm         — Causal LSTM 2L x gamma=2,3,5 (3 experiments)"
+        echo "  mamba        — Causal Mamba 2L x gamma=2,3,5 (3 experiments)"
+        echo "  bidir_trans  — Bidirectional Transformer x gamma=2,3,5 (3 experiments)  [NEW]"
+        echo "  bilstm       — Bi-LSTM 2L x gamma=2,3,5 (3 experiments)  [NEW]"
+        echo "  bidir_all    — bidir_trans + bilstm (6 experiments, default)  [NEW]"
+        echo "  causal_all   — Original causal: bridge + ct + mamba + lstm (10 experiments)"
+        echo "  all          — Everything (16 experiments)"
         exit 1
         ;;
 esac
@@ -155,8 +229,9 @@ echo "Phase 6 complete!"
 echo "Logs: logs/phase6/"
 echo ""
 echo "Experiment matrix:"
-echo "  p6_bridge       Bidirectional Transformer + CE"
-echo "  p6a_ct_g{2,3,5}  Causal Transformer + Focal"
-echo "  p6b_lstm_g{2,3,5} LSTM 2L + Focal"
-echo "  p6c_mamba_g{2,3,5} Mamba 2L + Focal"
+echo "  p6_bridge          Bidirectional Transformer + CE"
+echo "  p6d_bt_g{2,3,5}    Bidirectional Transformer + Focal  [NEW]"
+echo "  p6e_bilstm_g{2,3,5} Bi-LSTM 2L + Focal  [NEW]"
+echo "  p6a_ct_g{2,3,5}    Causal Transformer + Focal"
+echo "  p6b_lstm_g{2,3,5}  Causal LSTM 2L + Focal"
 echo "=============================================="

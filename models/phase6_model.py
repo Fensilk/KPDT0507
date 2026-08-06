@@ -101,22 +101,32 @@ class CausalTransformerDecoder(nn.Module):
 # ============================================================
 
 class LSTMDecoder(nn.Module):
-    """2-layer LSTM decoder with dropout between layers."""
+    """2-layer LSTM decoder with dropout between layers.
+
+    When bidirectional=True, uses Bi-LSTM and projects 2*d_model → d_model
+    so the output shape stays (B, T, d_model), keeping the interface uniform.
+    """
 
     def __init__(
         self,
         d_model: int = 384,
         num_layers: int = 2,
         dropout: float = 0.3,
+        bidirectional: bool = False,
     ):
         super().__init__()
+        self.bidirectional = bidirectional
         self.lstm = nn.LSTM(
             input_size=d_model,
             hidden_size=d_model,
             num_layers=num_layers,
             batch_first=True,
             dropout=dropout if num_layers > 1 else 0.0,
+            bidirectional=bidirectional,
         )
+        if bidirectional:
+            # Bi-LSTM doubles the hidden dim → project back to d_model
+            self.out_proj = nn.Linear(2 * d_model, d_model)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """
@@ -126,6 +136,8 @@ class LSTMDecoder(nn.Module):
             (B, T, d_model)
         """
         out, _ = self.lstm(x)
+        if self.bidirectional:
+            out = self.out_proj(out)
         return out
 
 
@@ -367,6 +379,7 @@ class Phase6TernaryModel(nn.Module):
         mlp_ratio: float = 4.0,
         max_len: int = 100,
         num_classes: int = 3,  # 3=ternary, 2=binary event
+        bidirectional: bool = False,  # Bi-LSTM
     ):
         super().__init__()
 
@@ -396,6 +409,7 @@ class Phase6TernaryModel(nn.Module):
                 d_model=hidden_dim,
                 num_layers=num_layers,
                 dropout=dropout,
+                bidirectional=bidirectional,
             )
         elif decoder_type == "mamba":
             self.decoder = MambaDecoder(
@@ -452,10 +466,12 @@ def test_forward_shapes():
         ("transformer", True, 1),
         ("transformer", False, 1),  # bridge
         ("lstm", True, 2),
+        ("lstm", False, 2),  # Bi-LSTM
         ("mamba", True, 2),
     ]
 
     for decoder_type, causal, num_layers in configs:
+        bidirectional = (decoder_type == "lstm" and not causal)
         model = Phase6TernaryModel(
             input_dim=D,
             hidden_dim=384,
@@ -464,6 +480,7 @@ def test_forward_shapes():
             num_layers=num_layers,
             dropout=0.3,
             max_len=T + 10,
+            bidirectional=bidirectional,
         )
         model.eval()
 
@@ -474,9 +491,9 @@ def test_forward_shapes():
             f"[{decoder_type}] Expected ({B},{T},3), got {logits.shape}"
         )
         n_params = sum(p.numel() for p in model.parameters())
-        causal_str = "causal" if causal else "bidir"
+        causal_str = "causal" if causal else ("bidir" if decoder_type == "transformer" else "bilstm")
         print(
-            f"[PASS] {decoder_type:>12s} ({causal_str:>6s}, "
+            f"[PASS] {decoder_type:>12s} ({causal_str:>7s}, "
             f"{num_layers}L) → {logits.shape} | Params: {n_params:,}"
         )
 

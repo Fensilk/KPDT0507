@@ -35,6 +35,7 @@ logs/*
 data/dinov2_features/
 data/dinov2_giant_features/
 phase6_results.tar.gz
+p6_results.tar.gz
 phase6_code.tar.gz
 
 # OS
