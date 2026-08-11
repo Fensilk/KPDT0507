@@ -1,0 +1,281 @@
+{
+  "config": {
+    "experiment": "p7a_event_rule",
+    "bridge_exp": "logs/phase6/p6_bridge",
+    "event_timeout": 32,
+    "window_size": 64,
+    "stride": 8
+  },
+  "rule_stats": {
+    "events_detected": 266,
+    "fallen_kept": 7219,
+    "fallen_suppressed": 1843,
+    "fall_trigger_frames": 266
+  },
+  "metrics_bridge": {
+    "ternary_acc": 0.899375,
+    "random_baseline": 0.3333333333333333,
+    "fall_f1": 0.6992971569682771,
+    "fall_precision": 0.5947867298578199,
+    "fall_recall": 0.8483638039637426,
+    "fallen_f1": 0.6283072805790402,
+    "fallen_precision": 0.5699624806885897,
+    "fallen_recall": 0.6999593440845643,
+    "normal_f1": 0.9470475570521888,
+    "normal_precision": 0.9742318489710768,
+    "normal_recall": 0.9213391465315667,
+    "avg_f1": 0.7582173315331687,
+    "confusion_matrix": [
+      [
+        5522,
+        252,
+        735
+      ],
+      [
+        948,
+        5165,
+        1266
+      ],
+      [
+        2814,
+        3645,
+        75653
+      ]
+    ],
+    "cls_report": "              precision    recall  f1-score   support\n\n        fall       0.59      0.85      0.70      6509\n      fallen       0.57      0.70      0.63      7379\n      normal       0.97      0.92      0.95     82112\n\n    accuracy                           0.90     96000\n   macro avg       0.71      0.82      0.76     96000\nweighted avg       0.92      0.90      0.91     96000\n"
+  },
+  "metrics_corrected": {
+    "ternary_acc": 0.9068645833333333,
+    "random_baseline": 0.3333333333333333,
+    "fall_f1": 0.6992971569682771,
+    "fall_precision": 0.5947867298578199,
+    "fall_recall": 0.8483638039637426,
+    "fallen_f1": 0.6306343334703384,
+    "fallen_precision": 0.6376229394652999,
+    "fallen_recall": 0.623797262501694,
+    "normal_f1": 0.9521004399507453,
+    "normal_precision": 0.9677597896775979,
+    "normal_recall": 0.9369397895557288,
+    "avg_f1": 0.760677310129787,
+    "confusion_matrix": [
+      [
+        5522,
+        252,
+        735
+      ],
+      [
+        948,
+        4603,
+        1828
+      ],
+      [
+        2814,
+        2364,
+        76934
+      ]
+    ],
+    "cls_report": "              precision    recall  f1-score   support\n\n        fall       0.59      0.85      0.70      6509\n      fallen       0.64      0.62      0.63      7379\n      normal       0.97      0.94      0.95     82112\n\n    accuracy                           0.91     96000\n   macro avg       0.73      0.80      0.76     96000\nweighted avg       0.92      0.91      0.91     96000\n"
+  },
+  "breakdown_bridge": {
+    "walk": {
+      "total": 10893,
+      "pred_fall": 90,
+      "pred_fallen": 1,
+      "pred_normal": 10802
+    },
+    "fall": {
+      "total": 6509,
+      "pred_fall": 5522,
+      "pred_fallen": 252,
+      "pred_normal": 735
+    },
+    "fallen": {
+      "total": 7379,
+      "pred_fall": 948,
+      "pred_fallen": 5165,
+      "pred_normal": 1266
+    },
+    "sit_down": {
+      "total": 4652,
+      "pred_fall": 254,
+      "pred_fallen": 17,
+      "pred_normal": 4381
+    },
+    "sitting": {
+      "total": 15765,
+      "pred_fall": 127,
+      "pred_fallen": 511,
+      "pred_normal": 15127
+    },
+    "lie_down": {
+      "total": 4844,
+      "pred_fall": 471,
+      "pred_fallen": 128,
+      "pred_normal": 4245
+    },
+    "lying": {
+      "total": 15601,
+      "pred_fall": 171,
+      "pred_fallen": 1981,
+      "pred_normal": 13449
+    },
+    "stand_up": {
+      "total": 6684,
+      "pred_fall": 308,
+      "pred_fallen": 522,
+      "pred_normal": 5854
+    },
+    "standing": {
+      "total": 12706,
+      "pred_fall": 64,
+      "pred_fallen": 30,
+      "pred_normal": 12612
+    },
+    "other": {
+      "total": 9093,
+      "pred_fall": 1155,
+      "pred_fallen": 438,
+      "pred_normal": 7500
+    },
+    "kneel_down": {
+      "total": 31,
+      "pred_fall": 23,
+      "pred_fallen": 8,
+      "pred_normal": 0
+    },
+    "kneeling": {
+      "total": 529,
+      "pred_fall": 12,
+      "pred_fallen": 0,
+      "pred_normal": 517
+    },
+    "squat_down": {
+      "total": 220,
+      "pred_fall": 21,
+      "pred_fallen": 0,
+      "pred_normal": 199
+    },
+    "squatting": {
+      "total": 152,
+      "pred_fall": 6,
+      "pred_fallen": 0,
+      "pred_normal": 146
+    },
+    "crawl": {
+      "total": 421,
+      "pred_fall": 26,
+      "pred_fallen": 9,
+      "pred_normal": 386
+    },
+    "jump": {
+      "total": 521,
+      "pred_fall": 86,
+      "pred_fallen": 0,
+      "pred_normal": 435
+    }
+  },
+  "breakdown_corrected": {
+    "walk": {
+      "total": 10893,
+      "pred_fall": 90,
+      "pred_fallen": 1,
+      "pred_normal": 10802
+    },
+    "fall": {
+      "total": 6509,
+      "pred_fall": 5522,
+      "pred_fallen": 252,
+      "pred_normal": 735
+    },
+    "fallen": {
+      "total": 7379,
+      "pred_fall": 948,
+      "pred_fallen": 4603,
+      "pred_normal": 1828
+    },
+    "sit_down": {
+      "total": 4652,
+      "pred_fall": 254,
+      "pred_fallen": 17,
+      "pred_normal": 4381
+    },
+    "sitting": {
+      "total": 15765,
+      "pred_fall": 127,
+      "pred_fallen": 494,
+      "pred_normal": 15144
+    },
+    "lie_down": {
+      "total": 4844,
+      "pred_fall": 471,
+      "pred_fallen": 90,
+      "pred_normal": 4283
+    },
+    "lying": {
+      "total": 15601,
+      "pred_fall": 171,
+      "pred_fallen": 886,
+      "pred_normal": 14544
+    },
+    "stand_up": {
+      "total": 6684,
+      "pred_fall": 308,
+      "pred_fallen": 466,
+      "pred_normal": 5910
+    },
+    "standing": {
+      "total": 12706,
+      "pred_fall": 64,
+      "pred_fallen": 30,
+      "pred_normal": 12612
+    },
+    "other": {
+      "total": 9093,
+      "pred_fall": 1155,
+      "pred_fallen": 363,
+      "pred_normal": 7575
+    },
+    "kneel_down": {
+      "total": 31,
+      "pred_fall": 23,
+      "pred_fallen": 8,
+      "pred_normal": 0
+    },
+    "kneeling": {
+      "total": 529,
+      "pred_fall": 12,
+      "pred_fallen": 0,
+      "pred_normal": 517
+    },
+    "squat_down": {
+      "total": 220,
+      "pred_fall": 21,
+      "pred_fallen": 0,
+      "pred_normal": 199
+    },
+    "squatting": {
+      "total": 152,
+      "pred_fall": 6,
+      "pred_fallen": 0,
+      "pred_normal": 146
+    },
+    "crawl": {
+      "total": 421,
+      "pred_fall": 26,
+      "pred_fallen": 9,
+      "pred_normal": 386
+    },
+    "jump": {
+      "total": 521,
+      "pred_fall": 86,
+      "pred_fallen": 0,
+      "pred_normal": 435
+    }
+  },
+  "total_frames": 96000,
+  "gt_dist": {
+    "fall": 6509,
+    "fallen": 7379,
+    "normal": 82112
+  }
+}

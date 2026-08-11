@@ -1,0 +1,29 @@
+{
+  "seg_acc": 0.6946279761904762,
+  "random_baseline": 0.09090909090909091,
+  "fall_f1": 0.6404183328206705,
+  "fall_precision": 0.5637184115523466,
+  "fall_recall": 0.7412769997626395,
+  "fallen_f1": 0.5853627760252366,
+  "fallen_precision": 0.5513648429143061,
+  "fallen_recall": 0.6238289479582232,
+  "avg_f1": 0.6128905544229535,
+  "loss": 3.7453394519116427,
+  "cls_report": "              precision    recall  f1-score   support\n\n        walk       0.74      0.79      0.77     30170\n        fall       0.63      0.63      0.63     16852\n      fallen       0.60      0.55      0.57     22309\n    sit_down       0.54      0.68      0.60     12870\n     sitting       0.88      0.72      0.79     44256\n    lie_down       0.46      0.81      0.58     14087\n       lying       0.83      0.68      0.75     43565\n    stand_up       0.68      0.62      0.65     19020\n    standing       0.73      0.77      0.75     35106\n       other       0.70      0.71      0.70     25306\n        rare       0.22      0.22      0.22      5259\n\n    accuracy                           0.69    268800\n   macro avg       0.64      0.65      0.64    268800\nweighted avg       0.71      0.69      0.70    268800\n",
+  "config": {
+    "input_dim": 1024,
+    "hidden_dim": 384,
+    "num_layers": 1,
+    "num_heads": 6,
+    "dropout": 0.3,
+    "use_diff": false,
+    "pose_npz": false,
+    "window_size": 32,
+    "stride": 8,
+    "batch_size": 32,
+    "lr": 0.001,
+    "n_params": 2173837,
+    "epochs_run": 25,
+    "best_epoch": 10
+  }
+}

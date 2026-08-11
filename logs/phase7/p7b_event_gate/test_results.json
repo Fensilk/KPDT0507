@@ -1,0 +1,160 @@
+{
+  "config": {
+    "frame_npz": "data/omnifall_dinov2_giant_frame.npz",
+    "splits_dir": "DATASET-omnifall/splits/syn/random",
+    "window_size": 64,
+    "stride": 8,
+    "hidden_dim": 384,
+    "num_layers": 1,
+    "num_heads": 6,
+    "dropout": 0.3,
+    "batch_size": 32,
+    "lr": 0.001,
+    "weight_decay": 0.0001,
+    "epochs": 100,
+    "patience": 15,
+    "lr_patience": 6,
+    "event_lambda": 0.5,
+    "no_fp16": false,
+    "num_workers": 0,
+    "seed": 42,
+    "device": "auto",
+    "log_dir": "logs/phase7/p7b_event_gate",
+    "exp_tag": "phase7/p7b_event_gate"
+  },
+  "ternary_acc": 0.8916579861111111,
+  "random_baseline": 0.3333333333333333,
+  "fall_f1": 0.6857307415406767,
+  "fall_precision": 0.5964332231239354,
+  "fall_recall": 0.8064756485809117,
+  "fallen_f1": 0.6289687237660633,
+  "fallen_precision": 0.5280850140967253,
+  "fallen_recall": 0.7774998669575861,
+  "normal_f1": 0.9426423404580394,
+  "normal_precision": 0.9789355043442103,
+  "normal_recall": 0.9089440476311431,
+  "avg_f1": 0.7524472685882597,
+  "cls_report": "              precision    recall  f1-score   support\n\n        fall       0.60      0.81      0.69     14763\n      fallen       0.53      0.78      0.63     18791\n      normal       0.98      0.91      0.94    196846\n\n    accuracy                           0.89    230400\n   macro avg       0.70      0.83      0.75    230400\nweighted avg       0.92      0.89      0.90    230400\n",
+  "loss": 0.9173685268345544,
+  "event_precision": 0.7377530864197531,
+  "event_recall": 0.8568683682248351,
+  "event_f1": 0.7928618813851666,
+  "confusion_matrix": [
+    [
+      11906,
+      986,
+      1871
+    ],
+    [
+      2202,
+      14610,
+      1979
+    ],
+    [
+      5854,
+      12070,
+      178922
+    ]
+  ],
+  "16class_breakdown": {
+    "walk": {
+      "total": 25913,
+      "pred_fall": 118,
+      "pred_fallen": 24,
+      "pred_normal": 25771
+    },
+    "fall": {
+      "total": 14763,
+      "pred_fall": 11906,
+      "pred_fallen": 986,
+      "pred_normal": 1871
+    },
+    "fallen": {
+      "total": 18791,
+      "pred_fall": 2202,
+      "pred_fallen": 14610,
+      "pred_normal": 1979
+    },
+    "sit_down": {
+      "total": 11087,
+      "pred_fall": 636,
+      "pred_fallen": 43,
+      "pred_normal": 10408
+    },
+    "sitting": {
+      "total": 37889,
+      "pred_fall": 484,
+      "pred_fallen": 1869,
+      "pred_normal": 35536
+    },
+    "lie_down": {
+      "total": 11971,
+      "pred_fall": 684,
+      "pred_fallen": 531,
+      "pred_normal": 10756
+    },
+    "lying": {
+      "total": 37356,
+      "pred_fall": 255,
+      "pred_fallen": 6839,
+      "pred_normal": 30262
+    },
+    "stand_up": {
+      "total": 16244,
+      "pred_fall": 872,
+      "pred_fallen": 1511,
+      "pred_normal": 13861
+    },
+    "standing": {
+      "total": 30172,
+      "pred_fall": 184,
+      "pred_fallen": 0,
+      "pred_normal": 29988
+    },
+    "other": {
+      "total": 21714,
+      "pred_fall": 2098,
+      "pred_fallen": 1055,
+      "pred_normal": 18561
+    },
+    "kneel_down": {
+      "total": 69,
+      "pred_fall": 27,
+      "pred_fallen": 42,
+      "pred_normal": 0
+    },
+    "kneeling": {
+      "total": 1256,
+      "pred_fall": 20,
+      "pred_fallen": 16,
+      "pred_normal": 1220
+    },
+    "squat_down": {
+      "total": 535,
+      "pred_fall": 120,
+      "pred_fallen": 0,
+      "pred_normal": 415
+    },
+    "squatting": {
+      "total": 365,
+      "pred_fall": 22,
+      "pred_fallen": 0,
+      "pred_normal": 343
+    },
+    "crawl": {
+      "total": 1022,
+      "pred_fall": 59,
+      "pred_fallen": 101,
+      "pred_normal": 862
+    },
+    "jump": {
+      "total": 1253,
+      "pred_fall": 275,
+      "pred_fallen": 39,
+      "pred_normal": 939
+    }
+  },
+  "n_params": 2366980,
+  "best_epoch": 12,
+  "best_val_fall_f1": 0.6876199337093679
+}

@@ -1,0 +1,29 @@
+{
+  "seg_acc": 0.6879836309523809,
+  "random_baseline": 0.0625,
+  "fall_f1": 0.6510313173434833,
+  "fall_precision": 0.6160813602415383,
+  "fall_recall": 0.6901851412295277,
+  "fallen_f1": 0.5930160193615305,
+  "fallen_precision": 0.6103624976276333,
+  "fallen_recall": 0.5766282666188534,
+  "avg_f1": 0.6220236683525069,
+  "loss": 7.0032171529727485,
+  "cls_report": "              precision    recall  f1-score   support\n\n        walk       0.79      0.80      0.79     30170\n        fall       0.66      0.65      0.65     16852\n      fallen       0.63      0.53      0.58     22309\n    sit_down       0.48      0.66      0.56     12870\n     sitting       0.82      0.72      0.77     44256\n    lie_down       0.54      0.72      0.62     14087\n       lying       0.81      0.75      0.78     43565\n    stand_up       0.52      0.61      0.56     19020\n    standing       0.76      0.67      0.71     35106\n       other       0.66      0.73      0.69     25306\n  kneel_down       0.00      0.00      0.00        76\n    kneeling       0.02      0.03      0.03      1455\n  squat_down       0.52      0.08      0.14       627\n   squatting       0.00      0.00      0.00       434\n       crawl       0.36      0.33      0.34      1194\n        jump       0.08      0.09      0.08      1473\n\n    accuracy                           0.69    268800\n   macro avg       0.48      0.46      0.46    268800\nweighted avg       0.70      0.69      0.69    268800\n",
+  "config": {
+    "input_dim": 1024,
+    "hidden_dim": 768,
+    "num_layers": 1,
+    "num_heads": 8,
+    "dropout": 0.3,
+    "use_diff": false,
+    "pose_npz": false,
+    "window_size": 32,
+    "stride": 8,
+    "batch_size": 32,
+    "lr": 0.001,
+    "n_params": 7890450,
+    "epochs_run": 43,
+    "best_epoch": 28
+  }
+}

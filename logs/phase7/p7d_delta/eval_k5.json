@@ -1,0 +1,321 @@
+{
+  "rule_stats": {
+    "events": 257,
+    "fallen_kept": 6250,
+    "fallen_suppressed": 2055
+  },
+  "ternary": {
+    "ternary_acc": 0.9082604166666667,
+    "fall_f1": 0.6906408483171969,
+    "fall_precision": 0.6044500807009453,
+    "fall_recall": 0.8055000768167153,
+    "fallen_f1": 0.657102779903086,
+    "fallen_precision": 0.6204695966285371,
+    "fallen_recall": 0.6983331074671365,
+    "normal_f1": 0.9532125635344715,
+    "avg_f1": 0.7669853972515849,
+    "confusion_matrix": [
+      [
+        5243,
+        278,
+        988
+      ],
+      [
+        990,
+        5153,
+        1236
+      ],
+      [
+        2441,
+        2874,
+        76797
+      ]
+    ]
+  },
+  "ternary_r1": {
+    "ternary_acc": 0.91596875,
+    "fall_f1": 0.6906408483171969,
+    "fall_precision": 0.6044500807009453,
+    "fall_recall": 0.8055000768167153,
+    "fallen_f1": 0.6621175434734756,
+    "fallen_precision": 0.72192,
+    "fallen_recall": 0.6114649681528662,
+    "normal_f1": 0.9581341765325881,
+    "avg_f1": 0.7702975227744201,
+    "confusion_matrix": [
+      [
+        5243,
+        245,
+        1021
+      ],
+      [
+        990,
+        4512,
+        1877
+      ],
+      [
+        2441,
+        1493,
+        78178
+      ]
+    ]
+  },
+  "binary": {
+    "event_f1": 0.7557585771211974,
+    "event_precision": 0.6869662524294717,
+    "event_recall": 0.8398617511520737,
+    "binary_cm": [
+      [
+        76797,
+        5315
+      ],
+      [
+        2224,
+        11664
+      ]
+    ]
+  },
+  "binary_r1": {
+    "event_f1": 0.7628765792031097,
+    "event_precision": 0.7363977485928705,
+    "event_recall": 0.7913306451612904,
+    "binary_cm": [
+      [
+        78178,
+        3934
+      ],
+      [
+        2898,
+        10990
+      ]
+    ]
+  },
+  "breakdown": {
+    "walk": {
+      "total": 10893,
+      "pred_fall": 73,
+      "pred_fallen": 0,
+      "pred_normal": 10820,
+      "pred_event": 73
+    },
+    "fall": {
+      "total": 6509,
+      "pred_fall": 5243,
+      "pred_fallen": 278,
+      "pred_normal": 988,
+      "pred_event": 5521
+    },
+    "fallen": {
+      "total": 7379,
+      "pred_fall": 990,
+      "pred_fallen": 5153,
+      "pred_normal": 1236,
+      "pred_event": 6143
+    },
+    "sit_down": {
+      "total": 4652,
+      "pred_fall": 216,
+      "pred_fallen": 11,
+      "pred_normal": 4425,
+      "pred_event": 227
+    },
+    "sitting": {
+      "total": 15765,
+      "pred_fall": 159,
+      "pred_fallen": 409,
+      "pred_normal": 15197,
+      "pred_event": 568
+    },
+    "lie_down": {
+      "total": 4844,
+      "pred_fall": 307,
+      "pred_fallen": 96,
+      "pred_normal": 4441,
+      "pred_event": 403
+    },
+    "lying": {
+      "total": 15601,
+      "pred_fall": 190,
+      "pred_fallen": 1751,
+      "pred_normal": 13660,
+      "pred_event": 1941
+    },
+    "stand_up": {
+      "total": 6684,
+      "pred_fall": 344,
+      "pred_fallen": 378,
+      "pred_normal": 5962,
+      "pred_event": 722
+    },
+    "standing": {
+      "total": 12706,
+      "pred_fall": 111,
+      "pred_fallen": 24,
+      "pred_normal": 12571,
+      "pred_event": 135
+    },
+    "other": {
+      "total": 9093,
+      "pred_fall": 812,
+      "pred_fallen": 195,
+      "pred_normal": 8086,
+      "pred_event": 1007
+    },
+    "kneel_down": {
+      "total": 31,
+      "pred_fall": 26,
+      "pred_fallen": 5,
+      "pred_normal": 0,
+      "pred_event": 31
+    },
+    "kneeling": {
+      "total": 529,
+      "pred_fall": 22,
+      "pred_fallen": 0,
+      "pred_normal": 507,
+      "pred_event": 22
+    },
+    "squat_down": {
+      "total": 220,
+      "pred_fall": 58,
+      "pred_fallen": 0,
+      "pred_normal": 162,
+      "pred_event": 58
+    },
+    "squatting": {
+      "total": 152,
+      "pred_fall": 9,
+      "pred_fallen": 0,
+      "pred_normal": 143,
+      "pred_event": 9
+    },
+    "crawl": {
+      "total": 421,
+      "pred_fall": 12,
+      "pred_fallen": 3,
+      "pred_normal": 406,
+      "pred_event": 15
+    },
+    "jump": {
+      "total": 521,
+      "pred_fall": 102,
+      "pred_fallen": 2,
+      "pred_normal": 417,
+      "pred_event": 104
+    }
+  },
+  "breakdown_r1": {
+    "walk": {
+      "total": 10893,
+      "pred_fall": 73,
+      "pred_fallen": 0,
+      "pred_normal": 10820,
+      "pred_event": 73
+    },
+    "fall": {
+      "total": 6509,
+      "pred_fall": 5243,
+      "pred_fallen": 245,
+      "pred_normal": 1021,
+      "pred_event": 5488
+    },
+    "fallen": {
+      "total": 7379,
+      "pred_fall": 990,
+      "pred_fallen": 4512,
+      "pred_normal": 1877,
+      "pred_event": 5502
+    },
+    "sit_down": {
+      "total": 4652,
+      "pred_fall": 216,
+      "pred_fallen": 0,
+      "pred_normal": 4436,
+      "pred_event": 216
+    },
+    "sitting": {
+      "total": 15765,
+      "pred_fall": 159,
+      "pred_fallen": 404,
+      "pred_normal": 15202,
+      "pred_event": 563
+    },
+    "lie_down": {
+      "total": 4844,
+      "pred_fall": 307,
+      "pred_fallen": 77,
+      "pred_normal": 4460,
+      "pred_event": 384
+    },
+    "lying": {
+      "total": 15601,
+      "pred_fall": 190,
+      "pred_fallen": 579,
+      "pred_normal": 14832,
+      "pred_event": 769
+    },
+    "stand_up": {
+      "total": 6684,
+      "pred_fall": 344,
+      "pred_fallen": 310,
+      "pred_normal": 6030,
+      "pred_event": 654
+    },
+    "standing": {
+      "total": 12706,
+      "pred_fall": 111,
+      "pred_fallen": 0,
+      "pred_normal": 12595,
+      "pred_event": 111
+    },
+    "other": {
+      "total": 9093,
+      "pred_fall": 812,
+      "pred_fallen": 114,
+      "pred_normal": 8167,
+      "pred_event": 926
+    },
+    "kneel_down": {
+      "total": 31,
+      "pred_fall": 26,
+      "pred_fallen": 5,
+      "pred_normal": 0,
+      "pred_event": 31
+    },
+    "kneeling": {
+      "total": 529,
+      "pred_fall": 22,
+      "pred_fallen": 0,
+      "pred_normal": 507,
+      "pred_event": 22
+    },
+    "squat_down": {
+      "total": 220,
+      "pred_fall": 58,
+      "pred_fallen": 0,
+      "pred_normal": 162,
+      "pred_event": 58
+    },
+    "squatting": {
+      "total": 152,
+      "pred_fall": 9,
+      "pred_fallen": 0,
+      "pred_normal": 143,
+      "pred_event": 9
+    },
+    "crawl": {
+      "total": 421,
+      "pred_fall": 12,
+      "pred_fallen": 3,
+      "pred_normal": 406,
+      "pred_event": 15
+    },
+    "jump": {
+      "total": 521,
+      "pred_fall": 102,
+      "pred_fallen": 1,
+      "pred_normal": 418,
+      "pred_event": 103
+    }
+  }
+}

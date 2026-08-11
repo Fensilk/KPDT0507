@@ -1,0 +1,127 @@
+{
+  "config": {
+    "frame_npz": "data/omnifall_dinov2_giant_frame.npz",
+    "splits_dir": "DATASET-omnifall/splits/syn/random",
+    "window_size": 64,
+    "stride": 8,
+    "hidden_dim": 384,
+    "num_layers": 1,
+    "num_heads": 6,
+    "dropout": 0.3,
+    "batch_size": 32,
+    "lr": 0.001,
+    "weight_decay": 0.0001,
+    "epochs": 100,
+    "patience": 15,
+    "lr_patience": 6,
+    "no_fp16": false,
+    "num_workers": 0,
+    "seed": 42,
+    "device": "auto",
+    "log_dir": "logs/phase7/p7c_binary",
+    "exp_tag": "phase7/p7c_binary"
+  },
+  "loss": 0.6508907096887252,
+  "accuracy": 0.9162673611111111,
+  "event_precision": 0.6603841482614368,
+  "event_recall": 0.8750670560886928,
+  "event_f1": 0.7527173913043478,
+  "normal_precision": 0.9774548505415783,
+  "normal_recall": 0.9232902878392246,
+  "avg_f1": 0.8511591052826705,
+  "confusion_matrix": [
+    [
+      29362,
+      4192
+    ],
+    [
+      15100,
+      181746
+    ]
+  ],
+  "16class_breakdown": {
+    "walk": {
+      "total": 25913,
+      "pred_event": 146,
+      "pred_normal": 25767
+    },
+    "fall": {
+      "total": 14763,
+      "pred_event": 13149,
+      "pred_normal": 1614
+    },
+    "fallen": {
+      "total": 18791,
+      "pred_event": 16213,
+      "pred_normal": 2578
+    },
+    "sit_down": {
+      "total": 11087,
+      "pred_event": 588,
+      "pred_normal": 10499
+    },
+    "sitting": {
+      "total": 37889,
+      "pred_event": 1796,
+      "pred_normal": 36093
+    },
+    "lie_down": {
+      "total": 11971,
+      "pred_event": 1109,
+      "pred_normal": 10862
+    },
+    "lying": {
+      "total": 37356,
+      "pred_event": 4832,
+      "pred_normal": 32524
+    },
+    "stand_up": {
+      "total": 16244,
+      "pred_event": 2196,
+      "pred_normal": 14048
+    },
+    "standing": {
+      "total": 30172,
+      "pred_event": 195,
+      "pred_normal": 29977
+    },
+    "other": {
+      "total": 21714,
+      "pred_event": 3433,
+      "pred_normal": 18281
+    },
+    "kneel_down": {
+      "total": 69,
+      "pred_event": 69,
+      "pred_normal": 0
+    },
+    "kneeling": {
+      "total": 1256,
+      "pred_event": 138,
+      "pred_normal": 1118
+    },
+    "squat_down": {
+      "total": 535,
+      "pred_event": 59,
+      "pred_normal": 476
+    },
+    "squatting": {
+      "total": 365,
+      "pred_event": 18,
+      "pred_normal": 347
+    },
+    "crawl": {
+      "total": 1022,
+      "pred_event": 202,
+      "pred_normal": 820
+    },
+    "jump": {
+      "total": 1253,
+      "pred_event": 319,
+      "pred_normal": 934
+    }
+  },
+  "n_params": 2366210,
+  "best_epoch": 18,
+  "best_val_event_f1": 0.765172735760971
+}
