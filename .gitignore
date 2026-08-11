@@ -17,10 +17,6 @@ data/cifar-10-batches-py/
 DATASET-omnifall/
 
 # Logs
-logs/*
-!logs/phase1/
-!logs/phase2/
-!logs/phase3/
 
 # IDE
 .vscode/
@@ -34,9 +30,9 @@ logs/*
 # Phase 6 large artifacts
 data/dinov2_features/
 data/dinov2_giant_features/
-phase6_results.tar.gz
-p6_results.tar.gz
-phase6_code.tar.gz
+
+# Root-level archives (too large for GitHub)
+/*.tar.gz
 
 # OS
 .DS_Store
