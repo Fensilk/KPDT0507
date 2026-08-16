@@ -346,6 +346,7 @@ class LongSequenceDataset(Dataset):
         window_size: int = 16,
         stride: int = 1,
         use_diff: bool = False,
+        use_accel: bool = False,
         pose_npz_path: str = None,
     ):
         """
@@ -355,11 +356,13 @@ class LongSequenceDataset(Dataset):
             window_size: T — number of frames per sequence.
             stride: Sliding window stride (default 1 = max overlap).
             use_diff: If True, concat frame-to-frame diff features (Δframe).
+            use_accel: If True, concat second-order diff features (acceleration).
             pose_npz_path: Optional frame-level pose NPZ path.
         """
         self.window_size = window_size
         self.stride = stride
         self.use_diff = use_diff
+        self.use_accel = use_accel
 
         # --- Load NPZ ---
         print(f"[INFO] Loading frame-level NPZ from {npz_path}...")
@@ -385,6 +388,9 @@ class LongSequenceDataset(Dataset):
         if use_diff:
             self.feature_dim += self.base_feature_dim  # diff duplicates base dim
             print(f"[INFO] Using Δframe diff features, total input dim: {self.feature_dim}")
+        if use_accel:
+            self.feature_dim += self.base_feature_dim  # accel duplicates base dim
+            print(f"[INFO] Using second-order diff (accel) features, total input dim: {self.feature_dim}")
 
         video_start_indices = data["video_start_indices"]
         video_clip_counts = data["video_clip_counts"]
@@ -463,11 +469,18 @@ class LongSequenceDataset(Dataset):
             self.features_all[s:e].copy()
         ).float()
 
-        # Optional: frame-to-frame diff (Δframe)
+        # Optional: temporal difference features (Δframe + accel)
+        parts = [feat]
         if self.use_diff:
             diff = torch.zeros_like(feat)
             diff[1:] = feat[1:] - feat[:-1]
-            feat = torch.cat([feat, diff], dim=-1)
+            parts.append(diff)
+        if self.use_accel:
+            accel = torch.zeros_like(feat)
+            accel[1:-1] = feat[2:] - 2 * feat[1:-1] + feat[:-2]
+            parts.append(accel)
+        if len(parts) > 1:
+            feat = torch.cat(parts, dim=-1)
 
         # Optional: pose features
         if self.pose_all is not None:
@@ -572,6 +585,7 @@ def create_longseq_dataloaders(
     num_workers: int = 0,
     use_weighted_sampler: bool = True,
     use_diff: bool = False,
+    use_accel: bool = False,
     pose_npz_path: str = None,
     use_ternary_sampler: bool = False,
 ) -> tuple[DataLoader, DataLoader, DataLoader]:
@@ -587,6 +601,7 @@ def create_longseq_dataloaders(
         num_workers: DataLoader workers (0 recommended for Windows).
         use_weighted_sampler: Use WeightedRandomSampler on train.
         use_diff: If True, concat frame-to-frame diff features.
+        use_accel: If True, concat second-order diff features (acceleration).
         pose_npz_path: Optional frame-level pose NPZ path.
         use_ternary_sampler: If True, use ternary (3-class) weights
             instead of 16-class weights (Phase 6).
@@ -602,6 +617,7 @@ def create_longseq_dataloaders(
         window_size=window_size,
         stride=stride,
         use_diff=use_diff,
+        use_accel=use_accel,
         pose_npz_path=pose_npz_path,
     )
     val_dataset = LongSequenceDataset(
@@ -610,6 +626,7 @@ def create_longseq_dataloaders(
         window_size=window_size,
         stride=stride,
         use_diff=use_diff,
+        use_accel=use_accel,
         pose_npz_path=pose_npz_path,
     )
     test_dataset = LongSequenceDataset(
@@ -618,6 +635,7 @@ def create_longseq_dataloaders(
         window_size=window_size,
         stride=stride,
         use_diff=use_diff,
+        use_accel=use_accel,
         pose_npz_path=pose_npz_path,
     )
 

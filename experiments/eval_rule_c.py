@@ -25,7 +25,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 # Inference (reused from eval_p7d_k5.py)
 # ═══════════════════════════════════════════════════════════════
 
-def load_and_infer(ckpt, npz, splits, use_diff, T=64, stride=8, bs=32):
+def load_and_infer(ckpt, npz, splits, use_diff, use_accel=False, T=64, stride=8, bs=32):
     import torch
     from models.phase6_model import Phase6TernaryModel
 
@@ -40,8 +40,11 @@ def load_and_infer(ckpt, npz, splits, use_diff, T=64, stride=8, bs=32):
             if p: paths.add(p)
 
     ck = torch.load(ckpt, map_location=device, weights_only=False)
+    input_dim = 1536
+    if use_diff:  input_dim += 1536
+    if use_accel: input_dim += 1536
     m = Phase6TernaryModel(
-        input_dim=3072 if use_diff else 1536, hidden_dim=384, decoder_type="transformer",
+        input_dim=input_dim, hidden_dim=384, decoder_type="transformer",
         causal=False, num_layers=1, num_heads=6, dropout=0.3, max_len=T+10, num_classes=3,
     ).to(device)
     m.load_state_dict(ck["model_state_dict"]); m.eval()
@@ -61,9 +64,16 @@ def load_and_infer(ckpt, npz, splits, use_diff, T=64, stride=8, bs=32):
     for b0 in range(0, len(wins), bs):
         b1 = min(b0 + bs, len(wins))
         batch = torch.from_numpy(np.stack(wins[b0:b1])).float().to(device)
+        parts = [batch]
         if use_diff:
-            diff = torch.zeros_like(batch); diff[:,1:] = batch[:,1:] - batch[:,:-1]
-            batch = torch.cat([batch, diff], dim=-1)
+            diff = torch.zeros_like(batch); diff[:, 1:] = batch[:, 1:] - batch[:, :-1]
+            parts.append(diff)
+        if use_accel:
+            accel = torch.zeros_like(batch)
+            accel[:, 1:-1] = batch[:, 2:] - 2 * batch[:, 1:-1] + batch[:, :-2]
+            parts.append(accel)
+        if len(parts) > 1:
+            batch = torch.cat(parts, dim=-1)
         with torch.no_grad(): preds.append(m(batch).argmax(dim=-1).cpu().numpy())
         if (b0 // bs + 1) % 50 == 0: print(f"  [{b1}/{len(wins)}]")
 
