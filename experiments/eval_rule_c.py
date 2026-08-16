@@ -25,7 +25,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 # Inference (reused from eval_p7d_k5.py)
 # ═══════════════════════════════════════════════════════════════
 
-def load_and_infer(ckpt, npz, splits, use_diff, use_accel=False, T=64, stride=8, bs=32):
+def load_and_infer(ckpt, npz, splits, use_diff, use_accel=False, pose_npz=None, T=64, stride=8, bs=32):
     import torch
     from models.phase6_model import Phase6TernaryModel
 
@@ -39,10 +39,16 @@ def load_and_infer(ckpt, npz, splits, use_diff, use_accel=False, T=64, stride=8,
             p = line.strip().split(",")[0]
             if p: paths.add(p)
 
+    # Optional pose features (frame-aligned with the main NPZ)
+    pose_feats = None
+    if pose_npz is not None:
+        pose_feats = np.load(pose_npz, allow_pickle=True, mmap_mode='r')["pose_features"]
+
     ck = torch.load(ckpt, map_location=device, weights_only=False)
     input_dim = 1536
     if use_diff:  input_dim += 1536
     if use_accel: input_dim += 1536
+    if pose_feats is not None: input_dim += pose_feats.shape[1]
     m = Phase6TernaryModel(
         input_dim=input_dim, hidden_dim=384, decoder_type="transformer",
         causal=False, num_layers=1, num_heads=6, dropout=0.3, max_len=T+10, num_classes=3,
@@ -52,13 +58,18 @@ def load_and_infer(ckpt, npz, splits, use_diff, use_accel=False, T=64, stride=8,
     vp = d["video_paths"]; vsi = d["video_start_indices"]; vcc = d["video_clip_counts"]
     feats = d["features"]; lb16 = d["labels_16"]; fl = d["fall_labels"]; fdl = d["fallen_labels"]
 
-    wins, meta, vinfo = [], [], {}
+    wins, wins_pose, meta, vinfo = [], [], [], {}
     for vi in range(len(vp)):
         if str(vp[vi]) not in paths: continue
         ns = int(vsi[vi]); nf = int(vcc[vi]); nw = (nf - T) // stride + 1
         vinfo[vi] = (ns, nf, nw)
         vf = feats[ns:ns+nf]
-        for w in range(nw): off = w * stride; wins.append(vf[off:off+T]); meta.append((vi, off))
+        pf = pose_feats[ns:ns+nf] if pose_feats is not None else None
+        for w in range(nw):
+            off = w * stride
+            wins.append(vf[off:off+T])
+            if pf is not None: wins_pose.append(pf[off:off+T])
+            meta.append((vi, off))
 
     preds = []
     for b0 in range(0, len(wins), bs):
@@ -72,6 +83,9 @@ def load_and_infer(ckpt, npz, splits, use_diff, use_accel=False, T=64, stride=8,
             accel = torch.zeros_like(batch)
             accel[:, 1:-1] = batch[:, 2:] - 2 * batch[:, 1:-1] + batch[:, :-2]
             parts.append(accel)
+        if pose_feats is not None:
+            pose_batch = torch.from_numpy(np.stack(wins_pose[b0:b1])).float().to(device)
+            parts.append(pose_batch)
         if len(parts) > 1:
             batch = torch.cat(parts, dim=-1)
         with torch.no_grad(): preds.append(m(batch).argmax(dim=-1).cpu().numpy())

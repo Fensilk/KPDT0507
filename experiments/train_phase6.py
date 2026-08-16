@@ -118,6 +118,8 @@ def parse_args():
                         help="Use Δframe (frame-to-frame diff) features — doubles input dim")
     parser.add_argument("--use_accel", action="store_true",
                         help="Use second-order diff (acceleration) features — adds input dim")
+    parser.add_argument("--pose_npz", type=str, default=None,
+                        help="Optional frame-level pose NPZ (e.g. data/omnifall_pose_frame.npz)")
     parser.add_argument("--no_fp16", action="store_true",
                         help="Disable FP16 autocast")
     parser.add_argument("--fast", action="store_true",
@@ -272,7 +274,7 @@ def main():
         use_weighted_sampler=not args.no_weighted_sampler,
         use_diff=args.use_diff if hasattr(args, 'use_diff') else False,
         use_accel=args.use_accel if hasattr(args, 'use_accel') else False,
-        pose_npz_path=None,
+        pose_npz_path=args.pose_npz if hasattr(args, 'pose_npz') else None,
         use_ternary_sampler=True,  # Phase 6: 3-class balanced sampling
     )
 
@@ -529,6 +531,7 @@ def main():
         "bridge": args.bridge,
         "use_diff": args.use_diff if hasattr(args, 'use_diff') else False,
         "use_accel": args.use_accel if hasattr(args, 'use_accel') else False,
+        "pose_npz": args.pose_npz if hasattr(args, 'pose_npz') else None,
         "n_params": n_params,
         "epochs_run": len(history["train_loss"]),
         "best_epoch": best_epoch,

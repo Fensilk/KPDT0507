@@ -33,6 +33,8 @@ def parse_args():
                         help="Checkpoint trained with Δframe features")
     parser.add_argument("--use_accel", action="store_true",
                         help="Checkpoint trained with second-order diff (accel) features")
+    parser.add_argument("--pose_npz", type=str, default=None,
+                        help="Pose NPZ if checkpoint trained with pose features")
     parser.add_argument("--out", type=str,
                         default="analysis/diagnose_lying_event/test_preds.json",
                         help="Output JSON path")
@@ -46,9 +48,10 @@ def main():
     os.makedirs(os.path.dirname(args.out), exist_ok=True)
 
     print(f"[1] Running inference ({args.ckpt}, use_diff={args.use_diff}, "
-          f"use_accel={args.use_accel})...")
+          f"use_accel={args.use_accel}, pose={args.pose_npz is not None})...")
     pv = load_and_infer(args.ckpt, NPZ, SPLITS,
-                        use_diff=args.use_diff, use_accel=args.use_accel)
+                        use_diff=args.use_diff, use_accel=args.use_accel,
+                        pose_npz=args.pose_npz)
     print(f"    Inferred {len(pv)} test videos")
 
     # 从 NPZ 取 video_paths 映射
