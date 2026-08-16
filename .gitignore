@@ -18,6 +18,9 @@ DATASET-omnifall/
 
 # Logs
 
+# Diagnostic output (large, regenerable)
+analysis/diagnose_lying_event/
+
 # IDE
 .vscode/
 
