@@ -251,6 +251,83 @@ def apply_rule_c(pv, W=64, K=5, fallback_timeout=None):
 
 
 # ═══════════════════════════════════════════════════════════════
+# RuleV2: fallen-triggered + causal lookback + video-level context
+# ═══════════════════════════════════════════════════════════════
+
+def apply_rulev2(pv, K1=2, K2=7, W=64):
+    """
+    RuleV2 (Phase 7 最优规则): fallen 触发 + 因果回查 + 视频级上下文。
+
+    视频级上下文检测:
+        - n_fallen == 0 → 跳过（无事可做）
+        - n_fall < K1 AND n_fallen >= 8 → 跳过（纯 fallen 视频，保护免误杀）
+
+    逐帧因果:
+        NORMAL state:
+            on fallen: 回查前 W 帧 → 存在 >=K2 连续 fall ?
+                是 → IN_EVENT（保留 fallen）
+                否 → 孤立 fallen → 改判 normal
+        IN_EVENT state:
+            fallen → 保留
+            fall   → 事件结束（无 fallback timeout，normal 不结束事件）
+
+    对比 apply_rule_c: 多了 K1 视频上下文跳过，且去掉了 fallback_timeout。
+    """
+    corr = {}
+    stats = {
+        "events": 0, "fallen_kept": 0, "fallen_suppressed": 0,
+        "videos_skipped_no_fallen": 0, "videos_skipped_pure_fallen": 0,
+        "videos_processed": 0,
+    }
+
+    for vi, d in pv.items():
+        bp = d["bridge_pred"].copy()
+        nf = len(bp)
+        cp = bp.copy()
+
+        n_fall = int((bp == 0).sum())
+        n_fallen = int((bp == 1).sum())
+
+        # ── 视频级上下文检测 ──
+        if n_fallen == 0:
+            stats["videos_skipped_no_fallen"] += 1
+            corr[vi] = cp
+            continue
+        if n_fall < K1 and n_fallen >= 8:
+            stats["videos_skipped_pure_fallen"] += 1
+            corr[vi] = cp
+            continue
+
+        stats["videos_processed"] += 1
+
+        # ── 逐帧因果 ──
+        in_event = False
+        for f in range(nf):
+            p = bp[f]
+            if not in_event:
+                if p == 1:  # fallen
+                    lb_start = max(0, f - W)
+                    best_run, _ = find_best_fall_run_in_window(bp, lb_start, f, K2)
+                    if best_run >= K2:
+                        in_event = True
+                        stats["events"] += 1
+                        stats["fallen_kept"] += 1
+                    else:
+                        cp[f] = 2  # 孤立 fallen → normal
+                        stats["fallen_suppressed"] += 1
+            else:
+                if p == 1:  # fallen → 保留
+                    stats["fallen_kept"] += 1
+                elif p == 0:  # fall → 事件结束
+                    in_event = False
+                # normal → 保留（无 fallback timeout）
+
+        corr[vi] = cp
+
+    return corr, stats
+
+
+# ═══════════════════════════════════════════════════════════════
 # Risk Pattern Analysis (on raw bridge_pred)
 # ═══════════════════════════════════════════════════════════════
 
