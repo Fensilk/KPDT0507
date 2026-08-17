@@ -348,6 +348,7 @@ class LongSequenceDataset(Dataset):
         use_diff: bool = False,
         use_accel: bool = False,
         pose_npz_path: str = None,
+        return_aux_separately: bool = False,
     ):
         """
         Args:
@@ -358,11 +359,14 @@ class LongSequenceDataset(Dataset):
             use_diff: If True, concat frame-to-frame diff features (Δframe).
             use_accel: If True, concat second-order diff features (acceleration).
             pose_npz_path: Optional frame-level pose NPZ path.
+            return_aux_separately: If True, return aux (pose) features as a
+                separate "aux_features" key instead of concatenating (for gated fusion).
         """
         self.window_size = window_size
         self.stride = stride
         self.use_diff = use_diff
         self.use_accel = use_accel
+        self.return_aux_separately = return_aux_separately
 
         # --- Load NPZ ---
         print(f"[INFO] Loading frame-level NPZ from {npz_path}...")
@@ -381,7 +385,8 @@ class LongSequenceDataset(Dataset):
             print(f"[INFO] Loading frame-level pose NPZ from {pose_npz_path}...")
             pose_data = np.load(pose_npz_path, allow_pickle=True, mmap_mode='r')
             self.pose_all = pose_data["pose_features"]  # (N_frames, pose_dim)
-            self.feature_dim += self.pose_all.shape[1]
+            if not return_aux_separately:
+                self.feature_dim += self.pose_all.shape[1]
             print(f"[INFO] Pose dim: {self.pose_all.shape[1]}, "
                   f"total input dim: {self.feature_dim}")
 
@@ -483,11 +488,15 @@ class LongSequenceDataset(Dataset):
             feat = torch.cat(parts, dim=-1)
 
         # Optional: pose features
+        aux_feat = None
         if self.pose_all is not None:
             pose_feat = torch.from_numpy(
                 self.pose_all[s:e].copy()
             ).float()
-            feat = torch.cat([feat, pose_feat], dim=-1)
+            if self.return_aux_separately:
+                aux_feat = pose_feat  # 单独返回（门控融合）
+            else:
+                feat = torch.cat([feat, pose_feat], dim=-1)
 
         labels_16 = torch.from_numpy(
             self.labels_16_all[s:e].copy()
@@ -499,7 +508,7 @@ class LongSequenceDataset(Dataset):
         ternary_labels[labels_16 == 1] = 0  # fall
         ternary_labels[labels_16 == 2] = 1  # fallen
 
-        return {
+        out = {
             "features": feat,
             "labels_16": labels_16,
             "fall_labels": torch.from_numpy(
@@ -510,6 +519,9 @@ class LongSequenceDataset(Dataset):
             ).long(),
             "ternary_labels": ternary_labels,  # Phase 6: (T,) int64
         }
+        if aux_feat is not None:
+            out["aux_features"] = aux_feat
+        return out
 
 
 def _get_longseq_sample_weights(dataset: LongSequenceDataset) -> torch.Tensor:
@@ -587,6 +599,7 @@ def create_longseq_dataloaders(
     use_diff: bool = False,
     use_accel: bool = False,
     pose_npz_path: str = None,
+    return_aux_separately: bool = False,
     use_ternary_sampler: bool = False,
 ) -> tuple[DataLoader, DataLoader, DataLoader]:
     """
@@ -603,6 +616,7 @@ def create_longseq_dataloaders(
         use_diff: If True, concat frame-to-frame diff features.
         use_accel: If True, concat second-order diff features (acceleration).
         pose_npz_path: Optional frame-level pose NPZ path.
+        return_aux_separately: If True, return aux (pose) features as a separate key.
         use_ternary_sampler: If True, use ternary (3-class) weights
             instead of 16-class weights (Phase 6).
 
@@ -619,6 +633,7 @@ def create_longseq_dataloaders(
         use_diff=use_diff,
         use_accel=use_accel,
         pose_npz_path=pose_npz_path,
+        return_aux_separately=return_aux_separately,
     )
     val_dataset = LongSequenceDataset(
         npz_path=npz_path,
@@ -628,6 +643,7 @@ def create_longseq_dataloaders(
         use_diff=use_diff,
         use_accel=use_accel,
         pose_npz_path=pose_npz_path,
+        return_aux_separately=return_aux_separately,
     )
     test_dataset = LongSequenceDataset(
         npz_path=npz_path,
@@ -637,6 +653,7 @@ def create_longseq_dataloaders(
         use_diff=use_diff,
         use_accel=use_accel,
         pose_npz_path=pose_npz_path,
+        return_aux_separately=return_aux_separately,
     )
 
     # Training set with weighted sampling
