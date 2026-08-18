@@ -1,0 +1,43 @@
+{
+  "vitg_to_static": {
+    "head_h_ratio": 0.5583000183105469,
+    "torso_angle": -0.06015598773956299,
+    "bbox_aspect": 0.6519264578819275,
+    "hip_height": 0.37228941917419434
+  },
+  "vitg_to_static_mean": 0.38058996200561523,
+  "pose_to_static_ceiling": {
+    "head_h_ratio": 0.7837564945220947,
+    "torso_angle": 0.6694959402084351,
+    "bbox_aspect": 0.5894598960876465,
+    "hip_height": 0.9998263120651245
+  },
+  "pose_to_static_ceiling_mean": 0.7606346607208252,
+  "vitg_diff_to_velocity": {
+    "head_h_ratio_v": -0.048059940338134766,
+    "torso_angle_v": -0.050417542457580566,
+    "bbox_aspect_v": -0.05330479145050049,
+    "hip_height_v": -0.04863262176513672
+  },
+  "vitg_diff_to_velocity_mean": -0.050103724002838135,
+  "pose_diff_to_velocity_ceiling": {
+    "head_h_ratio_v": 0.5062336921691895,
+    "torso_angle_v": 0.11573487520217896,
+    "bbox_aspect_v": 0.39978402853012085,
+    "hip_height_v": 0.9996934533119202
+  },
+  "pose_diff_to_velocity_ceiling_mean": 0.5053614974021912,
+  "vitg_mlp_to_static": {
+    "head_h_ratio": 0.4123164415359497,
+    "torso_angle": -0.3989065885543823,
+    "bbox_aspect": 0.6300988793373108,
+    "hip_height": 0.004422128200531006
+  },
+  "vitg_mlp_to_static_mean": 0.1619827151298523,
+  "verdict": "冗余不成立：ViT-g 只编码粗粒度外观（bbox/头高比），未编码判别性姿态（躯干角≈0、髋高弱）→ 姿态集成失败的根因不是冗余，Phase 8 'ViT-g 已隐式编码姿态' 的推断被证伪，需改写",
+  "summary": [
+    "静态冗余：ViT-g→静态语义 mean R²=+0.381，ceiling=+0.761 （ViT-g 达 ceiling 的 50%）",
+    "  判别性维度：torso_angle R²=-0.060（ViT-g 几乎不含躯干倾角），hip_height R²=+0.372",
+    "速度冗余：ViT-g Δframe→姿态速度 mean R²=-0.050，ceiling=+0.505"
+  ]
+}

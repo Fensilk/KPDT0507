@@ -1,0 +1,54 @@
+{
+  "ternary_acc": 0.8899175347222222,
+  "random_baseline": 0.3333333333333333,
+  "fall_f1": 0.6459981839408484,
+  "fall_precision": 0.5235051719788075,
+  "fall_recall": 0.8433245275350538,
+  "fallen_f1": 0.6356822316555488,
+  "fallen_precision": 0.5840688241062673,
+  "fallen_recall": 0.6973018998456708,
+  "normal_f1": 0.9420990473191088,
+  "normal_precision": 0.974482039699431,
+  "normal_recall": 0.9117990713552726,
+  "avg_f1": 0.7412598209718353,
+  "loss": 0.6539309983821129,
+  "cls_report": "              precision    recall  f1-score   support\n\n        fall       0.52      0.84      0.65     14763\n      fallen       0.58      0.70      0.64     18791\n      normal       0.97      0.91      0.94    196846\n\n    accuracy                           0.89    230400\n   macro avg       0.69      0.82      0.74    230400\nweighted avg       0.91      0.89      0.90    230400\n",
+  "confusion_matrix": [
+    [
+      12450,
+      734,
+      1579
+    ],
+    [
+      2567,
+      13103,
+      3121
+    ],
+    [
+      8765,
+      8597,
+      179484
+    ]
+  ],
+  "config": {
+    "input_dim": 3080,
+    "hidden_dim": 384,
+    "decoder_type": "transformer",
+    "causal": false,
+    "num_layers": 1,
+    "num_heads": 6,
+    "dropout": 0.3,
+    "window_size": 64,
+    "stride": 8,
+    "batch_size": 32,
+    "lr": 0.001,
+    "focal_gamma": 0.0,
+    "bridge": true,
+    "use_diff": true,
+    "use_accel": false,
+    "pose_npz": "data/omnifall_pose_semantic.npz",
+    "n_params": 2959491,
+    "epochs_run": 22,
+    "best_epoch": 7
+  }
+}

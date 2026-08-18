@@ -9,14 +9,17 @@ data/*.npz
 !data/omnifall_pose.npz
 data/*.tar.gz
 data/*.csv
-data/features/
-data/pose_features/
 data/cifar-10-batches-py/
+
+# Per-video .pt feature folders (listed in DATA_MANIFEST.md, not committed)
+data/features/
+data/dinov2_features/
+data/dinov2_giant_features/
+data/pose_features/
+data/optical_flow_features/
 
 # Dataset
 DATASET-omnifall/
-
-# Logs
 
 # Diagnostic output (large, regenerable)
 analysis/diagnose_lying_event/
@@ -29,10 +32,6 @@ analysis/diagnose_lying_event/
 
 # Jupyter
 .ipynb_checkpoints/
-
-# Phase 6 large artifacts
-data/dinov2_features/
-data/dinov2_giant_features/
 
 # Root-level archives (too large for GitHub)
 /*.tar.gz

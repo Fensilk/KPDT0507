@@ -1,0 +1,51 @@
+{
+  "ternary_acc": 0.8988020833333333,
+  "random_baseline": 0.3333333333333333,
+  "fall_f1": 0.654419335609386,
+  "fall_precision": 0.5453642234566228,
+  "fall_recall": 0.8179909232540812,
+  "fallen_f1": 0.643045665056521,
+  "fallen_precision": 0.604230031350896,
+  "fallen_recall": 0.6871906763876324,
+  "normal_f1": 0.949073832779127,
+  "normal_precision": 0.9743640508117248,
+  "normal_recall": 0.9250632474116822,
+  "avg_f1": 0.7488462778150113,
+  "loss": 0.8329334553942565,
+  "cls_report": "              precision    recall  f1-score   support\n\n        fall       0.55      0.82      0.65     14763\n      fallen       0.60      0.69      0.64     18791\n      normal       0.97      0.93      0.95    196846\n\n    accuracy                           0.90    230400\n   macro avg       0.71      0.81      0.75    230400\nweighted avg       0.92      0.90      0.91    230400\n",
+  "confusion_matrix": [
+    [
+      12076,
+      761,
+      1926
+    ],
+    [
+      3013,
+      12913,
+      2865
+    ],
+    [
+      7054,
+      7697,
+      182095
+    ]
+  ],
+  "config": {
+    "main_dim": 3072,
+    "aux_dim": 99,
+    "hidden_dim": 384,
+    "num_heads": 6,
+    "dropout": 0.3,
+    "window_size": 64,
+    "stride": 8,
+    "batch_size": 32,
+    "lr": 0.001,
+    "bridge": true,
+    "use_diff": true,
+    "pose_npz": "data/omnifall_pose_frame.npz",
+    "n_params": 3625731,
+    "epochs_run": 33,
+    "best_epoch": 18,
+    "final_attn_norm": 0.3233771324157715
+  }
+}
