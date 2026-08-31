@@ -10,7 +10,8 @@ Elderly fall detection research project (master's thesis). Uses visual keypoint-
 
 - **OS**: Windows 11, Git Bash shell
 - **Python**: conda env `py310` (Python 3.10)
-- **GPU**: Single RTX 4060 (8GB VRAM)
+- **GPU (main compute)**: Autodl RTX 3090 (24GB VRAM) — 主力训练在 Autodl 云服务器上
+- **GPU (local)**: RTX 4060 (8GB VRAM) — 本地只做无需 GPU 的工作（抽帧、分析、小脚本）
 - **Data**: OmniFall OF-Syn subset — 12,000 synthetic videos, 81 frames each, 16 action classes, AV1-encoded
 
 ## Commands
