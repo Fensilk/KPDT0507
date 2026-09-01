@@ -20,6 +20,7 @@ import pandas as pd
 import torch
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.join(BASE, "preprocessing"))  # 供 av_decode 导入
 NPZ = os.path.join(BASE, "data", "omnifall_dinov2_giant_frame.npz")
 VIDEO_ROOT = os.path.join(BASE, "DATASET-omnifall", "data_files", "extracted")
 TRAIN_CSV = os.path.join(BASE, "DATASET-omnifall", "splits", "syn", "random", "train.csv")
