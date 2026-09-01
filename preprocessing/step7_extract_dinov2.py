@@ -88,23 +88,10 @@ def extract_dinov2_features(video_path: str, model, device,
     Returns:
         features: (80, 1024) float16 numpy array, or None on failure.
     """
-    cap = cv2.VideoCapture(video_path)
-    if not cap.isOpened():
+    from av_decode import read_rgb_frames
+    frames = read_rgb_frames(video_path, N_FRAMES)
+    if not frames:
         return None
-
-    frames = []
-    while True:
-        ret, frame = cap.read()
-        if not ret:
-            break
-        frames.append(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
-    cap.release()
-
-    # Pad/trim to exactly N_FRAMES
-    if len(frames) < N_FRAMES:
-        while len(frames) < N_FRAMES:
-            frames.append(frames[-1] if frames else np.zeros((224, 224, 3), dtype=np.uint8))
-    frames = frames[:N_FRAMES]
 
     # Process in batches
     all_cls = []

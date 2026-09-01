@@ -29,18 +29,8 @@ N_FRAMES = 80
 
 
 def decode_frames(mp4, n=N_FRAMES):
-    cap = cv2.VideoCapture(mp4)
-    frames = []
-    while True:
-        ret, f = cap.read()
-        if not ret:
-            break
-        frames.append(cv2.cvtColor(f, cv2.COLOR_BGR2RGB))
-    cap.release()
-    if len(frames) < n:
-        while len(frames) < n:
-            frames.append(frames[-1] if frames else np.zeros((224, 224, 3), dtype=np.uint8))
-    return frames[:n]
+    from av_decode import read_rgb_frames
+    return read_rgb_frames(mp4, n)
 
 
 def main():
