@@ -64,8 +64,9 @@ def main():
     from transformers import AutoModel
 
     print(f"[1] 加载 facebook/dinov2-giant + 注入 LoRA + 合并 ...")
-    model = AutoModel.from_pretrained("facebook/dinov2-giant").to(args.device)
+    model = AutoModel.from_pretrained("facebook/dinov2-giant")
     inject_lora(model, r=16)
+    model = model.to(args.device)  # LoRA 参数移到设备
     ck = torch.load(args.ckpt, map_location="cpu", weights_only=False)
     missing, unexpected = model.load_state_dict(ck["lora_state"], strict=False)
     # 只加载 LoRA 参数

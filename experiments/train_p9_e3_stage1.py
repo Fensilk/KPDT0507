@@ -65,8 +65,8 @@ class FrameCacheDataset(Dataset):
         frames, labels = [], []
         for f in files:
             d = torch.load(f, weights_only=False)
-            frames.append(torch.from_numpy(d["frames"]))   # (K,H,W,3) uint8
-            labels.append(d["labels"])                      # (K,) int64
+            frames.append(torch.from_numpy(d["frames"]))       # (K,H,W,3) uint8
+            labels.append(torch.from_numpy(d["labels"]))       # (K,) int64
         self.frames = torch.cat(frames, 0)   # (N,224,224,3)
         self.labels = torch.cat(labels, 0)   # (N,)
         self.class_counts = np.bincount(self.labels.numpy(), minlength=3)
@@ -97,20 +97,23 @@ def main():
     ap.add_argument("--rank", type=int, default=16)
     ap.add_argument("--lr", type=float, default=1e-4)
     ap.add_argument("--epochs", type=int, default=5)
-    ap.add_argument("--batch_size", type=int, default=64)
+    ap.add_argument("--batch_size", type=int, default=16)
+    ap.add_argument("--max_steps", type=int, default=None, help="跑通用：限制总步数提前停")
     ap.add_argument("--device", default="cuda" if torch.cuda.is_available() else "cpu")
     args = ap.parse_args()
 
     from transformers import AutoModel
 
     os.makedirs(args.out, exist_ok=True)
-    print(f"[1] 加载 facebook/dinov2-giant + 注入 LoRA(r={args.rank}) ...")
-    model = AutoModel.from_pretrained("facebook/dinov2-giant").to(args.device)
-    inject_lora(model, r=args.rank)
-
-    # 冻结主干（LoRALinear 里已冻结原权重）
+    print(f"[1] 加载 facebook/dinov2-giant(fp16) + 注入 LoRA(r={args.rank}) ...")
+    model = AutoModel.from_pretrained("facebook/dinov2-giant").half()  # 主干 fp16 省显存
+    # 先冻结主干全部参数
     for p in model.parameters():
         p.requires_grad_(False)
+    # 再注入 LoRA（LoRALinear 的 A/B 默认 requires_grad=True，保持 fp32）
+    inject_lora(model, r=args.rank)
+    model = model.to(args.device)  # 新 LoRA 参数默认在 CPU，需移回设备
+
     # 只开 LoRA A/B
     lora_params = [p for p in model.parameters() if p.requires_grad]
     # 头
@@ -131,7 +134,8 @@ def main():
     w = cc.sum() / (3 * cc.astype(np.float32) + 1e-9)
     w = w / w.sum() * 3
     print(f"  类权重: {[round(x, 3) for x in w]}")
-    criterion = nn.CrossEntropyLoss(weight=torch.tensor(w, device=args.device))
+    criterion = nn.CrossEntropyLoss(
+        weight=torch.tensor(w.astype(np.float32), dtype=torch.float32, device=args.device))
 
     # 优化器：LoRA + 头
     optimizer = torch.optim.AdamW(list(lora_params) + list(head.parameters()),
@@ -139,6 +143,7 @@ def main():
     model.train(); head.train()
 
     print(f"[3] 训练 {args.epochs} epochs ...")
+    step_count = 0
     for ep in range(args.epochs):
         total_loss, n_correct, n_total = 0.0, 0, 0
         for frames, labels in loader:
@@ -147,7 +152,7 @@ def main():
             optimizer.zero_grad()
             with torch.cuda.amp.autocast(dtype=torch.float16):
                 cls = model(x).last_hidden_state[:, 0, :]   # (B,1536)
-                logits = head(cls.float())
+                logits = head(cls.float()).float()          # 强制 fp32，避免 Half 与权重不匹配
             loss = criterion(logits, y)
             loss.backward()
             torch.nn.utils.clip_grad_norm_(lora_params, 1.0)
@@ -155,7 +160,13 @@ def main():
             total_loss += loss.item() * len(y)
             n_correct += (logits.argmax(1) == y).sum().item()
             n_total += len(y)
+            step_count += 1
+            if args.max_steps and step_count >= args.max_steps:
+                break
         print(f"  epoch {ep+1}: loss={total_loss/n_total:.4f} acc={n_correct/n_total:.4f}")
+        if args.max_steps and step_count >= args.max_steps:
+            print(f"  (提前停在 {step_count} 步)")
+            break
 
     # 保存：LoRA + 头（小 checkpoint），特征重抽时重建模型
     ckpt = {
