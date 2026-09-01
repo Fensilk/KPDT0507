@@ -18,6 +18,10 @@ data/dinov2_giant_features/
 data/pose_features/
 data/optical_flow_features/
 
+# E3 帧级微调缓存与重抽特征
+data/p9_frames/
+data/p9_features_finetuned/
+
 # Dataset
 DATASET-omnifall/
 
