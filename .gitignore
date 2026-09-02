@@ -22,6 +22,10 @@ data/optical_flow_features/
 data/p9_frames/
 data/p9_features_finetuned/
 
+# E1 连续帧缓存（训练 + val 监控）
+data/p9e1_frames/
+data/p9e1_frames_val/
+
 # Dataset
 DATASET-omnifall/
 
