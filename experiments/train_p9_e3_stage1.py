@@ -23,34 +23,8 @@ sys.path.insert(0, os.path.join(BASE, "preprocessing"))
 from step7_extract_dinov2 import DINOV2_MEAN, DINOV2_STD  # noqa: E402
 
 
-# ═══════════════════════════════════════════════════════════
-# 手写 LoRA
-# ═══════════════════════════════════════════════════════════
-class LoRALinear(nn.Module):
-    def __init__(self, original: nn.Linear, r: int = 16, alpha: int = 16):
-        super().__init__()
-        self.original = original
-        self.original.weight.requires_grad_(False)
-        if self.original.bias is not None:
-            self.original.bias.requires_grad_(False)
-        self.scaling = alpha / r
-        self.lora_A = nn.Parameter(torch.zeros(r, original.in_features))
-        self.lora_B = nn.Parameter(torch.zeros(original.out_features, r))
-        nn.init.kaiming_uniform_(self.lora_A, a=5 ** 0.5)
-        nn.init.zeros_(self.lora_B)
-
-    def forward(self, x):
-        base = self.original(x)
-        return base + self.scaling * (x @ self.lora_A.t() @ self.lora_B.t())
-
-
-def inject_lora(model, r=16, alpha=16, targets=("query", "key", "value")):
-    """在注意力 q/k/v 和 output.dense 上注入 LoRA。返回可训练参数名列表。"""
-    for layer in model.encoder.layer:
-        attn = layer.attention.attention
-        for name in targets:
-            setattr(attn, name, LoRALinear(getattr(attn, name), r, alpha))
-        layer.attention.output.dense = LoRALinear(layer.attention.output.dense, r, alpha)
+# LoRA 由共享模块 experiments/lora.py 提供（LoRALinear/inject_lora/merge_lora，E1 亦复用）
+from lora import LoRALinear, inject_lora  # noqa: E402
 
 
 # ═══════════════════════════════════════════════════════════
