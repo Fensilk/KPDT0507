@@ -3,7 +3,9 @@
 #
 # 目的：受控对比 E1@2000（端到端 LoRA）vs E3@2000（两阶段·冻特征·同数据），
 #       拆掉"E3 参考数字其时序头是全量 9,600 视频训的"这一数据量不对称。
-#       其余配置与 run_p9e3_stage2.sh（原 E3 stage2）逐字一致，仅换 train split。
+# 关键：本 runner 作为 E1 的受控，训练窗口步长须与 E1 对齐（stride 16，2 窗口/视频），
+#       否则步长又成第二个变量（E1 训练用 stride16）。要"忠实原 E3 配方(stride8)"的
+#       参考数字，把下面 --stride 改回 8 即可（等价 run_p9e3_stage2.sh 只换 train split）。
 #
 # 训练集：DATASET-omnifall/splits/syn/e1_2000/train.csv = E1 的 2,000 视频
 #         （seed-42 抽样，与 prep_p9e1_frames.py 同批同序，首个 = lie_down/lie_down_to_088）。
@@ -13,8 +15,6 @@
 #       - 本地有（2.6G）；autodl 上曾因清盘被删，如要 autodl 跑需先 scp 回。
 # 运行：冻结特征时序训练很轻，本地 py310 / 4060 即可跑；无需 24G。
 #
-# 注意：原 E3 stage2 训练用 stride 8（每视频 3 窗口）；E1 训练用 stride 16（2 窗口）。
-#       本脚本保持 E3 原配方 stride 8 —— 若需与 E1 训练窗口完全对齐，把 --stride 改 16 即可。
 set -e
 cd "$(dirname "$0")/.."
 
@@ -43,7 +43,7 @@ echo "[E3@2000] 时序训练（微调特征，仅 E1 同批 2000 视频）| $(pw
 python experiments/train_phase6.py \
     --bridge \
     --use_diff \
-    --window_size 64 --stride 8 \
+    --window_size 64 --stride 16 --eval_stride 8 \
     --frame_npz data/omnifall_dinov2_finetuned_frame.npz \
     --splits_dir DATASET-omnifall/splits/syn/e1_2000 \
     --exp_tag phase9/e3_stage2_2000 \

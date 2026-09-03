@@ -593,6 +593,7 @@ def create_longseq_dataloaders(
     splits_dir: str,
     window_size: int = 16,
     stride: int = 1,
+    test_stride: int = None,
     batch_size: int = 64,
     num_workers: int = 0,
     use_weighted_sampler: bool = True,
@@ -609,7 +610,10 @@ def create_longseq_dataloaders(
         npz_path: Frame-level NPZ path.
         splits_dir: Directory with train.csv, val.csv, test.csv.
         window_size: T — sequence length.
-        stride: Sliding window stride.
+        stride: Sliding window stride for train/val.
+        test_stride: Sliding window stride for the TEST loader only. None → same as stride
+            (default, preserves original behavior). Lets training windows differ from the
+            test-eval windows (e.g. E3@2000 control: train stride 16, eval stride 8).
         batch_size: Batch size.
         num_workers: DataLoader workers (0 recommended for Windows).
         use_weighted_sampler: Use WeightedRandomSampler on train.
@@ -649,7 +653,7 @@ def create_longseq_dataloaders(
         npz_path=npz_path,
         split_csv_path=_os.path.join(splits_dir, "test.csv"),
         window_size=window_size,
-        stride=stride,
+        stride=test_stride if test_stride is not None else stride,
         use_diff=use_diff,
         use_accel=use_accel,
         pose_npz_path=pose_npz_path,

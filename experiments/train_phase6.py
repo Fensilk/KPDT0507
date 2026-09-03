@@ -69,6 +69,9 @@ def parse_args():
                         help="Sequence length T (Phase 6 default: 64)")
     parser.add_argument("--stride", type=int, default=8,
                         help="Sliding window stride (default: 8)")
+    parser.add_argument("--eval_stride", type=int, default=None,
+                        help="TEST 评估窗口 stride（默认=None → 与 --stride 相同，保持原行为）。"
+                             "用于让训练窗口与 test 评估窗口解耦（如 E3@2000 受控：训 stride16/测 stride8）")
 
     # ── Model ─────────────────────────────────────────────
     parser.add_argument("--decoder_type", type=str, default="transformer",
@@ -269,6 +272,7 @@ def main():
         splits_dir=splits_dir,
         window_size=args.window_size,
         stride=args.stride,
+        test_stride=args.eval_stride,
         batch_size=args.batch_size,
         num_workers=args.num_workers,
         use_weighted_sampler=not args.no_weighted_sampler,
