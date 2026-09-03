@@ -201,6 +201,8 @@ def main():
     ap.add_argument("--max_steps", type=int, default=None)
     ap.add_argument("--seed", type=int, default=42)
     ap.add_argument("--compile", action="store_true", help="torch.compile（默认关，冒烟不开）")
+    ap.add_argument("--early_stop_patience", type=int, default=2,
+                    help="连续多少次 val_avg_f1 未创新高即早停；0=关闭早停（跑满 epochs）")
     ap.add_argument("--device", default="cuda" if torch.cuda.is_available() else "cpu")
     args = ap.parse_args()
 
@@ -331,9 +333,9 @@ def main():
                         emit(f"  [BEST] 新最优 f1={best_f1:.4f} → best_model.pt")
                     else:
                         no_improve += 1
-                        if no_improve >= 2:
+                        if args.early_stop_patience > 0 and no_improve >= args.early_stop_patience:
                             stop_reason = (f"early_stop: 连续 {no_improve} 次 val_avg_f1 "
-                                           f"未超过 {best_f1:.4f}")
+                                           f"未超过 {best_f1:.4f} (patience={args.early_stop_patience})")
                             emit(f"  [STOP] {stop_reason}")
                             break
                     mon_loss, mon_cnt = 0.0, 0
