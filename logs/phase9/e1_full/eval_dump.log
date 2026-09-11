@@ -1,0 +1,38 @@
+== dump-eval start Fri Sep 11 17:31:25 CST 2026 ==
+PIDS: best=1492 ep3=1493
+/root/miniconda3/lib/python3.10/site-packages/torchvision/io/image.py:13: UserWarning: Failed to load image Python extension: '/root/miniconda3/lib/python3.10/site-packages/torchvision/image.so: undefined symbol: _ZN3c1017RegisterOperatorsD1Ev'If you don't plan on using image functionality from `torchvision.io`, you can ignore this warning. Otherwise, there might be something wrong with your environment. Did you have `libjpeg` or `libpng` installed before building `torchvision` from source?
+  warn(
+/root/miniconda3/lib/python3.10/site-packages/torchvision/io/image.py:13: UserWarning: Failed to load image Python extension: '/root/miniconda3/lib/python3.10/site-packages/torchvision/image.so: undefined symbol: _ZN3c1017RegisterOperatorsD1Ev'If you don't plan on using image functionality from `torchvision.io`, you can ignore this warning. Otherwise, there might be something wrong with your environment. Did you have `libjpeg` or `libpng` installed before building `torchvision` from source?
+  warn(
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights:  65%|██████▌   | 476/727 [00:00<00:00, 4730.38it/s]Loading weights:  54%|█████▍    | 393/727 [00:00<00:00, 3913.82it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 4171.12it/s]
+Loading weights: 100%|██████████| 727/727 [00:00<00:00, 3551.53it/s]
+/root/miniconda3/lib/python3.10/site-packages/torch/nn/modules/transformer.py:379: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+/root/miniconda3/lib/python3.10/site-packages/torch/nn/modules/transformer.py:379: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 best_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 746 个 = 冻结主干（预期）
+[E1Model.from_checkpoint] 已从 epoch_3_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 746 个 = 冻结主干（预期）
+  [200/1200] videos done, skip 0
+  [200/1200] videos done, skip 0
+  [400/1200] videos done, skip 0
+  [400/1200] videos done, skip 0
+  [600/1200] videos done, skip 0
+  [600/1200] videos done, skip 0
+  [800/1200] videos done, skip 0
+  [800/1200] videos done, skip 0
+  [1000/1200] videos done, skip 0
+  [1000/1200] videos done, skip 0
+  [1200/1200] videos done, skip 0
+Saved: logs/phase9/e1_full/eval_best_dump.json
+Dumped pv: logs/phase9/e1_full/pv_best.pt (1200 videos)
+[instance] acc=0.9367 fall_rec=0.8305 fallen_prec=0.7551 fallen_rec=0.7538 avg=0.8268
+[merged] raw ev_f1=0.8269 | canonical=0.8236 | best(K2=7,W=32)=0.8250 fallen_prec=0.7486
+  [1200/1200] videos done, skip 0
+Saved: logs/phase9/e1_full/eval_ep3_dump.json
+Dumped pv: logs/phase9/e1_full/pv_ep3.pt (1200 videos)
+[instance] acc=0.9173 fall_rec=0.8939 fallen_prec=0.7559 fallen_rec=0.5609 avg=0.7649
+[merged] raw ev_f1=0.7951 | canonical=0.7954 | best(K2=7,W=64)=0.7954 fallen_prec=0.7475
+== dump-eval done best rc=0 ep3 rc=0 @ Fri Sep 11 19:17:03 CST 2026 ==
+-rw-r--r-- 1 root root 2621280 Sep 11 19:16 logs/phase9/e1_full/pv_best.pt
+-rw-r--r-- 1 root root 2621276 Sep 11 19:17 logs/phase9/e1_full/pv_ep3.pt
+== DUMP_ALL_DONE Fri Sep 11 19:17:03 CST 2026 ==
