@@ -128,6 +128,11 @@ def main():
                 cls = model(x).last_hidden_state[:, 0, :]   # (B,1536)
                 logits = head(cls.float()).float()          # 强制 fp32，避免 Half 与权重不匹配
             loss = criterion(logits, y)
+            if not torch.isfinite(loss):
+                print(f"  [NAN-ABORT] step {step_count} loss={loss.item()} — 训练发散，立即中止（诊断：降 lr / 查数据）")
+                sys.exit(1)
+            if step_count % 500 == 0:
+                print(f"    step {step_count}: loss={loss.item():.4f}")
             loss.backward()
             torch.nn.utils.clip_grad_norm_(lora_params, 1.0)
             optimizer.step()

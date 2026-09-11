@@ -192,6 +192,8 @@ def print_table(b, e3, e1):
 
 def main():
     ap = argparse.ArgumentParser()
+    ap.add_argument("--model_name", default="facebook/dinov2-giant",
+                    help="重建用的 ViT 骨干（方案E 小骨干: facebook/dinov2-base/small）")
     ap.add_argument("--ckpt", default=os.path.join(BASE, "logs", "phase9", "e1",
                                                    "best_model.pt"))
     ap.add_argument("--out", default=os.path.join(BASE, "logs", "phase9", "e1",
@@ -224,7 +226,7 @@ def main():
         sys.exit(1)
     print(f"[0] device={device} | window={args.window} stride={args.stride}")
     print(f"[1] 重建 E1Model: {args.ckpt}")
-    model = E1Model.from_checkpoint(args.ckpt, device=device)
+    model = E1Model.from_checkpoint(args.ckpt, device=device, model_name=args.model_name)
     model.eval()
 
     if not os.path.exists(args.test_csv):

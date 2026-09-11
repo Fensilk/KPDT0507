@@ -76,7 +76,11 @@ def main():
     ap.add_argument("--n_videos", type=int, default=2000)
     ap.add_argument("--n_val", type=int, default=150)
     ap.add_argument("--seed", type=int, default=42)
+    ap.add_argument("--out_dir", default=OUT,
+                    help="训练帧缓存输出目录（默认 data/p9e1_frames；6000 视频 ≈96GB，"
+                         "autodl data 盘放不下时可指到大盘目录，如 /root/e1h_frames）")
     args = ap.parse_args()
+    train_out = args.out_dir
 
     # 视频索引（仅用 video_paths 做归属校验；标签由训练侧按 path 从 NPZ 对齐）
     d = np.load(NPZ, allow_pickle=True, mmap_mode="r")
@@ -91,10 +95,10 @@ def main():
     selected = train_paths[: args.n_videos]
     print(f"训练候选: {len(selected)}（train.csv {len(train_paths)} 条, seed={args.seed}）")
 
-    n_ok, first = cache_videos(selected, OUT, path2idx)
+    n_ok, first = cache_videos(selected, train_out, path2idx)
     if first:
         print(f"首训练视频 {first[0]}: 帧均值 {first[1]:.1f}（>20 为真实解码帧）")
-    print(f"完成：训练 {n_ok} 视频 × {N_FRAMES} 帧 → {OUT}")
+    print(f"完成：训练 {n_ok} 视频 × {N_FRAMES} 帧 → {train_out}")
 
     # ---- val：fresh rng(seed) 独立打散 → 固定 val 子集供训练监控 ----
     val_paths = list(pd.read_csv(VAL_CSV)["path"].str.strip())

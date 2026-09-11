@@ -57,6 +57,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--limit", type=int, default=None, help="跑通时只抽前 N 个视频")
     ap.add_argument("--ckpt", default=CKPT)
+    ap.add_argument("--pt_out", default=PT_OUT, help="per-video 特征 .pt 目录（默认覆盖 E3 的 p9_features_finetuned，方法3 请改新目录）")
+    ap.add_argument("--npz_out", default=NPZ_OUT, help="聚合 NPZ 输出（默认覆盖 E3 的 finetuned NPZ，方法3 请改新名字）")
     ap.add_argument("--batch_size", type=int, default=16)
     ap.add_argument("--device", default="cuda" if torch.cuda.is_available() else "cpu")
     args = ap.parse_args()
@@ -80,9 +82,9 @@ def main():
     labels16 = d["labels_16"]; fl = d["fall_labels"]; fdl = d["fallen_labels"]
 
     n_videos = len(vp) if args.limit is None else min(args.limit, len(vp))
-    os.makedirs(PT_OUT, exist_ok=True)
+    os.makedirs(args.pt_out, exist_ok=True)
     n_ok = 0
-    print(f"[3] 重抽特征（{n_videos} 视频）...")
+    print(f"[3] 重抽特征（{n_videos} 视频）→ {args.pt_out} ...")
     for i in range(n_videos):
         rel = vp[i]
         mp4 = os.path.join(VIDEO_ROOT, rel + ".mp4")
@@ -94,7 +96,7 @@ def main():
         if feats is None:
             continue
         n = len(feats)
-        out_path = os.path.join(PT_OUT, rel + ".pt")
+        out_path = os.path.join(args.pt_out, rel + ".pt")
         os.makedirs(os.path.dirname(out_path), exist_ok=True)
         torch.save({
             "features": torch.from_numpy(feats),
@@ -107,9 +109,9 @@ def main():
             print(f"  [{i+1}/{n_videos}] 已抽 {n_ok}")
 
     print(f"[4] 聚合 NPZ ...")
-    aggregate_to_npz(PT_OUT, NPZ_OUT)
-    print(f"完成: {n_ok} 视频 → {NPZ_OUT}")
-    print("下一步: python experiments/train_phase6.py --frame_npz data/omnifall_dinov2_finetuned_frame.npz ...")
+    aggregate_to_npz(args.pt_out, args.npz_out)
+    print(f"完成: {n_ok} 视频 → {args.npz_out}")
+    print("下一步: python experiments/train_phase6.py --frame_npz .../new.npz ...")
 
 
 if __name__ == "__main__":

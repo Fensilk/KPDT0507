@@ -117,6 +117,8 @@ def parse_args():
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--device", type=str, default="auto")
     parser.add_argument("--no_weighted_sampler", action="store_true")
+    parser.add_argument("--fallen_w", type=float, default=1.0,
+                        help="fallen(类1) 的 CE 类权重乘子（>1 放大静态轴惩罚；默认 1=不变）")
     parser.add_argument("--use_diff", action="store_true",
                         help="Use Δframe (frame-to-frame diff) features — doubles input dim")
     parser.add_argument("--use_accel", action="store_true",
@@ -335,6 +337,11 @@ def main():
         print(f"[INFO] Using FocalLoss (gamma={args.focal_gamma})")
 
     criterion = loss_info["criterion"]
+    if args.fallen_w != 1.0 and hasattr(criterion, "weight") and criterion.weight is not None:
+        w = criterion.weight.clone()
+        w[1] = w[1] * args.fallen_w
+        criterion.weight = w
+        print(f"[INFO] fallen(类1) 权重 ×{args.fallen_w}: {w.cpu().numpy().round(3)}")
 
     # ── Optimizer ──────────────────────────────────────
     optimizer = optim.AdamW(
