@@ -165,7 +165,7 @@ TensorBoard `events.*`、运行日志与各评估口径的 `eval_*.json`。
 
 - `.claude/`（`settings.local.json` + `skills/`）、`.agents/`（`skills/`）、`AGENTS.md` —— agent 工具配置。
 - `CLAUDE.md` —— **规范层**：目录速查地图 + 跨阶段稳定约定 + Long-Run 任务约定 + 指标定义与验收约定。
-- `DATA_MANIFEST.md` —— 本文（具体描述层）。
+- `PROJECT_CONTENTS.md` —— 本文（具体描述层）。
 
 ---
 
