@@ -30,6 +30,7 @@ import json
 import time
 import argparse
 
+import cv2
 import numpy as np
 import torch
 import torch.nn as nn
@@ -104,6 +105,65 @@ class WindowCache(Dataset):
         frames = torch.from_numpy(np.ascontiguousarray(frames))  # (T,H,W,3) uint8
         y = torch.from_numpy(ternary(self.labels16[st + ws: st + ws + self.window])).long()
         return frames, y
+
+
+# ── mp4 现解码数据集（H@6000 用：无 96GB 磁盘缓存，decode-on-fly；
+#    解码+resize 与 prep_p9e1_frames/eval_p9e1 同一路径 → 与 E1@2000 缓存逐字节一致）──
+def decode_mp4_frames(mp4, n=80, size=(224, 224)):
+    """decode + INTER_LINEAR resize → (80,224,224,3) uint8；失败返回 None。"""
+    from av_decode import read_rgb_frames
+    frames = read_rgb_frames(mp4, n)
+    if not frames:
+        return None
+    imgs = np.stack([cv2.resize(f, size, interpolation=cv2.INTER_LINEAR) for f in frames])
+    return np.ascontiguousarray(imgs).astype(np.uint8)
+
+
+class Mp4WindowCache(Dataset):
+    """训练视频现解码滑窗数据集。与 WindowCache 同接口（.videos/.len/下标），
+    DataLoader 多 worker 并行下 decode 成本可忽略。labels 按 video path 对齐 NPZ。"""
+
+    def __init__(self, csv_path, npz, window=64, stride=16, limit_videos=None,
+                 video_root=None):
+        import pandas as pd
+        rels = list(pd.read_csv(csv_path)["path"].str.strip())
+        if limit_videos is not None:
+            rels = rels[: limit_videos]
+        if video_root is None:
+            video_root = os.path.join(BASE, "DATASET-omnifall", "data_files", "extracted")
+        self.video_root = video_root
+        d = np.load(npz, allow_pickle=True, mmap_mode="r")
+        self.labels16 = d["labels_16"]
+        self.vsi = d["video_start_indices"]
+        vp = [str(p) for p in d["video_paths"]]
+        self.idx = {p: i for i, p in enumerate(vp)}
+        self.window, self.stride = window, stride
+        self.videos = []   # (rel, st)
+        self.meta = []     # (rel, st, ws)
+        n_skip = 0
+        for rel in rels:
+            if rel not in self.idx:
+                n_skip += 1; continue
+            if not os.path.exists(os.path.join(video_root, rel + ".mp4")):
+                n_skip += 1; continue
+            st = int(self.vsi[self.idx[rel]])
+            self.videos.append((rel, st))
+            for ws in range(0, 80 - window + 1, stride):
+                self.meta.append((rel, st, ws))
+        if n_skip:
+            print(f"[Mp4WindowCache] 跳过 {n_skip} 个不在 NPZ/缺失 mp4 的视频", flush=True)
+
+    def __len__(self):
+        return len(self.meta)
+
+    def __getitem__(self, i):
+        rel, st, ws = self.meta[i]
+        frames = decode_mp4_frames(os.path.join(self.video_root, rel + ".mp4"))
+        if frames is None:
+            raise RuntimeError(f"[Mp4WindowCache] 解码失败: {rel}")
+        fr = torch.from_numpy(np.ascontiguousarray(frames[ws:ws + self.window]))  # (T,H,W,3)
+        y = torch.from_numpy(ternary(self.labels16[st + ws: st + ws + self.window])).long()
+        return fr, y
 
 
 def compute_class_weights(cache, device):
@@ -194,6 +254,14 @@ def main():
     ap.add_argument("--epochs", type=int, default=3)
     ap.add_argument("--batch", type=int, default=2)
     ap.add_argument("--lr", type=float, default=1e-4)
+    ap.add_argument("--data_mp4", default=None,
+                    help="训练改为 mp4 现解码（csv: path 列；H@6000 用，免 96GB 缓存）")
+    ap.add_argument("--init_ckpt", default=None,
+                    help="resume/热启: 从 E1 紧凑 ckpt（如 epoch_2_model.pt）续训")
+    ap.add_argument("--init_epoch", type=int, default=0,
+                    help="resume: 已完成的 epoch 数（跳过前 init_epoch 个）")
+    ap.add_argument("--workers", type=int, default=0,
+                    help="DataLoader workers（现解码建议 ≥8）")
     ap.add_argument("--val_every", type=int, default=600)
     ap.add_argument("--val_n", type=int, default=150)
     ap.add_argument("--log_every", type=int, default=50)
@@ -203,6 +271,8 @@ def main():
     ap.add_argument("--compile", action="store_true", help="torch.compile（默认关，冒烟不开）")
     ap.add_argument("--early_stop_patience", type=int, default=2,
                     help="连续多少次 val_avg_f1 未创新高即早停；0=关闭早停（跑满 epochs）")
+    ap.add_argument("--model_name", default="facebook/dinov2-giant",
+                    help="ViT 骨干（方案E 小骨干: facebook/dinov2-vits14 / vitb14）")
     ap.add_argument("--device", default="cuda" if torch.cuda.is_available() else "cpu")
     args = ap.parse_args()
 
@@ -221,9 +291,14 @@ def main():
             logf.flush()
 
         # ---- 模型 ----
-        emit(f"[1] 加载 facebook/dinov2-giant(fp16) + LoRA(r=16) + Phase6 bridge 头")
-        model = E1Model.from_pretrained(model_name="facebook/dinov2-giant",
-                                        lora_rank=16, device=device)
+        if args.init_ckpt:
+            emit(f"[1] resume: 从 {args.init_ckpt} 续训（跳过前 {args.init_epoch} 个 epoch）")
+            model = E1Model.from_checkpoint(args.init_ckpt, device=device,
+                                            model_name=args.model_name)
+        else:
+            emit(f"[1] 加载 {args.model_name}(fp16) + LoRA(r=16) + Phase6 bridge 头")
+            model = E1Model.from_pretrained(model_name=args.model_name,
+                                            lora_rank=16, device=device)
         model.vit.gradient_checkpointing_enable()   # 必须：128 帧/step 显存
         emit(f"  梯度 checkpointing: {model.vit.is_gradient_checkpointing}")
         if args.compile:
@@ -235,9 +310,15 @@ def main():
              f"(LoRA + 时序头；主干冻结 fp16)")
 
         # ---- 数据集 + 类权重 ----
-        emit(f"[2] 窗口数据集: {args.data} (window={args.window}, stride={args.stride})")
-        ds = WindowCache(args.data, args.npz, args.window, args.stride,
-                         limit_videos=args.limit_videos)
+        if args.data_mp4:
+            emit(f"[2] mp4 现解码数据集: {args.data_mp4} (window={args.window}, "
+                 f"stride={args.stride}, workers={args.workers})")
+            ds = Mp4WindowCache(args.data_mp4, args.npz, args.window, args.stride,
+                                limit_videos=args.limit_videos)
+        else:
+            emit(f"[2] 窗口数据集: {args.data} (window={args.window}, stride={args.stride})")
+            ds = WindowCache(args.data, args.npz, args.window, args.stride,
+                             limit_videos=args.limit_videos)
         w = compute_class_weights(ds, device)
         emit(f"  训练视频: {len(ds.videos)} | 窗口: {len(ds)} | "
              f"类权重 fall/fallen/normal: {[round(float(x), 3) for x in w.cpu().numpy()]}")
@@ -255,9 +336,11 @@ def main():
         monitor_records = []
 
         model.train()
-        for ep in range(args.epochs):
+        start_ep = min(max(args.init_epoch, 0), args.epochs)
+        for ep in range(start_ep, args.epochs):
             loader = DataLoader(ds, batch_size=args.batch, shuffle=True,
-                                num_workers=0, collate_fn=collate_windows)
+                                num_workers=args.workers, collate_fn=collate_windows,
+                                persistent_workers=args.workers > 0)
             # 滚动日志区间累计
             log_loss, log_cnt, log_correct, log_total = 0.0, 0, np.zeros(3, np.int64), np.zeros(3, np.int64)
             # val 区间累计（monitor 的 train_loss_avg）

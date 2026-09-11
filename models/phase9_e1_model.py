@@ -63,12 +63,17 @@ class E1Model(nn.Module):
         E1Model.from_checkpoint(path)    从紧凑 checkpoint 重建
     """
 
-    def __init__(self, vit_model, temporal=None, lora_rank=16):
+    def __init__(self, vit_model, temporal=None, lora_rank=16, cls_dim=None):
         super().__init__()
-        self.vit = vit_model                      # facebook/dinov2-giant（主干已 .half() + 冻结）
+        self.vit = vit_model                      # 主干（已 .half() + 冻结）
         self.lora_rank = lora_rank
+        # CLS 维度 = 骨干 hidden_size（giant=1536；方案E 小骨干 vitb=768/vits=384 自动推导）
+        self.cls_dim = cls_dim or vit_model.config.hidden_size
         # temporal 传入时使用之（其 input_proj 由调用方保证 fp32）；否则按默认基线配置新建
-        self.temporal = temporal or Phase6TernaryModel(**_DEFAULT_HEAD_ARGS)
+        if temporal is None:
+            head_args = dict(_DEFAULT_HEAD_ARGS, input_dim=self.cls_dim * 2)
+            temporal = Phase6TernaryModel(**head_args)
+        self.temporal = temporal
         self.temporal.input_proj.to(torch.float32)
 
     # ------------------------------------------------------------------ forward
@@ -83,11 +88,11 @@ class E1Model(nn.Module):
         B, T = frames.shape[0], frames.shape[1]
         x = frames.reshape(B * T, *frames.shape[2:])                 # (B*T, 3, 224, 224)
         with torch.amp.autocast("cuda", dtype=torch.float16):        # vit 主干 fp16
-            cls = self.vit(x).last_hidden_state[:, 0, :]             # (B*T, 1536) fp16
-        cls = cls.reshape(B, T, CLS_DIM).float()                     # (B, T, 1536) fp32
+            cls = self.vit(x).last_hidden_state[:, 0, :]             # (B*T, cls_dim) fp16
+        cls = cls.reshape(B, T, self.cls_dim).float()                # (B, T, cls_dim) fp32
         diff = torch.zeros_like(cls)
         diff[:, 1:] = cls[:, 1:] - cls[:, :-1]                       # Δdiff，diff[:, 0] = 0
-        feats = torch.cat([cls, diff], dim=-1)                       # (B, T, 3072)
+        feats = torch.cat([cls, diff], dim=-1)                       # (B, T, cls_dim*2)
         return self.temporal(feats)                                  # (B, T, 3)
 
     # ---------------------------------------------------------- construction
@@ -103,18 +108,19 @@ class E1Model(nn.Module):
         from transformers import AutoModel
 
         vit = AutoModel.from_pretrained(model_name).half()
+        hidden = vit.config.hidden_size            # giant=1536；vitb=768；vits=384
         # 必须先整体冻结主干，再注入 LoRA（LoRA 只包裹 q/k/v/o，不动其余 MLP/norm/embed）
         for p in vit.parameters():
             p.requires_grad_(False)
         inject_lora(vit, r=lora_rank)
         temporal = None
         if temporal_args is not None:
-            if temporal_args.get("input_dim") != CLS_DIM * 2:
-                raise ValueError(
-                    f"temporal_args input_dim={temporal_args.get('input_dim')} 与 "
-                    f"CLS+Δdiff 维度 {CLS_DIM * 2} 不符")
+            # 头输入维度由骨干决定(=hidden*2)；ckpt 里的 temporal_args 可能存了
+            # 训练时写死的其它骨干值（如 giant 的 3072），此处一律按当前骨干覆写。
+            # 真实形状不匹配会由后续 load_state_dict(temporal_state) 抛错捕获。
+            temporal_args = dict(temporal_args, input_dim=hidden * 2)
             temporal = Phase6TernaryModel(**temporal_args)
-        return cls(vit, temporal=temporal, lora_rank=lora_rank).to(device)
+        return cls(vit, temporal=temporal, lora_rank=lora_rank, cls_dim=hidden).to(device)
 
     # ---------------------------------------------------------- reload
     @classmethod
