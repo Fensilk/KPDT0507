@@ -47,3 +47,13 @@ analysis/diagnose_lying_event/
 # OS
 .DS_Store
 Thumbs.db
+
+# 第三方参考实现（vendored，约 1.1GB：C3D/SlowFast/TimeSformer/kinetics-i3d/scenic/TSM）
+reference/
+
+# Agent 技能脚手架（同 .claude/）
+.agents/
+AGENTS.md
+
+# E1-full 本地日志镜像（内容与 run.log / eval_dump.log 重复）
+logs/phase9/e1_full/*.live.log
