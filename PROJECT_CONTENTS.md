@@ -128,14 +128,21 @@
 ## `logs/` — 训练产物
 
 `logs/phaseN/<exp_tag>/`。各阶段实验目录数（**仅目录**）：**phase1:13｜phase2:4｜phase3:17｜phase4:15｜
-phase5:2｜phase6:17｜phase7:7｜phase8:10｜phase9:18**（合计 103）。
+phase5:2｜phase6:17｜phase7:7｜phase8:10｜phase9:19**（合计 104）。
 
-**phase9 的具体实验目录**（18 个）：
+**phase9 的具体实验目录**（19 个）：
 `e1_5ep`（E1@2000 五轮）、`e1_6000`（H）、`e1_full`（E1-full 收官）、`e1_earlystop`、`e1_dinov2base`（方案 E）、
 `e1_cache_build`、`e1_rulev2`、`e3_stage1`、`e3_stage2`（E3-full）、`e3_stage2_2000`（E3@2000）、`e3_rulev2`、
 `m1_v1_s8`、`m1_v2_fw3`（方案 A）、`m3_stage1`、`m3_full_features`（方案 B）、`m7_distill`（方案 G）、
-`no_keeplying`、`no_keeplying_fallen`（数据侧前奏 P9/P9b）。
+`no_keeplying`、`no_keeplying_fallen`（数据侧前奏 P9/P9b）、`e2_rank_trunc`（E2 = LoRA 秩截断探针，§六）。
 零散文件：`e3_stage2_2000_terminal.log`、`m3_stage1.live.log`、`timeline_metrics_cached.json`。
+
+> ⚠ **P9/P9b 有产物缺口（2026-09-12 核实）**：两个目录只剩 ckpt + `test_results.json` +
+> `training_history.json`；**其数据侧脚本与过滤 split 从未入库、本地已丢失**
+> （`analysis/flag_no_gain_videos.py`、`build_filtered_splits.py`、`review_decisions.csv`、
+> `splits/syn/no_keeplying/`），全量 test 对照数字出自同批丢失的
+> `analysis/eval_compare_no_keeplying.py` → 该部分**不可复现**。详见
+> `docs/0902实验第九阶段总结.md` §7.3。
 
 每个实验目录的典型内容：`training_history.json`（逐 epoch）、`test_results.json`（全量 test）、
 `monitor.json`（训练中 val 曲线）、`best_model.pt` / `last_model.pt` / `epoch_N_model.pt`、
