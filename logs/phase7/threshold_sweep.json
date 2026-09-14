@@ -1,0 +1,674 @@
+{
+  "K_VALUES": [
+    1,
+    2,
+    3,
+    5,
+    8,
+    12
+  ],
+  "p6_bridge": {
+    "1": {
+      "lying": {
+        "bridge_event": 2152,
+        "rulev1_event": 1171,
+        "total": 15601
+      },
+      "lie_down": {
+        "bridge_event": 599,
+        "rulev1_event": 590,
+        "total": 4844
+      },
+      "sit_down": {
+        "bridge_event": 271,
+        "rulev1_event": 271,
+        "total": 4652
+      },
+      "sitting": {
+        "bridge_event": 638,
+        "rulev1_event": 621,
+        "total": 15765
+      },
+      "stand_up": {
+        "bridge_event": 830,
+        "rulev1_event": 790,
+        "total": 6684
+      },
+      "other": {
+        "bridge_event": 1593,
+        "rulev1_event": 1518,
+        "total": 9093
+      },
+      "walk": {
+        "bridge_event": 91,
+        "rulev1_event": 91,
+        "total": 10893
+      },
+      "standing": {
+        "bridge_event": 94,
+        "rulev1_event": 94,
+        "total": 12706
+      },
+      "jump": {
+        "bridge_event": 86,
+        "rulev1_event": 86,
+        "total": 521
+      },
+      "_total_bridge": 6354,
+      "_total_rulev1": 5232,
+      "_total_frames": 80759,
+      "_stats": {
+        "events": 282,
+        "fallen_kept": 7380,
+        "fallen_suppressed": 1682
+      }
+    },
+    "2": {
+      "lying": {
+        "bridge_event": 2152,
+        "rulev1_event": 1100,
+        "total": 15601
+      },
+      "lie_down": {
+        "bridge_event": 599,
+        "rulev1_event": 590,
+        "total": 4844
+      },
+      "sit_down": {
+        "bridge_event": 271,
+        "rulev1_event": 271,
+        "total": 4652
+      },
+      "sitting": {
+        "bridge_event": 638,
+        "rulev1_event": 621,
+        "total": 15765
+      },
+      "stand_up": {
+        "bridge_event": 830,
+        "rulev1_event": 785,
+        "total": 6684
+      },
+      "other": {
+        "bridge_event": 1593,
+        "rulev1_event": 1518,
+        "total": 9093
+      },
+      "walk": {
+        "bridge_event": 91,
+        "rulev1_event": 91,
+        "total": 10893
+      },
+      "standing": {
+        "bridge_event": 94,
+        "rulev1_event": 94,
+        "total": 12706
+      },
+      "jump": {
+        "bridge_event": 86,
+        "rulev1_event": 86,
+        "total": 521
+      },
+      "_total_bridge": 6354,
+      "_total_rulev1": 5156,
+      "_total_frames": 80759,
+      "_stats": {
+        "events": 277,
+        "fallen_kept": 7304,
+        "fallen_suppressed": 1758
+      }
+    },
+    "3": {
+      "lying": {
+        "bridge_event": 2152,
+        "rulev1_event": 1057,
+        "total": 15601
+      },
+      "lie_down": {
+        "bridge_event": 599,
+        "rulev1_event": 561,
+        "total": 4844
+      },
+      "sit_down": {
+        "bridge_event": 271,
+        "rulev1_event": 271,
+        "total": 4652
+      },
+      "sitting": {
+        "bridge_event": 638,
+        "rulev1_event": 621,
+        "total": 15765
+      },
+      "stand_up": {
+        "bridge_event": 830,
+        "rulev1_event": 774,
+        "total": 6684
+      },
+      "other": {
+        "bridge_event": 1593,
+        "rulev1_event": 1518,
+        "total": 9093
+      },
+      "walk": {
+        "bridge_event": 91,
+        "rulev1_event": 91,
+        "total": 10893
+      },
+      "standing": {
+        "bridge_event": 94,
+        "rulev1_event": 94,
+        "total": 12706
+      },
+      "jump": {
+        "bridge_event": 86,
+        "rulev1_event": 86,
+        "total": 521
+      },
+      "_total_bridge": 6354,
+      "_total_rulev1": 5073,
+      "_total_frames": 80759,
+      "_stats": {
+        "events": 266,
+        "fallen_kept": 7219,
+        "fallen_suppressed": 1843
+      }
+    },
+    "5": {
+      "lying": {
+        "bridge_event": 2152,
+        "rulev1_event": 816,
+        "total": 15601
+      },
+      "lie_down": {
+        "bridge_event": 599,
+        "rulev1_event": 561,
+        "total": 4844
+      },
+      "sit_down": {
+        "bridge_event": 271,
+        "rulev1_event": 271,
+        "total": 4652
+      },
+      "sitting": {
+        "bridge_event": 638,
+        "rulev1_event": 621,
+        "total": 15765
+      },
+      "stand_up": {
+        "bridge_event": 830,
+        "rulev1_event": 773,
+        "total": 6684
+      },
+      "other": {
+        "bridge_event": 1593,
+        "rulev1_event": 1518,
+        "total": 9093
+      },
+      "walk": {
+        "bridge_event": 91,
+        "rulev1_event": 91,
+        "total": 10893
+      },
+      "standing": {
+        "bridge_event": 94,
+        "rulev1_event": 94,
+        "total": 12706
+      },
+      "jump": {
+        "bridge_event": 86,
+        "rulev1_event": 86,
+        "total": 521
+      },
+      "_total_bridge": 6354,
+      "_total_rulev1": 4831,
+      "_total_frames": 80759,
+      "_stats": {
+        "events": 255,
+        "fallen_kept": 6977,
+        "fallen_suppressed": 2085
+      }
+    },
+    "8": {
+      "lying": {
+        "bridge_event": 2152,
+        "rulev1_event": 759,
+        "total": 15601
+      },
+      "lie_down": {
+        "bridge_event": 599,
+        "rulev1_event": 522,
+        "total": 4844
+      },
+      "sit_down": {
+        "bridge_event": 271,
+        "rulev1_event": 271,
+        "total": 4652
+      },
+      "sitting": {
+        "bridge_event": 638,
+        "rulev1_event": 488,
+        "total": 15765
+      },
+      "stand_up": {
+        "bridge_event": 830,
+        "rulev1_event": 761,
+        "total": 6684
+      },
+      "other": {
+        "bridge_event": 1593,
+        "rulev1_event": 1470,
+        "total": 9093
+      },
+      "walk": {
+        "bridge_event": 91,
+        "rulev1_event": 90,
+        "total": 10893
+      },
+      "standing": {
+        "bridge_event": 94,
+        "rulev1_event": 64,
+        "total": 12706
+      },
+      "jump": {
+        "bridge_event": 86,
+        "rulev1_event": 86,
+        "total": 521
+      },
+      "_total_bridge": 6354,
+      "_total_rulev1": 4511,
+      "_total_frames": 80759,
+      "_stats": {
+        "events": 244,
+        "fallen_kept": 6604,
+        "fallen_suppressed": 2458
+      }
+    },
+    "12": {
+      "lying": {
+        "bridge_event": 2152,
+        "rulev1_event": 759,
+        "total": 15601
+      },
+      "lie_down": {
+        "bridge_event": 599,
+        "rulev1_event": 522,
+        "total": 4844
+      },
+      "sit_down": {
+        "bridge_event": 271,
+        "rulev1_event": 271,
+        "total": 4652
+      },
+      "sitting": {
+        "bridge_event": 638,
+        "rulev1_event": 488,
+        "total": 15765
+      },
+      "stand_up": {
+        "bridge_event": 830,
+        "rulev1_event": 750,
+        "total": 6684
+      },
+      "other": {
+        "bridge_event": 1593,
+        "rulev1_event": 1470,
+        "total": 9093
+      },
+      "walk": {
+        "bridge_event": 91,
+        "rulev1_event": 90,
+        "total": 10893
+      },
+      "standing": {
+        "bridge_event": 94,
+        "rulev1_event": 64,
+        "total": 12706
+      },
+      "jump": {
+        "bridge_event": 86,
+        "rulev1_event": 86,
+        "total": 521
+      },
+      "_total_bridge": 6354,
+      "_total_rulev1": 4500,
+      "_total_frames": 80759,
+      "_stats": {
+        "events": 231,
+        "fallen_kept": 6204,
+        "fallen_suppressed": 2858
+      }
+    }
+  },
+  "p7d_delta": {
+    "1": {
+      "lying": {
+        "bridge_event": 1941,
+        "rulev1_event": 1407,
+        "total": 15601
+      },
+      "lie_down": {
+        "bridge_event": 403,
+        "rulev1_event": 403,
+        "total": 4844
+      },
+      "sit_down": {
+        "bridge_event": 227,
+        "rulev1_event": 216,
+        "total": 4652
+      },
+      "sitting": {
+        "bridge_event": 568,
+        "rulev1_event": 568,
+        "total": 15765
+      },
+      "stand_up": {
+        "bridge_event": 722,
+        "rulev1_event": 671,
+        "total": 6684
+      },
+      "other": {
+        "bridge_event": 1007,
+        "rulev1_event": 927,
+        "total": 9093
+      },
+      "walk": {
+        "bridge_event": 73,
+        "rulev1_event": 73,
+        "total": 10893
+      },
+      "standing": {
+        "bridge_event": 135,
+        "rulev1_event": 111,
+        "total": 12706
+      },
+      "jump": {
+        "bridge_event": 104,
+        "rulev1_event": 104,
+        "total": 521
+      },
+      "_total_bridge": 5180,
+      "_total_rulev1": 4480,
+      "_total_frames": 80759,
+      "_stats": {
+        "events": 291,
+        "fallen_kept": 6972,
+        "fallen_suppressed": 1333
+      }
+    },
+    "2": {
+      "lying": {
+        "bridge_event": 1941,
+        "rulev1_event": 1351,
+        "total": 15601
+      },
+      "lie_down": {
+        "bridge_event": 403,
+        "rulev1_event": 384,
+        "total": 4844
+      },
+      "sit_down": {
+        "bridge_event": 227,
+        "rulev1_event": 216,
+        "total": 4652
+      },
+      "sitting": {
+        "bridge_event": 568,
+        "rulev1_event": 568,
+        "total": 15765
+      },
+      "stand_up": {
+        "bridge_event": 722,
+        "rulev1_event": 671,
+        "total": 6684
+      },
+      "other": {
+        "bridge_event": 1007,
+        "rulev1_event": 927,
+        "total": 9093
+      },
+      "walk": {
+        "bridge_event": 73,
+        "rulev1_event": 73,
+        "total": 10893
+      },
+      "standing": {
+        "bridge_event": 135,
+        "rulev1_event": 111,
+        "total": 12706
+      },
+      "jump": {
+        "bridge_event": 104,
+        "rulev1_event": 104,
+        "total": 521
+      },
+      "_total_bridge": 5180,
+      "_total_rulev1": 4405,
+      "_total_frames": 80759,
+      "_stats": {
+        "events": 281,
+        "fallen_kept": 6897,
+        "fallen_suppressed": 1408
+      }
+    },
+    "3": {
+      "lying": {
+        "bridge_event": 1941,
+        "rulev1_event": 985,
+        "total": 15601
+      },
+      "lie_down": {
+        "bridge_event": 403,
+        "rulev1_event": 384,
+        "total": 4844
+      },
+      "sit_down": {
+        "bridge_event": 227,
+        "rulev1_event": 216,
+        "total": 4652
+      },
+      "sitting": {
+        "bridge_event": 568,
+        "rulev1_event": 568,
+        "total": 15765
+      },
+      "stand_up": {
+        "bridge_event": 722,
+        "rulev1_event": 667,
+        "total": 6684
+      },
+      "other": {
+        "bridge_event": 1007,
+        "rulev1_event": 926,
+        "total": 9093
+      },
+      "walk": {
+        "bridge_event": 73,
+        "rulev1_event": 73,
+        "total": 10893
+      },
+      "standing": {
+        "bridge_event": 135,
+        "rulev1_event": 111,
+        "total": 12706
+      },
+      "jump": {
+        "bridge_event": 104,
+        "rulev1_event": 103,
+        "total": 521
+      },
+      "_total_bridge": 5180,
+      "_total_rulev1": 4033,
+      "_total_frames": 80759,
+      "_stats": {
+        "events": 269,
+        "fallen_kept": 6484,
+        "fallen_suppressed": 1821
+      }
+    },
+    "5": {
+      "lying": {
+        "bridge_event": 1941,
+        "rulev1_event": 769,
+        "total": 15601
+      },
+      "lie_down": {
+        "bridge_event": 403,
+        "rulev1_event": 384,
+        "total": 4844
+      },
+      "sit_down": {
+        "bridge_event": 227,
+        "rulev1_event": 216,
+        "total": 4652
+      },
+      "sitting": {
+        "bridge_event": 568,
+        "rulev1_event": 563,
+        "total": 15765
+      },
+      "stand_up": {
+        "bridge_event": 722,
+        "rulev1_event": 654,
+        "total": 6684
+      },
+      "other": {
+        "bridge_event": 1007,
+        "rulev1_event": 926,
+        "total": 9093
+      },
+      "walk": {
+        "bridge_event": 73,
+        "rulev1_event": 73,
+        "total": 10893
+      },
+      "standing": {
+        "bridge_event": 135,
+        "rulev1_event": 111,
+        "total": 12706
+      },
+      "jump": {
+        "bridge_event": 104,
+        "rulev1_event": 103,
+        "total": 521
+      },
+      "_total_bridge": 5180,
+      "_total_rulev1": 3799,
+      "_total_frames": 80759,
+      "_stats": {
+        "events": 257,
+        "fallen_kept": 6250,
+        "fallen_suppressed": 2055
+      }
+    },
+    "8": {
+      "lying": {
+        "bridge_event": 1941,
+        "rulev1_event": 695,
+        "total": 15601
+      },
+      "lie_down": {
+        "bridge_event": 403,
+        "rulev1_event": 384,
+        "total": 4844
+      },
+      "sit_down": {
+        "bridge_event": 227,
+        "rulev1_event": 216,
+        "total": 4652
+      },
+      "sitting": {
+        "bridge_event": 568,
+        "rulev1_event": 493,
+        "total": 15765
+      },
+      "stand_up": {
+        "bridge_event": 722,
+        "rulev1_event": 654,
+        "total": 6684
+      },
+      "other": {
+        "bridge_event": 1007,
+        "rulev1_event": 926,
+        "total": 9093
+      },
+      "walk": {
+        "bridge_event": 73,
+        "rulev1_event": 73,
+        "total": 10893
+      },
+      "standing": {
+        "bridge_event": 135,
+        "rulev1_event": 111,
+        "total": 12706
+      },
+      "jump": {
+        "bridge_event": 104,
+        "rulev1_event": 102,
+        "total": 521
+      },
+      "_total_bridge": 5180,
+      "_total_rulev1": 3654,
+      "_total_frames": 80759,
+      "_stats": {
+        "events": 244,
+        "fallen_kept": 6079,
+        "fallen_suppressed": 2226
+      }
+    },
+    "12": {
+      "lying": {
+        "bridge_event": 1941,
+        "rulev1_event": 631,
+        "total": 15601
+      },
+      "lie_down": {
+        "bridge_event": 403,
+        "rulev1_event": 384,
+        "total": 4844
+      },
+      "sit_down": {
+        "bridge_event": 227,
+        "rulev1_event": 216,
+        "total": 4652
+      },
+      "sitting": {
+        "bridge_event": 568,
+        "rulev1_event": 466,
+        "total": 15765
+      },
+      "stand_up": {
+        "bridge_event": 722,
+        "rulev1_event": 654,
+        "total": 6684
+      },
+      "other": {
+        "bridge_event": 1007,
+        "rulev1_event": 869,
+        "total": 9093
+      },
+      "walk": {
+        "bridge_event": 73,
+        "rulev1_event": 73,
+        "total": 10893
+      },
+      "standing": {
+        "bridge_event": 135,
+        "rulev1_event": 111,
+        "total": 12706
+      },
+      "jump": {
+        "bridge_event": 104,
+        "rulev1_event": 102,
+        "total": 521
+      },
+      "_total_bridge": 5180,
+      "_total_rulev1": 3506,
+      "_total_frames": 80759,
+      "_stats": {
+        "events": 223,
+        "fallen_kept": 5609,
+        "fallen_suppressed": 2696
+      }
+    }
+  }
+}
