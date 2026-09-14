@@ -1,0 +1,46 @@
+
+=============== [2026-09-13 21:29:56] WAIT for the T_max=15 run to finish ===============
+
+
+=============== [2026-09-13 21:30:29] ARCHIVE T_max=15 run -> logs/phase10/x3d_s_cos15 ===============
+
+
+=============== [2026-09-13 21:30:29] PROMOTE T_max=5 run (adopted protocol) -> logs/phase10/x3d_s ===============
+
+
+=============== [2026-09-13 21:30:29] EVAL: dense per-frame dump (stride 1) ===============
+
+/root/miniconda3/lib/python3.10/site-packages/torchvision/io/image.py:13: UserWarning: Failed to load image Python extension: '/root/miniconda3/lib/python3.10/site-packages/torchvision/image.so: undefined symbol: _ZN3c1017RegisterOperatorsD1Ev'If you don't plan on using image functionality from `torchvision.io`, you can ignore this warning. Otherwise, there might be something wrong with your environment. Did you have `libjpeg` or `libpng` installed before building `torchvision` from source?
+  warn(
+[data] model=x3d_s frames=16 | train clips=86400 (missing=0), val clips=10800 (missing=0)
+[data] label counts=[7384, 6607, 72409] -> weights=[1.352, 1.511, 0.138]
+[model] x3d_s params=2.98M
+/root/autodl-tmp/experiments/train_p10_tsm.py:334: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  ckpt = torch.load(ckpt_path, map_location="cpu")
+[test] 1200 videos -> 78000 clips (stride=1)
+[test] avg_f1=0.7303 acc=0.8994 fall_f1=0.6806 fallen_f1=0.5608 (n=96000)
+
+=============== [2026-09-13 21:39:14] EVAL: timeline metrics ===============
+
+=== timeline (event-level, per-video) ===
+  videos=1200  has_fall=211  has_fallen=150
+  fall_f1=0.7198  fallen_f1=0.5046  avg_f1=0.6489
+  coverage: fall=0.957  fallen=0.673
+  false alarm: fall=0.068  fallen=0.046
+  flips/video=0.46  order_correct=1.000
+=== instance (same frames) ===
+  avg_f1=0.7303 acc=0.8994 fall_f1=0.6806 fallen_f1=0.5608 n=96000
+saved -> logs/phase10/x3d_s/timeline_results.json
+
+=============== [2026-09-13 21:39:20] EVAL: same-frame comparison vs E1-full ===============
+
+common videos = 1200
+E1-full    inst: acc=0.9370 avg_f1=0.8296 fall_f1=0.7689 fallen_f1=0.7510
+           time: fall_f1=0.7827 fallen_f1=0.6989 avg_f1=0.7413 | cov 0.962/0.833 | FA 0.026/0.035 | flips 0.63
+X3D-S      inst: acc=0.8994 avg_f1=0.7303 fall_f1=0.6806 fallen_f1=0.5608
+           time: fall_f1=0.7198 fallen_f1=0.5046 avg_f1=0.6489 | cov 0.957/0.673 | FA 0.068/0.046 | flips 0.46
+delta (X3D-S - E1): acc -0.0376 | avg_f1 -0.0993 | fall_f1 -0.0884 | fallen_f1 -0.1902
+saved -> logs/phase10/x3d_s/compare_e1_vs_x3d_s.json
+
+=============== [2026-09-13 21:39:23] ALL DONE — logs/phase10/x3d_s/P10_x3d_s_DONE ===============
+

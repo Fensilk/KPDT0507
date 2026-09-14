@@ -1,0 +1,22 @@
+{
+  "tag": "tsm_smoke",
+  "frames_root": "C:\\Users\\Lizhe\\Documents\\KPDT0507\\data\\ref_frames",
+  "num_frames": 8,
+  "train_stride": 8,
+  "crop": 224,
+  "dropout": 0.5,
+  "shift_div": 8,
+  "epochs": 1,
+  "batch_size": 8,
+  "lr": 0.01,
+  "weight_decay": 0.0001,
+  "max_steps": 20,
+  "limit_videos": 400,
+  "val_limit_videos": 40,
+  "workers": 0,
+  "seed": 42,
+  "tune_from": null,
+  "balanced_sampler": false,
+  "amp": true,
+  "log_root": "C:\\Users\\Lizhe\\Documents\\KPDT0507\\logs\\phase10"
+}

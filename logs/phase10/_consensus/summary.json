@@ -1,0 +1,118 @@
+{
+  "n_videos_checked": 1200,
+  "n_consensus_failures": 25,
+  "criteria": {
+    "e1_ok": 0.1,
+    "wrong_err": 0.3,
+    "min_wrong": 5
+  },
+  "type_counts": {
+    "over": 16,
+    "miss": 8,
+    "swap": 1
+  },
+  "model_wrong_counts": {
+    "tsm_fair": 22,
+    "slowfast_r50": 18,
+    "x3d_s": 21,
+    "timesformer": 17,
+    "i3d_r50": 22,
+    "c3d": 22,
+    "vivit": 20
+  },
+  "representatives": {
+    "over": {
+      "video": "lie_down/lie_down_mi_071",
+      "n_wrong": 7,
+      "worst_models": [
+        "vivit",
+        "c3d"
+      ]
+    },
+    "miss": {
+      "video": "fallen/fallen_to_061",
+      "n_wrong": 7,
+      "worst_models": [
+        "slowfast_r50",
+        "timesformer"
+      ]
+    },
+    "swap": {
+      "video": "fallen/fallen_to_168",
+      "n_wrong": 5,
+      "worst_models": [
+        "timesformer",
+        "tsm_fair"
+      ]
+    }
+  },
+  "by_type": {
+    "over": {
+      "n_videos": 16,
+      "videos": [
+        "lie_down/lie_down_mi_071",
+        "fall/fall_to_194",
+        "lie_down/lie_down_el_047",
+        "lying/lying_ch_084",
+        "lying/lying_to_016",
+        "stand_up/stand_up_el_018",
+        "fall/fall_yo_134",
+        "other/other_to_164",
+        "lie_down/lie_down_ch_072",
+        "lie_down/lie_down_yo_005",
+        "lie_down/lie_down_yo_172",
+        "lie_down/lie_down_yo_194",
+        "lying/lying_ch_129",
+        "lying/lying_to_170",
+        "fallen/fallen_el_131",
+        "fallen/fallen_ch_014"
+      ],
+      "model_mean_err": {
+        "vivit": 0.7961,
+        "c3d": 0.7523,
+        "i3d_r50": 0.7188,
+        "x3d_s": 0.6453,
+        "tsm_fair": 0.5297,
+        "slowfast_r50": 0.4672,
+        "timesformer": 0.4344
+      }
+    },
+    "miss": {
+      "n_videos": 8,
+      "videos": [
+        "fall/fall_mi_010",
+        "fallen/fallen_mi_034",
+        "fallen/fallen_to_061",
+        "fallen/fallen_ch_176",
+        "fall/fall_yo_123",
+        "fall/fall_el_042",
+        "fall/fall_el_121",
+        "fallen/fallen_te_125"
+      ],
+      "model_mean_err": {
+        "timesformer": 0.7531,
+        "tsm_fair": 0.7094,
+        "i3d_r50": 0.5953,
+        "c3d": 0.5938,
+        "x3d_s": 0.5531,
+        "slowfast_r50": 0.4953,
+        "vivit": 0.4375
+      }
+    },
+    "swap": {
+      "n_videos": 1,
+      "videos": [
+        "fallen/fallen_to_168"
+      ],
+      "model_mean_err": {
+        "timesformer": 0.7625,
+        "tsm_fair": 0.7,
+        "x3d_s": 0.6375,
+        "c3d": 0.5875,
+        "slowfast_r50": 0.4625,
+        "i3d_r50": 0.0,
+        "vivit": 0.0
+      }
+    }
+  }
+}

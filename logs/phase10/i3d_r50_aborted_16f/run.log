@@ -1,0 +1,26 @@
+
+=============== [2026-09-14 06:51:23] BASELINE START model=i3d_r50 tag=i3d_r50 ===============
+
+/root/miniconda3/lib/python3.10/site-packages/torchvision/io/image.py:13: UserWarning: Failed to load image Python extension: '/root/miniconda3/lib/python3.10/site-packages/torchvision/image.so: undefined symbol: _ZN3c1017RegisterOperatorsD1Ev'If you don't plan on using image functionality from `torchvision.io`, you can ignore this warning. Otherwise, there might be something wrong with your environment. Did you have `libjpeg` or `libpng` installed before building `torchvision` from source?
+  warn(
+[data] model=i3d_r50 frames=16 | train clips=86400 (missing=0), val clips=10800 (missing=0)
+[data] label counts=[7384, 6607, 72409] -> weights=[1.352, 1.511, 0.138]
+[model] i3d_r50 params=27.23M
+  ep1 step20 loss=0.9507 (41.7 clips/s)
+  ep1 step40 loss=0.9401 (50.5 clips/s)
+  ep1 step60 loss=0.8618 (54.3 clips/s)
+  ep1 step80 loss=0.8096 (56.3 clips/s)
+  ep1 step100 loss=0.7576 (57.6 clips/s)
+  ep1 step120 loss=0.7481 (58.5 clips/s)
+  ep1 step140 loss=0.7207 (59.2 clips/s)
+  ep1 step160 loss=0.7064 (59.7 clips/s)
+  ep1 step180 loss=0.6854 (60.0 clips/s)
+  ep1 step200 loss=0.6768 (60.3 clips/s)
+  ep1 step220 loss=0.6704 (60.6 clips/s)
+  ep1 step240 loss=0.6669 (60.8 clips/s)
+  ep1 step260 loss=0.6565 (60.9 clips/s)
+  ep1 step280 loss=0.6489 (61.1 clips/s)
+  ep1 step300 loss=0.6490 (61.2 clips/s)
+  ep1 step320 loss=0.6472 (61.3 clips/s)
+  ep1 step340 loss=0.6387 (61.4 clips/s)
+  ep1 step360 loss=0.6382 (61.5 clips/s)

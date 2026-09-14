@@ -1,0 +1,2469 @@
+{
+  "fall/fall_mi_010": {
+    "type": "miss",
+    "e1_err_rate": 0.0,
+    "n_wrong": 7,
+    "wrong_models": [
+      "tsm_fair",
+      "slowfast_r50",
+      "x3d_s",
+      "timesformer",
+      "i3d_r50",
+      "c3d",
+      "vivit"
+    ],
+    "models": {
+      "tsm_fair": {
+        "frames": 80,
+        "errors": 46,
+        "err_rate": 0.575,
+        "over": 0,
+        "miss": 41,
+        "swap": 5,
+        "over_rate": 0.0,
+        "miss_rate": 0.5125,
+        "swap_rate": 0.0625,
+        "dominant": "miss"
+      },
+      "slowfast_r50": {
+        "frames": 80,
+        "errors": 36,
+        "err_rate": 0.45,
+        "over": 0,
+        "miss": 36,
+        "swap": 0,
+        "over_rate": 0.0,
+        "miss_rate": 0.45,
+        "swap_rate": 0.0,
+        "dominant": "miss"
+      },
+      "x3d_s": {
+        "frames": 80,
+        "errors": 31,
+        "err_rate": 0.3875,
+        "over": 0,
+        "miss": 31,
+        "swap": 0,
+        "over_rate": 0.0,
+        "miss_rate": 0.3875,
+        "swap_rate": 0.0,
+        "dominant": "miss"
+      },
+      "timesformer": {
+        "frames": 80,
+        "errors": 63,
+        "err_rate": 0.7875,
+        "over": 0,
+        "miss": 52,
+        "swap": 11,
+        "over_rate": 0.0,
+        "miss_rate": 0.65,
+        "swap_rate": 0.1375,
+        "dominant": "miss"
+      },
+      "i3d_r50": {
+        "frames": 80,
+        "errors": 42,
+        "err_rate": 0.525,
+        "over": 0,
+        "miss": 34,
+        "swap": 8,
+        "over_rate": 0.0,
+        "miss_rate": 0.425,
+        "swap_rate": 0.1,
+        "dominant": "miss"
+      },
+      "c3d": {
+        "frames": 80,
+        "errors": 49,
+        "err_rate": 0.6125,
+        "over": 0,
+        "miss": 49,
+        "swap": 0,
+        "over_rate": 0.0,
+        "miss_rate": 0.6125,
+        "swap_rate": 0.0,
+        "dominant": "miss"
+      },
+      "vivit": {
+        "frames": 80,
+        "errors": 28,
+        "err_rate": 0.35,
+        "over": 0,
+        "miss": 28,
+        "swap": 0,
+        "over_rate": 0.0,
+        "miss_rate": 0.35,
+        "swap_rate": 0.0,
+        "dominant": "miss"
+      }
+    }
+  },
+  "lie_down/lie_down_mi_071": {
+    "type": "over",
+    "e1_err_rate": 0.0,
+    "n_wrong": 7,
+    "wrong_models": [
+      "tsm_fair",
+      "slowfast_r50",
+      "x3d_s",
+      "timesformer",
+      "i3d_r50",
+      "c3d",
+      "vivit"
+    ],
+    "models": {
+      "tsm_fair": {
+        "frames": 80,
+        "errors": 39,
+        "err_rate": 0.4875,
+        "over": 39,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.4875,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "slowfast_r50": {
+        "frames": 80,
+        "errors": 65,
+        "err_rate": 0.8125,
+        "over": 65,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.8125,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "x3d_s": {
+        "frames": 80,
+        "errors": 43,
+        "err_rate": 0.5375,
+        "over": 43,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.5375,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "timesformer": {
+        "frames": 80,
+        "errors": 65,
+        "err_rate": 0.8125,
+        "over": 65,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.8125,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "i3d_r50": {
+        "frames": 80,
+        "errors": 70,
+        "err_rate": 0.875,
+        "over": 70,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.875,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "c3d": {
+        "frames": 80,
+        "errors": 76,
+        "err_rate": 0.95,
+        "over": 76,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.95,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "vivit": {
+        "frames": 80,
+        "errors": 80,
+        "err_rate": 1.0,
+        "over": 80,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 1.0,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      }
+    }
+  },
+  "fallen/fallen_mi_034": {
+    "type": "miss",
+    "e1_err_rate": 0.0125,
+    "n_wrong": 7,
+    "wrong_models": [
+      "tsm_fair",
+      "slowfast_r50",
+      "x3d_s",
+      "timesformer",
+      "i3d_r50",
+      "c3d",
+      "vivit"
+    ],
+    "models": {
+      "tsm_fair": {
+        "frames": 80,
+        "errors": 41,
+        "err_rate": 0.5125,
+        "over": 0,
+        "miss": 36,
+        "swap": 5,
+        "over_rate": 0.0,
+        "miss_rate": 0.45,
+        "swap_rate": 0.0625,
+        "dominant": "miss"
+      },
+      "slowfast_r50": {
+        "frames": 80,
+        "errors": 33,
+        "err_rate": 0.4125,
+        "over": 0,
+        "miss": 32,
+        "swap": 1,
+        "over_rate": 0.0,
+        "miss_rate": 0.4,
+        "swap_rate": 0.0125,
+        "dominant": "miss"
+      },
+      "x3d_s": {
+        "frames": 80,
+        "errors": 32,
+        "err_rate": 0.4,
+        "over": 0,
+        "miss": 17,
+        "swap": 15,
+        "over_rate": 0.0,
+        "miss_rate": 0.2125,
+        "swap_rate": 0.1875,
+        "dominant": "miss"
+      },
+      "timesformer": {
+        "frames": 80,
+        "errors": 31,
+        "err_rate": 0.3875,
+        "over": 0,
+        "miss": 21,
+        "swap": 10,
+        "over_rate": 0.0,
+        "miss_rate": 0.2625,
+        "swap_rate": 0.125,
+        "dominant": "miss"
+      },
+      "i3d_r50": {
+        "frames": 80,
+        "errors": 33,
+        "err_rate": 0.4125,
+        "over": 0,
+        "miss": 16,
+        "swap": 17,
+        "over_rate": 0.0,
+        "miss_rate": 0.2,
+        "swap_rate": 0.2125,
+        "dominant": "swap"
+      },
+      "c3d": {
+        "frames": 80,
+        "errors": 58,
+        "err_rate": 0.725,
+        "over": 0,
+        "miss": 52,
+        "swap": 6,
+        "over_rate": 0.0,
+        "miss_rate": 0.65,
+        "swap_rate": 0.075,
+        "dominant": "miss"
+      },
+      "vivit": {
+        "frames": 80,
+        "errors": 61,
+        "err_rate": 0.7625,
+        "over": 0,
+        "miss": 0,
+        "swap": 61,
+        "over_rate": 0.0,
+        "miss_rate": 0.0,
+        "swap_rate": 0.7625,
+        "dominant": "swap"
+      }
+    }
+  },
+  "fallen/fallen_to_061": {
+    "type": "miss",
+    "e1_err_rate": 0.0125,
+    "n_wrong": 7,
+    "wrong_models": [
+      "tsm_fair",
+      "slowfast_r50",
+      "x3d_s",
+      "timesformer",
+      "i3d_r50",
+      "c3d",
+      "vivit"
+    ],
+    "models": {
+      "tsm_fair": {
+        "frames": 80,
+        "errors": 75,
+        "err_rate": 0.9375,
+        "over": 0,
+        "miss": 71,
+        "swap": 4,
+        "over_rate": 0.0,
+        "miss_rate": 0.8875,
+        "swap_rate": 0.05,
+        "dominant": "miss"
+      },
+      "slowfast_r50": {
+        "frames": 80,
+        "errors": 80,
+        "err_rate": 1.0,
+        "over": 0,
+        "miss": 80,
+        "swap": 0,
+        "over_rate": 0.0,
+        "miss_rate": 1.0,
+        "swap_rate": 0.0,
+        "dominant": "miss"
+      },
+      "x3d_s": {
+        "frames": 80,
+        "errors": 75,
+        "err_rate": 0.9375,
+        "over": 0,
+        "miss": 75,
+        "swap": 0,
+        "over_rate": 0.0,
+        "miss_rate": 0.9375,
+        "swap_rate": 0.0,
+        "dominant": "miss"
+      },
+      "timesformer": {
+        "frames": 80,
+        "errors": 80,
+        "err_rate": 1.0,
+        "over": 0,
+        "miss": 80,
+        "swap": 0,
+        "over_rate": 0.0,
+        "miss_rate": 1.0,
+        "swap_rate": 0.0,
+        "dominant": "miss"
+      },
+      "i3d_r50": {
+        "frames": 80,
+        "errors": 80,
+        "err_rate": 1.0,
+        "over": 0,
+        "miss": 80,
+        "swap": 0,
+        "over_rate": 0.0,
+        "miss_rate": 1.0,
+        "swap_rate": 0.0,
+        "dominant": "miss"
+      },
+      "c3d": {
+        "frames": 80,
+        "errors": 80,
+        "err_rate": 1.0,
+        "over": 0,
+        "miss": 80,
+        "swap": 0,
+        "over_rate": 0.0,
+        "miss_rate": 1.0,
+        "swap_rate": 0.0,
+        "dominant": "miss"
+      },
+      "vivit": {
+        "frames": 80,
+        "errors": 44,
+        "err_rate": 0.55,
+        "over": 0,
+        "miss": 34,
+        "swap": 10,
+        "over_rate": 0.0,
+        "miss_rate": 0.425,
+        "swap_rate": 0.125,
+        "dominant": "miss"
+      }
+    }
+  },
+  "fall/fall_to_194": {
+    "type": "over",
+    "e1_err_rate": 0.0,
+    "n_wrong": 6,
+    "wrong_models": [
+      "tsm_fair",
+      "slowfast_r50",
+      "x3d_s",
+      "i3d_r50",
+      "c3d",
+      "vivit"
+    ],
+    "models": {
+      "tsm_fair": {
+        "frames": 80,
+        "errors": 80,
+        "err_rate": 1.0,
+        "over": 80,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 1.0,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "slowfast_r50": {
+        "frames": 80,
+        "errors": 42,
+        "err_rate": 0.525,
+        "over": 42,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.525,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "x3d_s": {
+        "frames": 80,
+        "errors": 58,
+        "err_rate": 0.725,
+        "over": 58,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.725,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "timesformer": {
+        "frames": 80,
+        "errors": 18,
+        "err_rate": 0.225,
+        "over": 18,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.225,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "i3d_r50": {
+        "frames": 80,
+        "errors": 43,
+        "err_rate": 0.5375,
+        "over": 43,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.5375,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "c3d": {
+        "frames": 80,
+        "errors": 49,
+        "err_rate": 0.6125,
+        "over": 49,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.6125,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "vivit": {
+        "frames": 80,
+        "errors": 47,
+        "err_rate": 0.5875,
+        "over": 47,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.5875,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      }
+    }
+  },
+  "fallen/fallen_ch_176": {
+    "type": "miss",
+    "e1_err_rate": 0.0,
+    "n_wrong": 6,
+    "wrong_models": [
+      "tsm_fair",
+      "x3d_s",
+      "timesformer",
+      "i3d_r50",
+      "c3d",
+      "vivit"
+    ],
+    "models": {
+      "tsm_fair": {
+        "frames": 80,
+        "errors": 79,
+        "err_rate": 0.9875,
+        "over": 0,
+        "miss": 78,
+        "swap": 1,
+        "over_rate": 0.0,
+        "miss_rate": 0.975,
+        "swap_rate": 0.0125,
+        "dominant": "miss"
+      },
+      "slowfast_r50": {
+        "frames": 80,
+        "errors": 12,
+        "err_rate": 0.15,
+        "over": 0,
+        "miss": 0,
+        "swap": 12,
+        "over_rate": 0.0,
+        "miss_rate": 0.0,
+        "swap_rate": 0.15,
+        "dominant": "swap"
+      },
+      "x3d_s": {
+        "frames": 80,
+        "errors": 80,
+        "err_rate": 1.0,
+        "over": 0,
+        "miss": 80,
+        "swap": 0,
+        "over_rate": 0.0,
+        "miss_rate": 1.0,
+        "swap_rate": 0.0,
+        "dominant": "miss"
+      },
+      "timesformer": {
+        "frames": 80,
+        "errors": 80,
+        "err_rate": 1.0,
+        "over": 0,
+        "miss": 80,
+        "swap": 0,
+        "over_rate": 0.0,
+        "miss_rate": 1.0,
+        "swap_rate": 0.0,
+        "dominant": "miss"
+      },
+      "i3d_r50": {
+        "frames": 80,
+        "errors": 80,
+        "err_rate": 1.0,
+        "over": 0,
+        "miss": 80,
+        "swap": 0,
+        "over_rate": 0.0,
+        "miss_rate": 1.0,
+        "swap_rate": 0.0,
+        "dominant": "miss"
+      },
+      "c3d": {
+        "frames": 80,
+        "errors": 80,
+        "err_rate": 1.0,
+        "over": 0,
+        "miss": 80,
+        "swap": 0,
+        "over_rate": 0.0,
+        "miss_rate": 1.0,
+        "swap_rate": 0.0,
+        "dominant": "miss"
+      },
+      "vivit": {
+        "frames": 80,
+        "errors": 80,
+        "err_rate": 1.0,
+        "over": 0,
+        "miss": 79,
+        "swap": 1,
+        "over_rate": 0.0,
+        "miss_rate": 0.9875,
+        "swap_rate": 0.0125,
+        "dominant": "miss"
+      }
+    }
+  },
+  "lie_down/lie_down_el_047": {
+    "type": "over",
+    "e1_err_rate": 0.0,
+    "n_wrong": 6,
+    "wrong_models": [
+      "slowfast_r50",
+      "x3d_s",
+      "timesformer",
+      "i3d_r50",
+      "c3d",
+      "vivit"
+    ],
+    "models": {
+      "tsm_fair": {
+        "frames": 80,
+        "errors": 15,
+        "err_rate": 0.1875,
+        "over": 15,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.1875,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "slowfast_r50": {
+        "frames": 80,
+        "errors": 43,
+        "err_rate": 0.5375,
+        "over": 43,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.5375,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "x3d_s": {
+        "frames": 80,
+        "errors": 80,
+        "err_rate": 1.0,
+        "over": 80,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 1.0,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "timesformer": {
+        "frames": 80,
+        "errors": 64,
+        "err_rate": 0.8,
+        "over": 64,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.8,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "i3d_r50": {
+        "frames": 80,
+        "errors": 56,
+        "err_rate": 0.7,
+        "over": 56,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.7,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "c3d": {
+        "frames": 80,
+        "errors": 71,
+        "err_rate": 0.8875,
+        "over": 71,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.8875,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "vivit": {
+        "frames": 80,
+        "errors": 80,
+        "err_rate": 1.0,
+        "over": 80,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 1.0,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      }
+    }
+  },
+  "lying/lying_ch_084": {
+    "type": "over",
+    "e1_err_rate": 0.0,
+    "n_wrong": 6,
+    "wrong_models": [
+      "tsm_fair",
+      "x3d_s",
+      "timesformer",
+      "i3d_r50",
+      "c3d",
+      "vivit"
+    ],
+    "models": {
+      "tsm_fair": {
+        "frames": 80,
+        "errors": 79,
+        "err_rate": 0.9875,
+        "over": 79,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.9875,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "slowfast_r50": {
+        "frames": 80,
+        "errors": 0,
+        "err_rate": 0.0,
+        "over": 0,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.0,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "x3d_s": {
+        "frames": 80,
+        "errors": 80,
+        "err_rate": 1.0,
+        "over": 80,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 1.0,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "timesformer": {
+        "frames": 80,
+        "errors": 80,
+        "err_rate": 1.0,
+        "over": 80,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 1.0,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "i3d_r50": {
+        "frames": 80,
+        "errors": 71,
+        "err_rate": 0.8875,
+        "over": 71,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.8875,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "c3d": {
+        "frames": 80,
+        "errors": 80,
+        "err_rate": 1.0,
+        "over": 80,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 1.0,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "vivit": {
+        "frames": 80,
+        "errors": 70,
+        "err_rate": 0.875,
+        "over": 70,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.875,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      }
+    }
+  },
+  "lying/lying_to_016": {
+    "type": "over",
+    "e1_err_rate": 0.0,
+    "n_wrong": 6,
+    "wrong_models": [
+      "tsm_fair",
+      "slowfast_r50",
+      "x3d_s",
+      "i3d_r50",
+      "c3d",
+      "vivit"
+    ],
+    "models": {
+      "tsm_fair": {
+        "frames": 80,
+        "errors": 80,
+        "err_rate": 1.0,
+        "over": 80,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 1.0,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "slowfast_r50": {
+        "frames": 80,
+        "errors": 80,
+        "err_rate": 1.0,
+        "over": 80,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 1.0,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "x3d_s": {
+        "frames": 80,
+        "errors": 80,
+        "err_rate": 1.0,
+        "over": 80,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 1.0,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "timesformer": {
+        "frames": 80,
+        "errors": 16,
+        "err_rate": 0.2,
+        "over": 16,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.2,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "i3d_r50": {
+        "frames": 80,
+        "errors": 80,
+        "err_rate": 1.0,
+        "over": 80,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 1.0,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "c3d": {
+        "frames": 80,
+        "errors": 80,
+        "err_rate": 1.0,
+        "over": 80,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 1.0,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "vivit": {
+        "frames": 80,
+        "errors": 80,
+        "err_rate": 1.0,
+        "over": 80,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 1.0,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      }
+    }
+  },
+  "stand_up/stand_up_el_018": {
+    "type": "over",
+    "e1_err_rate": 0.0,
+    "n_wrong": 6,
+    "wrong_models": [
+      "tsm_fair",
+      "slowfast_r50",
+      "x3d_s",
+      "timesformer",
+      "i3d_r50",
+      "vivit"
+    ],
+    "models": {
+      "tsm_fair": {
+        "frames": 80,
+        "errors": 37,
+        "err_rate": 0.4625,
+        "over": 37,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.4625,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "slowfast_r50": {
+        "frames": 80,
+        "errors": 40,
+        "err_rate": 0.5,
+        "over": 40,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.5,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "x3d_s": {
+        "frames": 80,
+        "errors": 36,
+        "err_rate": 0.45,
+        "over": 36,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.45,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "timesformer": {
+        "frames": 80,
+        "errors": 37,
+        "err_rate": 0.4625,
+        "over": 37,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.4625,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "i3d_r50": {
+        "frames": 80,
+        "errors": 53,
+        "err_rate": 0.6625,
+        "over": 53,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.6625,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "c3d": {
+        "frames": 80,
+        "errors": 21,
+        "err_rate": 0.2625,
+        "over": 21,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.2625,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "vivit": {
+        "frames": 80,
+        "errors": 80,
+        "err_rate": 1.0,
+        "over": 80,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 1.0,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      }
+    }
+  },
+  "fall/fall_yo_134": {
+    "type": "over",
+    "e1_err_rate": 0.025,
+    "n_wrong": 6,
+    "wrong_models": [
+      "tsm_fair",
+      "x3d_s",
+      "timesformer",
+      "i3d_r50",
+      "c3d",
+      "vivit"
+    ],
+    "models": {
+      "tsm_fair": {
+        "frames": 80,
+        "errors": 24,
+        "err_rate": 0.3,
+        "over": 24,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.3,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "slowfast_r50": {
+        "frames": 80,
+        "errors": 15,
+        "err_rate": 0.1875,
+        "over": 15,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.1875,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "x3d_s": {
+        "frames": 80,
+        "errors": 34,
+        "err_rate": 0.425,
+        "over": 34,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.425,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "timesformer": {
+        "frames": 80,
+        "errors": 60,
+        "err_rate": 0.75,
+        "over": 59,
+        "miss": 0,
+        "swap": 1,
+        "over_rate": 0.7375,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0125,
+        "dominant": "over"
+      },
+      "i3d_r50": {
+        "frames": 80,
+        "errors": 51,
+        "err_rate": 0.6375,
+        "over": 51,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.6375,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "c3d": {
+        "frames": 80,
+        "errors": 33,
+        "err_rate": 0.4125,
+        "over": 33,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.4125,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "vivit": {
+        "frames": 80,
+        "errors": 62,
+        "err_rate": 0.775,
+        "over": 62,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.775,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      }
+    }
+  },
+  "other/other_to_164": {
+    "type": "over",
+    "e1_err_rate": 0.025,
+    "n_wrong": 6,
+    "wrong_models": [
+      "tsm_fair",
+      "x3d_s",
+      "timesformer",
+      "i3d_r50",
+      "c3d",
+      "vivit"
+    ],
+    "models": {
+      "tsm_fair": {
+        "frames": 80,
+        "errors": 64,
+        "err_rate": 0.8,
+        "over": 64,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.8,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "slowfast_r50": {
+        "frames": 80,
+        "errors": 0,
+        "err_rate": 0.0,
+        "over": 0,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.0,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "x3d_s": {
+        "frames": 80,
+        "errors": 58,
+        "err_rate": 0.725,
+        "over": 58,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.725,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "timesformer": {
+        "frames": 80,
+        "errors": 42,
+        "err_rate": 0.525,
+        "over": 42,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.525,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "i3d_r50": {
+        "frames": 80,
+        "errors": 76,
+        "err_rate": 0.95,
+        "over": 76,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.95,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "c3d": {
+        "frames": 80,
+        "errors": 56,
+        "err_rate": 0.7,
+        "over": 56,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.7,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "vivit": {
+        "frames": 80,
+        "errors": 76,
+        "err_rate": 0.95,
+        "over": 76,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.95,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      }
+    }
+  },
+  "fall/fall_yo_123": {
+    "type": "miss",
+    "e1_err_rate": 0.0375,
+    "n_wrong": 6,
+    "wrong_models": [
+      "tsm_fair",
+      "slowfast_r50",
+      "timesformer",
+      "i3d_r50",
+      "c3d",
+      "vivit"
+    ],
+    "models": {
+      "tsm_fair": {
+        "frames": 80,
+        "errors": 51,
+        "err_rate": 0.6375,
+        "over": 0,
+        "miss": 43,
+        "swap": 8,
+        "over_rate": 0.0,
+        "miss_rate": 0.5375,
+        "swap_rate": 0.1,
+        "dominant": "miss"
+      },
+      "slowfast_r50": {
+        "frames": 80,
+        "errors": 51,
+        "err_rate": 0.6375,
+        "over": 0,
+        "miss": 33,
+        "swap": 18,
+        "over_rate": 0.0,
+        "miss_rate": 0.4125,
+        "swap_rate": 0.225,
+        "dominant": "miss"
+      },
+      "x3d_s": {
+        "frames": 80,
+        "errors": 20,
+        "err_rate": 0.25,
+        "over": 0,
+        "miss": 0,
+        "swap": 20,
+        "over_rate": 0.0,
+        "miss_rate": 0.0,
+        "swap_rate": 0.25,
+        "dominant": "swap"
+      },
+      "timesformer": {
+        "frames": 80,
+        "errors": 57,
+        "err_rate": 0.7125,
+        "over": 0,
+        "miss": 44,
+        "swap": 13,
+        "over_rate": 0.0,
+        "miss_rate": 0.55,
+        "swap_rate": 0.1625,
+        "dominant": "miss"
+      },
+      "i3d_r50": {
+        "frames": 80,
+        "errors": 53,
+        "err_rate": 0.6625,
+        "over": 0,
+        "miss": 53,
+        "swap": 0,
+        "over_rate": 0.0,
+        "miss_rate": 0.6625,
+        "swap_rate": 0.0,
+        "dominant": "miss"
+      },
+      "c3d": {
+        "frames": 80,
+        "errors": 51,
+        "err_rate": 0.6375,
+        "over": 0,
+        "miss": 37,
+        "swap": 14,
+        "over_rate": 0.0,
+        "miss_rate": 0.4625,
+        "swap_rate": 0.175,
+        "dominant": "miss"
+      },
+      "vivit": {
+        "frames": 80,
+        "errors": 25,
+        "err_rate": 0.3125,
+        "over": 0,
+        "miss": 19,
+        "swap": 6,
+        "over_rate": 0.0,
+        "miss_rate": 0.2375,
+        "swap_rate": 0.075,
+        "dominant": "miss"
+      }
+    }
+  },
+  "fall/fall_el_042": {
+    "type": "miss",
+    "e1_err_rate": 0.0,
+    "n_wrong": 5,
+    "wrong_models": [
+      "tsm_fair",
+      "x3d_s",
+      "timesformer",
+      "i3d_r50",
+      "c3d"
+    ],
+    "models": {
+      "tsm_fair": {
+        "frames": 80,
+        "errors": 53,
+        "err_rate": 0.6625,
+        "over": 0,
+        "miss": 39,
+        "swap": 14,
+        "over_rate": 0.0,
+        "miss_rate": 0.4875,
+        "swap_rate": 0.175,
+        "dominant": "miss"
+      },
+      "slowfast_r50": {
+        "frames": 80,
+        "errors": 0,
+        "err_rate": 0.0,
+        "over": 0,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.0,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "x3d_s": {
+        "frames": 80,
+        "errors": 39,
+        "err_rate": 0.4875,
+        "over": 0,
+        "miss": 39,
+        "swap": 0,
+        "over_rate": 0.0,
+        "miss_rate": 0.4875,
+        "swap_rate": 0.0,
+        "dominant": "miss"
+      },
+      "timesformer": {
+        "frames": 80,
+        "errors": 36,
+        "err_rate": 0.45,
+        "over": 0,
+        "miss": 36,
+        "swap": 0,
+        "over_rate": 0.0,
+        "miss_rate": 0.45,
+        "swap_rate": 0.0,
+        "dominant": "miss"
+      },
+      "i3d_r50": {
+        "frames": 80,
+        "errors": 40,
+        "err_rate": 0.5,
+        "over": 0,
+        "miss": 35,
+        "swap": 5,
+        "over_rate": 0.0,
+        "miss_rate": 0.4375,
+        "swap_rate": 0.0625,
+        "dominant": "miss"
+      },
+      "c3d": {
+        "frames": 80,
+        "errors": 27,
+        "err_rate": 0.3375,
+        "over": 0,
+        "miss": 27,
+        "swap": 0,
+        "over_rate": 0.0,
+        "miss_rate": 0.3375,
+        "swap_rate": 0.0,
+        "dominant": "miss"
+      },
+      "vivit": {
+        "frames": 80,
+        "errors": 9,
+        "err_rate": 0.1125,
+        "over": 0,
+        "miss": 9,
+        "swap": 0,
+        "over_rate": 0.0,
+        "miss_rate": 0.1125,
+        "swap_rate": 0.0,
+        "dominant": "miss"
+      }
+    }
+  },
+  "fall/fall_el_121": {
+    "type": "miss",
+    "e1_err_rate": 0.0,
+    "n_wrong": 5,
+    "wrong_models": [
+      "tsm_fair",
+      "slowfast_r50",
+      "timesformer",
+      "i3d_r50",
+      "c3d"
+    ],
+    "models": {
+      "tsm_fair": {
+        "frames": 80,
+        "errors": 39,
+        "err_rate": 0.4875,
+        "over": 0,
+        "miss": 39,
+        "swap": 0,
+        "over_rate": 0.0,
+        "miss_rate": 0.4875,
+        "swap_rate": 0.0,
+        "dominant": "miss"
+      },
+      "slowfast_r50": {
+        "frames": 80,
+        "errors": 37,
+        "err_rate": 0.4625,
+        "over": 0,
+        "miss": 37,
+        "swap": 0,
+        "over_rate": 0.0,
+        "miss_rate": 0.4625,
+        "swap_rate": 0.0,
+        "dominant": "miss"
+      },
+      "x3d_s": {
+        "frames": 80,
+        "errors": 13,
+        "err_rate": 0.1625,
+        "over": 0,
+        "miss": 13,
+        "swap": 0,
+        "over_rate": 0.0,
+        "miss_rate": 0.1625,
+        "swap_rate": 0.0,
+        "dominant": "miss"
+      },
+      "timesformer": {
+        "frames": 80,
+        "errors": 63,
+        "err_rate": 0.7875,
+        "over": 0,
+        "miss": 63,
+        "swap": 0,
+        "over_rate": 0.0,
+        "miss_rate": 0.7875,
+        "swap_rate": 0.0,
+        "dominant": "miss"
+      },
+      "i3d_r50": {
+        "frames": 80,
+        "errors": 50,
+        "err_rate": 0.625,
+        "over": 0,
+        "miss": 50,
+        "swap": 0,
+        "over_rate": 0.0,
+        "miss_rate": 0.625,
+        "swap_rate": 0.0,
+        "dominant": "miss"
+      },
+      "c3d": {
+        "frames": 80,
+        "errors": 31,
+        "err_rate": 0.3875,
+        "over": 0,
+        "miss": 31,
+        "swap": 0,
+        "over_rate": 0.0,
+        "miss_rate": 0.3875,
+        "swap_rate": 0.0,
+        "dominant": "miss"
+      },
+      "vivit": {
+        "frames": 80,
+        "errors": 0,
+        "err_rate": 0.0,
+        "over": 0,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.0,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      }
+    }
+  },
+  "lie_down/lie_down_ch_072": {
+    "type": "over",
+    "e1_err_rate": 0.0,
+    "n_wrong": 5,
+    "wrong_models": [
+      "tsm_fair",
+      "x3d_s",
+      "i3d_r50",
+      "c3d",
+      "vivit"
+    ],
+    "models": {
+      "tsm_fair": {
+        "frames": 80,
+        "errors": 30,
+        "err_rate": 0.375,
+        "over": 30,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.375,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "slowfast_r50": {
+        "frames": 80,
+        "errors": 0,
+        "err_rate": 0.0,
+        "over": 0,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.0,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "x3d_s": {
+        "frames": 80,
+        "errors": 51,
+        "err_rate": 0.6375,
+        "over": 51,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.6375,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "timesformer": {
+        "frames": 80,
+        "errors": 0,
+        "err_rate": 0.0,
+        "over": 0,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.0,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "i3d_r50": {
+        "frames": 80,
+        "errors": 61,
+        "err_rate": 0.7625,
+        "over": 61,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.7625,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "c3d": {
+        "frames": 80,
+        "errors": 80,
+        "err_rate": 1.0,
+        "over": 80,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 1.0,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "vivit": {
+        "frames": 80,
+        "errors": 69,
+        "err_rate": 0.8625,
+        "over": 69,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.8625,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      }
+    }
+  },
+  "lie_down/lie_down_yo_005": {
+    "type": "over",
+    "e1_err_rate": 0.0,
+    "n_wrong": 5,
+    "wrong_models": [
+      "tsm_fair",
+      "slowfast_r50",
+      "i3d_r50",
+      "c3d",
+      "vivit"
+    ],
+    "models": {
+      "tsm_fair": {
+        "frames": 80,
+        "errors": 61,
+        "err_rate": 0.7625,
+        "over": 61,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.7625,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "slowfast_r50": {
+        "frames": 80,
+        "errors": 37,
+        "err_rate": 0.4625,
+        "over": 37,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.4625,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "x3d_s": {
+        "frames": 80,
+        "errors": 0,
+        "err_rate": 0.0,
+        "over": 0,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.0,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "timesformer": {
+        "frames": 80,
+        "errors": 0,
+        "err_rate": 0.0,
+        "over": 0,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.0,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "i3d_r50": {
+        "frames": 80,
+        "errors": 58,
+        "err_rate": 0.725,
+        "over": 58,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.725,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "c3d": {
+        "frames": 80,
+        "errors": 69,
+        "err_rate": 0.8625,
+        "over": 69,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.8625,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "vivit": {
+        "frames": 80,
+        "errors": 80,
+        "err_rate": 1.0,
+        "over": 80,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 1.0,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      }
+    }
+  },
+  "lie_down/lie_down_yo_172": {
+    "type": "over",
+    "e1_err_rate": 0.0,
+    "n_wrong": 5,
+    "wrong_models": [
+      "tsm_fair",
+      "slowfast_r50",
+      "i3d_r50",
+      "c3d",
+      "vivit"
+    ],
+    "models": {
+      "tsm_fair": {
+        "frames": 80,
+        "errors": 33,
+        "err_rate": 0.4125,
+        "over": 33,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.4125,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "slowfast_r50": {
+        "frames": 80,
+        "errors": 29,
+        "err_rate": 0.3625,
+        "over": 29,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.3625,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "x3d_s": {
+        "frames": 80,
+        "errors": 0,
+        "err_rate": 0.0,
+        "over": 0,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.0,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "timesformer": {
+        "frames": 80,
+        "errors": 18,
+        "err_rate": 0.225,
+        "over": 18,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.225,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "i3d_r50": {
+        "frames": 80,
+        "errors": 80,
+        "err_rate": 1.0,
+        "over": 80,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 1.0,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "c3d": {
+        "frames": 80,
+        "errors": 80,
+        "err_rate": 1.0,
+        "over": 80,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 1.0,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "vivit": {
+        "frames": 80,
+        "errors": 80,
+        "err_rate": 1.0,
+        "over": 80,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 1.0,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      }
+    }
+  },
+  "lie_down/lie_down_yo_194": {
+    "type": "over",
+    "e1_err_rate": 0.0,
+    "n_wrong": 5,
+    "wrong_models": [
+      "tsm_fair",
+      "x3d_s",
+      "i3d_r50",
+      "c3d",
+      "vivit"
+    ],
+    "models": {
+      "tsm_fair": {
+        "frames": 80,
+        "errors": 39,
+        "err_rate": 0.4875,
+        "over": 39,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.4875,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "slowfast_r50": {
+        "frames": 80,
+        "errors": 0,
+        "err_rate": 0.0,
+        "over": 0,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.0,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "x3d_s": {
+        "frames": 80,
+        "errors": 30,
+        "err_rate": 0.375,
+        "over": 30,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.375,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "timesformer": {
+        "frames": 80,
+        "errors": 0,
+        "err_rate": 0.0,
+        "over": 0,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.0,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "i3d_r50": {
+        "frames": 80,
+        "errors": 36,
+        "err_rate": 0.45,
+        "over": 36,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.45,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "c3d": {
+        "frames": 80,
+        "errors": 35,
+        "err_rate": 0.4375,
+        "over": 35,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.4375,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "vivit": {
+        "frames": 80,
+        "errors": 61,
+        "err_rate": 0.7625,
+        "over": 61,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.7625,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      }
+    }
+  },
+  "lying/lying_ch_129": {
+    "type": "over",
+    "e1_err_rate": 0.0,
+    "n_wrong": 5,
+    "wrong_models": [
+      "slowfast_r50",
+      "x3d_s",
+      "timesformer",
+      "i3d_r50",
+      "c3d"
+    ],
+    "models": {
+      "tsm_fair": {
+        "frames": 80,
+        "errors": 0,
+        "err_rate": 0.0,
+        "over": 0,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.0,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "slowfast_r50": {
+        "frames": 80,
+        "errors": 80,
+        "err_rate": 1.0,
+        "over": 80,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 1.0,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "x3d_s": {
+        "frames": 80,
+        "errors": 80,
+        "err_rate": 1.0,
+        "over": 80,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 1.0,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "timesformer": {
+        "frames": 80,
+        "errors": 77,
+        "err_rate": 0.9625,
+        "over": 77,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.9625,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "i3d_r50": {
+        "frames": 80,
+        "errors": 80,
+        "err_rate": 1.0,
+        "over": 80,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 1.0,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "c3d": {
+        "frames": 80,
+        "errors": 80,
+        "err_rate": 1.0,
+        "over": 80,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 1.0,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "vivit": {
+        "frames": 80,
+        "errors": 0,
+        "err_rate": 0.0,
+        "over": 0,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.0,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      }
+    }
+  },
+  "lying/lying_to_170": {
+    "type": "over",
+    "e1_err_rate": 0.0,
+    "n_wrong": 5,
+    "wrong_models": [
+      "tsm_fair",
+      "slowfast_r50",
+      "x3d_s",
+      "i3d_r50",
+      "c3d"
+    ],
+    "models": {
+      "tsm_fair": {
+        "frames": 80,
+        "errors": 36,
+        "err_rate": 0.45,
+        "over": 36,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.45,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "slowfast_r50": {
+        "frames": 80,
+        "errors": 80,
+        "err_rate": 1.0,
+        "over": 80,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 1.0,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "x3d_s": {
+        "frames": 80,
+        "errors": 71,
+        "err_rate": 0.8875,
+        "over": 71,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.8875,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "timesformer": {
+        "frames": 80,
+        "errors": 0,
+        "err_rate": 0.0,
+        "over": 0,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.0,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "i3d_r50": {
+        "frames": 80,
+        "errors": 25,
+        "err_rate": 0.3125,
+        "over": 25,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.3125,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "c3d": {
+        "frames": 80,
+        "errors": 80,
+        "err_rate": 1.0,
+        "over": 80,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 1.0,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "vivit": {
+        "frames": 80,
+        "errors": 0,
+        "err_rate": 0.0,
+        "over": 0,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.0,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      }
+    }
+  },
+  "fallen/fallen_to_168": {
+    "type": "swap",
+    "e1_err_rate": 0.025,
+    "n_wrong": 5,
+    "wrong_models": [
+      "tsm_fair",
+      "slowfast_r50",
+      "x3d_s",
+      "timesformer",
+      "c3d"
+    ],
+    "models": {
+      "tsm_fair": {
+        "frames": 80,
+        "errors": 56,
+        "err_rate": 0.7,
+        "over": 0,
+        "miss": 56,
+        "swap": 0,
+        "over_rate": 0.0,
+        "miss_rate": 0.7,
+        "swap_rate": 0.0,
+        "dominant": "miss"
+      },
+      "slowfast_r50": {
+        "frames": 80,
+        "errors": 37,
+        "err_rate": 0.4625,
+        "over": 0,
+        "miss": 4,
+        "swap": 33,
+        "over_rate": 0.0,
+        "miss_rate": 0.05,
+        "swap_rate": 0.4125,
+        "dominant": "swap"
+      },
+      "x3d_s": {
+        "frames": 80,
+        "errors": 51,
+        "err_rate": 0.6375,
+        "over": 0,
+        "miss": 19,
+        "swap": 32,
+        "over_rate": 0.0,
+        "miss_rate": 0.2375,
+        "swap_rate": 0.4,
+        "dominant": "swap"
+      },
+      "timesformer": {
+        "frames": 80,
+        "errors": 61,
+        "err_rate": 0.7625,
+        "over": 0,
+        "miss": 61,
+        "swap": 0,
+        "over_rate": 0.0,
+        "miss_rate": 0.7625,
+        "swap_rate": 0.0,
+        "dominant": "miss"
+      },
+      "i3d_r50": {
+        "frames": 80,
+        "errors": 0,
+        "err_rate": 0.0,
+        "over": 0,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.0,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "c3d": {
+        "frames": 80,
+        "errors": 47,
+        "err_rate": 0.5875,
+        "over": 0,
+        "miss": 0,
+        "swap": 47,
+        "over_rate": 0.0,
+        "miss_rate": 0.0,
+        "swap_rate": 0.5875,
+        "dominant": "swap"
+      },
+      "vivit": {
+        "frames": 80,
+        "errors": 0,
+        "err_rate": 0.0,
+        "over": 0,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.0,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      }
+    }
+  },
+  "fallen/fallen_te_125": {
+    "type": "miss",
+    "e1_err_rate": 0.05,
+    "n_wrong": 5,
+    "wrong_models": [
+      "tsm_fair",
+      "slowfast_r50",
+      "x3d_s",
+      "timesformer",
+      "vivit"
+    ],
+    "models": {
+      "tsm_fair": {
+        "frames": 80,
+        "errors": 70,
+        "err_rate": 0.875,
+        "over": 0,
+        "miss": 70,
+        "swap": 0,
+        "over_rate": 0.0,
+        "miss_rate": 0.875,
+        "swap_rate": 0.0,
+        "dominant": "miss"
+      },
+      "slowfast_r50": {
+        "frames": 80,
+        "errors": 68,
+        "err_rate": 0.85,
+        "over": 0,
+        "miss": 68,
+        "swap": 0,
+        "over_rate": 0.0,
+        "miss_rate": 0.85,
+        "swap_rate": 0.0,
+        "dominant": "miss"
+      },
+      "x3d_s": {
+        "frames": 80,
+        "errors": 64,
+        "err_rate": 0.8,
+        "over": 0,
+        "miss": 62,
+        "swap": 2,
+        "over_rate": 0.0,
+        "miss_rate": 0.775,
+        "swap_rate": 0.025,
+        "dominant": "miss"
+      },
+      "timesformer": {
+        "frames": 80,
+        "errors": 72,
+        "err_rate": 0.9,
+        "over": 0,
+        "miss": 72,
+        "swap": 0,
+        "over_rate": 0.0,
+        "miss_rate": 0.9,
+        "swap_rate": 0.0,
+        "dominant": "miss"
+      },
+      "i3d_r50": {
+        "frames": 80,
+        "errors": 3,
+        "err_rate": 0.0375,
+        "over": 0,
+        "miss": 0,
+        "swap": 3,
+        "over_rate": 0.0,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0375,
+        "dominant": "swap"
+      },
+      "c3d": {
+        "frames": 80,
+        "errors": 4,
+        "err_rate": 0.05,
+        "over": 0,
+        "miss": 0,
+        "swap": 4,
+        "over_rate": 0.0,
+        "miss_rate": 0.0,
+        "swap_rate": 0.05,
+        "dominant": "swap"
+      },
+      "vivit": {
+        "frames": 80,
+        "errors": 33,
+        "err_rate": 0.4125,
+        "over": 0,
+        "miss": 23,
+        "swap": 10,
+        "over_rate": 0.0,
+        "miss_rate": 0.2875,
+        "swap_rate": 0.125,
+        "dominant": "miss"
+      }
+    }
+  },
+  "fallen/fallen_el_131": {
+    "type": "over",
+    "e1_err_rate": 0.0625,
+    "n_wrong": 5,
+    "wrong_models": [
+      "tsm_fair",
+      "slowfast_r50",
+      "x3d_s",
+      "c3d",
+      "vivit"
+    ],
+    "models": {
+      "tsm_fair": {
+        "frames": 80,
+        "errors": 51,
+        "err_rate": 0.6375,
+        "over": 51,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.6375,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "slowfast_r50": {
+        "frames": 80,
+        "errors": 39,
+        "err_rate": 0.4875,
+        "over": 33,
+        "miss": 0,
+        "swap": 6,
+        "over_rate": 0.4125,
+        "miss_rate": 0.0,
+        "swap_rate": 0.075,
+        "dominant": "over"
+      },
+      "x3d_s": {
+        "frames": 80,
+        "errors": 69,
+        "err_rate": 0.8625,
+        "over": 69,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.8625,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "timesformer": {
+        "frames": 80,
+        "errors": 5,
+        "err_rate": 0.0625,
+        "over": 0,
+        "miss": 5,
+        "swap": 0,
+        "over_rate": 0.0,
+        "miss_rate": 0.0625,
+        "swap_rate": 0.0,
+        "dominant": "miss"
+      },
+      "i3d_r50": {
+        "frames": 80,
+        "errors": 6,
+        "err_rate": 0.075,
+        "over": 6,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.075,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "c3d": {
+        "frames": 80,
+        "errors": 65,
+        "err_rate": 0.8125,
+        "over": 65,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.8125,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "vivit": {
+        "frames": 80,
+        "errors": 74,
+        "err_rate": 0.925,
+        "over": 69,
+        "miss": 0,
+        "swap": 5,
+        "over_rate": 0.8625,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0625,
+        "dominant": "over"
+      }
+    }
+  },
+  "fallen/fallen_ch_014": {
+    "type": "over",
+    "e1_err_rate": 0.1,
+    "n_wrong": 5,
+    "wrong_models": [
+      "slowfast_r50",
+      "x3d_s",
+      "timesformer",
+      "i3d_r50",
+      "vivit"
+    ],
+    "models": {
+      "tsm_fair": {
+        "frames": 80,
+        "errors": 10,
+        "err_rate": 0.125,
+        "over": 10,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.125,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "slowfast_r50": {
+        "frames": 80,
+        "errors": 48,
+        "err_rate": 0.6,
+        "over": 42,
+        "miss": 0,
+        "swap": 6,
+        "over_rate": 0.525,
+        "miss_rate": 0.0,
+        "swap_rate": 0.075,
+        "dominant": "over"
+      },
+      "x3d_s": {
+        "frames": 80,
+        "errors": 56,
+        "err_rate": 0.7,
+        "over": 56,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.7,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "timesformer": {
+        "frames": 80,
+        "errors": 74,
+        "err_rate": 0.925,
+        "over": 74,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.925,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "i3d_r50": {
+        "frames": 80,
+        "errors": 74,
+        "err_rate": 0.925,
+        "over": 74,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.925,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "c3d": {
+        "frames": 80,
+        "errors": 8,
+        "err_rate": 0.1,
+        "over": 8,
+        "miss": 0,
+        "swap": 0,
+        "over_rate": 0.1,
+        "miss_rate": 0.0,
+        "swap_rate": 0.0,
+        "dominant": "over"
+      },
+      "vivit": {
+        "frames": 80,
+        "errors": 80,
+        "err_rate": 1.0,
+        "over": 74,
+        "miss": 0,
+        "swap": 6,
+        "over_rate": 0.925,
+        "miss_rate": 0.0,
+        "swap_rate": 0.075,
+        "dominant": "over"
+      }
+    }
+  }
+}

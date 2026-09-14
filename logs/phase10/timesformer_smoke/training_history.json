@@ -1,0 +1,13 @@
+[
+  {
+    "epoch": 1,
+    "step": 3,
+    "train_loss": 1.5243134498596191,
+    "val_avg_f1": 0.08695652173913043,
+    "val_acc": 0.15,
+    "val_fall_f1": 0.0,
+    "val_fallen_f1": 0.0,
+    "epoch_sec": 5.503058433532715,
+    "clips_seen": 24
+  }
+]

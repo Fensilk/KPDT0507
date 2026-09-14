@@ -1,0 +1,106 @@
+
+=============== [2026-09-14 08:21:20] VIVIT T1 START model=vivit (linear probe) ===============
+
+
+=============== [2026-09-14 08:21:20] STAGE 1/4: frozen-backbone [CLS] feature extraction ===============
+
+/root/miniconda3/lib/python3.10/site-packages/torchvision/io/image.py:13: UserWarning: Failed to load image Python extension: '/root/miniconda3/lib/python3.10/site-packages/torchvision/image.so: undefined symbol: _ZN3c1017RegisterOperatorsD1Ev'If you don't plan on using image functionality from `torchvision.io`, you can ignore this warning. Otherwise, there might be something wrong with your environment. Did you have `libjpeg` or `libpng` installed before building `torchvision` from source?
+  warn(
+[vivit] K400 weights loaded (missing=2, unexpected=0, head re-init=2)
+[features] train: 9600 videos -> 67200 clips (missing=0, workers=16)
+  [train]    32/67200 clips  2.7 clips/s
+  [train]  3232/67200 clips  33.8 clips/s
+  [train]  6432/67200 clips  37.9 clips/s
+  [train]  9632/67200 clips  39.5 clips/s
+  [train] 12832/67200 clips  40.4 clips/s
+  [train] 16032/67200 clips  40.9 clips/s
+  [train] 19232/67200 clips  41.3 clips/s
+  [train] 22432/67200 clips  41.5 clips/s
+  [train] 25632/67200 clips  41.7 clips/s
+  [train] 28832/67200 clips  41.9 clips/s
+  [train] 32032/67200 clips  42.0 clips/s
+  [train] 35232/67200 clips  42.1 clips/s
+  [train] 38432/67200 clips  42.2 clips/s
+  [train] 41632/67200 clips  42.3 clips/s
+  [train] 44832/67200 clips  42.3 clips/s
+  [train] 48032/67200 clips  42.4 clips/s
+  [train] 51232/67200 clips  42.4 clips/s
+  [train] 54432/67200 clips  42.5 clips/s
+  [train] 57632/67200 clips  42.5 clips/s
+  [train] 60832/67200 clips  42.5 clips/s
+  [train] 64032/67200 clips  42.6 clips/s
+  [train] 67200/67200 clips  42.6 clips/s
+[features] train -> logs/phase10/vivit/features/train.npz  (67200 clips, dim=768, 26.3 min)
+[features] val: 1200 videos -> 8400 clips (missing=0, workers=16)
+  [val]    32/8400 clips  3.7 clips/s
+  [val]  3232/8400 clips  39.1 clips/s
+  [val]  6432/8400 clips  41.1 clips/s
+  [val]  8400/8400 clips  41.5 clips/s
+[features] val -> logs/phase10/vivit/features/val.npz  (8400 clips, dim=768, 3.4 min)
+[features] test: 1200 videos -> 58800 clips (missing=0, workers=16)
+  [test]    32/58800 clips  5.1 clips/s
+  [test]  3232/58800 clips  39.7 clips/s
+  [test]  6432/58800 clips  41.4 clips/s
+  [test]  9632/58800 clips  41.9 clips/s
+  [test] 12832/58800 clips  42.2 clips/s
+  [test] 16032/58800 clips  42.4 clips/s
+  [test] 19232/58800 clips  42.5 clips/s
+  [test] 22432/58800 clips  42.6 clips/s
+  [test] 25632/58800 clips  42.7 clips/s
+  [test] 28832/58800 clips  42.7 clips/s
+  [test] 32032/58800 clips  42.8 clips/s
+  [test] 35232/58800 clips  42.8 clips/s
+  [test] 38432/58800 clips  42.9 clips/s
+  [test] 41632/58800 clips  42.9 clips/s
+  [test] 44832/58800 clips  42.9 clips/s
+  [test] 48032/58800 clips  42.9 clips/s
+  [test] 51232/58800 clips  42.9 clips/s
+  [test] 54432/58800 clips  42.9 clips/s
+  [test] 57632/58800 clips  43.0 clips/s
+  [test] 58800/58800 clips  43.0 clips/s
+[features] test_dense -> logs/phase10/vivit/features/test_dense.npz  (58800 clips, dim=768, 22.9 min)
+
+=============== [2026-09-14 09:14:10] STAGE 2/4: linear probe (AdamW, class-weighted CE) ===============
+
+/root/miniconda3/lib/python3.10/site-packages/torchvision/io/image.py:13: UserWarning: Failed to load image Python extension: '/root/miniconda3/lib/python3.10/site-packages/torchvision/image.so: undefined symbol: _ZN3c1017RegisterOperatorsD1Ev'If you don't plan on using image functionality from `torchvision.io`, you can ignore this warning. Otherwise, there might be something wrong with your environment. Did you have `libjpeg` or `libpng` installed before building `torchvision` from source?
+  warn(
+[data] label counts=[5514, 5464, 56222] -> weights=[1.424, 1.437, 0.14]
+[probe ep1] loss=0.5521 val_avg_f1=0.6675 val_acc=0.8307
+[probe ep2] loss=0.4400 val_avg_f1=0.6618 val_acc=0.8268
+[probe ep3] loss=0.4126 val_avg_f1=0.6625 val_acc=0.8261
+[probe ep4] loss=0.3972 val_avg_f1=0.6687 val_acc=0.8332
+[probe ep5] loss=0.3865 val_avg_f1=0.6735 val_acc=0.8373
+[probe ep6] loss=0.3799 val_avg_f1=0.6676 val_acc=0.8311
+[probe ep7] loss=0.3731 val_avg_f1=0.6653 val_acc=0.8263
+[probe ep8] loss=0.3690 val_avg_f1=0.6686 val_acc=0.8308
+[probe ep9] loss=0.3664 val_avg_f1=0.6680 val_acc=0.8311
+[probe ep10] loss=0.3633 val_avg_f1=0.6687 val_acc=0.8340
+[probe] early stop: no val improvement for 5 epoch(s)
+[probe] best val avg_f1=0.6735 (0.0 min)
+[test] avg_f1=0.6480 acc=0.8225 fall_f1=0.5410 fallen_f1=0.5010 (n=96000)
+[probe] artefacts -> logs/phase10/vivit
+
+=============== [2026-09-14 09:14:24] STAGE 3/4: timeline metrics ===============
+
+=== timeline (event-level, per-video) ===
+  videos=1200  has_fall=211  has_fallen=150
+  fall_f1=0.5806  fallen_f1=0.5888  avg_f1=0.6014
+  coverage: fall=0.882  fallen=0.760
+  false alarm: fall=0.116  fallen=0.131
+  flips/video=0.44  order_correct=0.856
+=== instance (same frames) ===
+  avg_f1=0.6480 acc=0.8225 fall_f1=0.5410 fallen_f1=0.5010 n=96000
+saved -> logs/phase10/vivit/timeline_results.json
+
+=============== [2026-09-14 09:14:30] STAGE 4/4: same-frame comparison vs E1-full ===============
+
+common videos = 1200
+E1-full    inst: acc=0.9370 avg_f1=0.8296 fall_f1=0.7689 fallen_f1=0.7510
+           time: fall_f1=0.7827 fallen_f1=0.6989 avg_f1=0.7413 | cov 0.962/0.833 | FA 0.026/0.035 | flips 0.63
+vivit      inst: acc=0.8225 avg_f1=0.6480 fall_f1=0.5410 fallen_f1=0.5010
+           time: fall_f1=0.5806 fallen_f1=0.5888 avg_f1=0.6014 | cov 0.882/0.760 | FA 0.116/0.131 | flips 0.44
+delta (vivit - E1): acc -0.1145 | avg_f1 -0.1816 | fall_f1 -0.2279 | fallen_f1 -0.2499
+saved -> logs/phase10/vivit/compare_e1_vs_vivit.json
+
+=============== [2026-09-14 09:14:34] ALL DONE — logs/phase10/vivit/P10_vivit_DONE ===============
+
