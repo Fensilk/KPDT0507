@@ -1,0 +1,702 @@
+C:\Users\Lizhe\anaconda3\envs\py310\lib\site-packages\torch\nn\modules\transformer.py:379: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+C:\Users\Lizhe\Documents\KPDT0507\experiments\train_phase6.py:351: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  scaler = torch.cuda.amp.GradScaler() if use_fp16 else None
+C:\Users\Lizhe\Documents\KPDT0507\experiments\train_phase6.py:174: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+[INFO] Using device: cuda
+
+============================================================
+Loading data...
+============================================================
+[INFO] Loading frame-level NPZ from C:\Users\Lizhe\Documents\KPDT0507\data/omnifall_dinov2_finetuned_frame.npz...
+[INFO] Using ¦¤frame diff features, total input dim: 3072
+[INFO] Loaded 4,000 windows from 2,000 videos for split 'train' (T=64, stride=16, 2.0x expansion) | Fall frames: 8.3%
+[INFO] Loading frame-level NPZ from C:\Users\Lizhe\Documents\KPDT0507\data/omnifall_dinov2_finetuned_frame.npz...
+[INFO] Using ¦¤frame diff features, total input dim: 3072
+[INFO] Loaded 2,400 windows from 1,200 videos for split 'val' (T=64, stride=16, 2.0x expansion) | Fall frames: 8.3%
+[INFO] Loading frame-level NPZ from C:\Users\Lizhe\Documents\KPDT0507\data/omnifall_dinov2_finetuned_frame.npz...
+[INFO] Using ¦¤frame diff features, total input dim: 3072
+[INFO] Loaded 3,600 windows from 1,200 videos for split 'test' (T=64, stride=8, 3.0x expansion) | Fall frames: 8.3%
+
+============================================================
+Building model...
+============================================================
+[INFO] Input dim: 3072 (from dataset)
+[INFO] Model params: 2,956,419
+[INFO] Decoder: transformer | bidirectional | 1L/384d | dropout=0.3
+[INFO] Window: T=64, stride=16
+
+============================================================
+Building loss function...
+============================================================
+[INFO] Sampling training labels for CE class weights...
+[INFO] CE class weights: [4.129 4.397 0.395]
+[INFO] Using CrossEntropyLoss (bridge experiment)
+[INFO] FP16 autocast: enabled
+
+============================================================
+Training started
+============================================================
+  [     1/125]    1% | loss=1.1420 | elapsed=1s | eta=67s
+  [    12/125]   10% | loss=0.7222 | elapsed=1s | eta=9s
+  [    24/125]   19% | loss=0.4990 | elapsed=1s | eta=6s
+  [    36/125]   29% | loss=0.3912 | elapsed=2s | eta=4s
+  [    48/125]   38% | loss=0.3327 | elapsed=2s | eta=3s
+  [    60/125]   48% | loss=0.2899 | elapsed=2s | eta=3s
+  [    72/125]   58% | loss=0.2568 | elapsed=3s | eta=2s
+  [    84/125]   67% | loss=0.2333 | elapsed=3s | eta=1s
+  [    96/125]   77% | loss=0.2173 | elapsed=3s | eta=1s
+  [   108/125]   86% | loss=0.2035 | elapsed=4s | eta=1s
+  [   120/125]   96% | loss=0.1909 | elapsed=4s | eta=0s
+C:\Users\Lizhe\Documents\KPDT0507\experiments\train_phase6.py:174: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+Epoch   1/100 | Train Loss: 0.1873 | Val Loss: 0.4976 (gap=-0.310) | Acc: 0.8989 | Fall F1: 0.6125 | Fallen F1: 0.7174 | Normal F1: 0.9471 | Avg F1: 0.7590 | LR: 1.00e-03
+  [BEST] New best model saved! (Fall F1=0.6125)
+  [     1/125]    1% | loss=0.0932 | elapsed=0s | eta=3s
+  [    12/125]   10% | loss=0.0806 | elapsed=0s | eta=3s
+  [    24/125]   19% | loss=0.0751 | elapsed=1s | eta=2s
+  [    36/125]   29% | loss=0.0728 | elapsed=1s | eta=2s
+  [    48/125]   38% | loss=0.0686 | elapsed=1s | eta=2s
+  [    60/125]   48% | loss=0.0693 | elapsed=1s | eta=2s
+  [    72/125]   58% | loss=0.0677 | elapsed=2s | eta=1s
+  [    84/125]   67% | loss=0.0685 | elapsed=2s | eta=1s
+  [    96/125]   77% | loss=0.0684 | elapsed=2s | eta=1s
+  [   108/125]   86% | loss=0.0680 | elapsed=3s | eta=0s
+  [   120/125]   96% | loss=0.0672 | elapsed=3s | eta=0s
+C:\Users\Lizhe\Documents\KPDT0507\experiments\train_phase6.py:174: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+Epoch   2/100 | Train Loss: 0.0668 | Val Loss: 0.5317 (gap=-0.465) | Acc: 0.9023 | Fall F1: 0.6145 | Fallen F1: 0.7105 | Normal F1: 0.9495 | Avg F1: 0.7582 | LR: 1.00e-03
+  [BEST] New best model saved! (Fall F1=0.6145)
+  [     1/125]    1% | loss=0.0529 | elapsed=0s | eta=3s
+  [    12/125]   10% | loss=0.0532 | elapsed=0s | eta=3s
+  [    24/125]   19% | loss=0.0557 | elapsed=1s | eta=3s
+  [    36/125]   29% | loss=0.0555 | elapsed=1s | eta=2s
+  [    48/125]   38% | loss=0.0565 | elapsed=1s | eta=2s
+  [    60/125]   48% | loss=0.0571 | elapsed=2s | eta=2s
+  [    72/125]   58% | loss=0.0558 | elapsed=2s | eta=1s
+  [    84/125]   67% | loss=0.0541 | elapsed=2s | eta=1s
+  [    96/125]   77% | loss=0.0544 | elapsed=2s | eta=1s
+  [   108/125]   86% | loss=0.0541 | elapsed=3s | eta=0s
+  [   120/125]   96% | loss=0.0536 | elapsed=3s | eta=0s
+C:\Users\Lizhe\Documents\KPDT0507\experiments\train_phase6.py:174: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+Epoch   3/100 | Train Loss: 0.0534 | Val Loss: 0.4249 (gap=-0.371) | Acc: 0.9021 | Fall F1: 0.6194 | Fallen F1: 0.7074 | Normal F1: 0.9497 | Avg F1: 0.7588 | LR: 1.00e-03
+  [BEST] New best model saved! (Fall F1=0.6194)
+  [     1/125]    1% | loss=0.0357 | elapsed=0s | eta=4s
+  [    12/125]   10% | loss=0.0459 | elapsed=0s | eta=3s
+  [    24/125]   19% | loss=0.0465 | elapsed=1s | eta=3s
+  [    36/125]   29% | loss=0.0438 | elapsed=1s | eta=2s
+  [    48/125]   38% | loss=0.0423 | elapsed=1s | eta=2s
+  [    60/125]   48% | loss=0.0419 | elapsed=2s | eta=2s
+  [    72/125]   58% | loss=0.0408 | elapsed=2s | eta=1s
+  [    84/125]   67% | loss=0.0401 | elapsed=2s | eta=1s
+  [    96/125]   77% | loss=0.0396 | elapsed=3s | eta=1s
+  [   108/125]   86% | loss=0.0404 | elapsed=3s | eta=0s
+  [   120/125]   96% | loss=0.0400 | elapsed=3s | eta=0s
+C:\Users\Lizhe\Documents\KPDT0507\experiments\train_phase6.py:174: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+Epoch   4/100 | Train Loss: 0.0395 | Val Loss: 0.5336 (gap=-0.494) | Acc: 0.9071 | Fall F1: 0.6356 | Fallen F1: 0.7091 | Normal F1: 0.9529 | Avg F1: 0.7658 | LR: 1.00e-03
+  [BEST] New best model saved! (Fall F1=0.6356)
+  [     1/125]    1% | loss=0.0821 | elapsed=0s | eta=3s
+  [    12/125]   10% | loss=0.0417 | elapsed=0s | eta=3s
+  [    24/125]   19% | loss=0.0366 | elapsed=1s | eta=3s
+  [    36/125]   29% | loss=0.0340 | elapsed=1s | eta=2s
+  [    48/125]   38% | loss=0.0333 | elapsed=1s | eta=2s
+  [    60/125]   48% | loss=0.0328 | elapsed=2s | eta=2s
+  [    72/125]   58% | loss=0.0334 | elapsed=2s | eta=1s
+  [    84/125]   67% | loss=0.0334 | elapsed=2s | eta=1s
+  [    96/125]   77% | loss=0.0330 | elapsed=2s | eta=1s
+  [   108/125]   86% | loss=0.0338 | elapsed=3s | eta=0s
+  [   120/125]   96% | loss=0.0334 | elapsed=3s | eta=0s
+C:\Users\Lizhe\Documents\KPDT0507\experiments\train_phase6.py:174: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+Epoch   5/100 | Train Loss: 0.0342 | Val Loss: 0.5505 (gap=-0.516) | Acc: 0.9048 | Fall F1: 0.6270 | Fallen F1: 0.7060 | Normal F1: 0.9516 | Avg F1: 0.7615 | LR: 1.00e-03
+  [     1/125]    1% | loss=0.0166 | elapsed=0s | eta=4s
+  [    12/125]   10% | loss=0.0342 | elapsed=0s | eta=3s
+  [    24/125]   19% | loss=0.0304 | elapsed=1s | eta=3s
+  [    36/125]   29% | loss=0.0327 | elapsed=1s | eta=2s
+  [    48/125]   38% | loss=0.0320 | elapsed=1s | eta=2s
+  [    60/125]   48% | loss=0.0321 | elapsed=2s | eta=2s
+  [    72/125]   58% | loss=0.0324 | elapsed=2s | eta=1s
+  [    84/125]   67% | loss=0.0324 | elapsed=2s | eta=1s
+  [    96/125]   77% | loss=0.0321 | elapsed=2s | eta=1s
+  [   108/125]   86% | loss=0.0323 | elapsed=3s | eta=0s
+  [   120/125]   96% | loss=0.0323 | elapsed=3s | eta=0s
+C:\Users\Lizhe\Documents\KPDT0507\experiments\train_phase6.py:174: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+Epoch   6/100 | Train Loss: 0.0321 | Val Loss: 0.5407 (gap=-0.509) | Acc: 0.9042 | Fall F1: 0.6265 | Fallen F1: 0.7171 | Normal F1: 0.9503 | Avg F1: 0.7646 | LR: 1.00e-03
+  [     1/125]    1% | loss=0.0323 | elapsed=0s | eta=4s
+  [    12/125]   10% | loss=0.0248 | elapsed=0s | eta=3s
+  [    24/125]   19% | loss=0.0211 | elapsed=1s | eta=3s
+  [    36/125]   29% | loss=0.0210 | elapsed=1s | eta=2s
+  [    48/125]   38% | loss=0.0205 | elapsed=1s | eta=2s
+  [    60/125]   48% | loss=0.0202 | elapsed=2s | eta=2s
+  [    72/125]   58% | loss=0.0197 | elapsed=2s | eta=1s
+  [    84/125]   67% | loss=0.0203 | elapsed=2s | eta=1s
+  [    96/125]   77% | loss=0.0216 | elapsed=2s | eta=1s
+  [   108/125]   86% | loss=0.0219 | elapsed=3s | eta=0s
+  [   120/125]   96% | loss=0.0235 | elapsed=3s | eta=0s
+C:\Users\Lizhe\Documents\KPDT0507\experiments\train_phase6.py:174: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+Epoch   7/100 | Train Loss: 0.0237 | Val Loss: 0.5400 (gap=-0.516) | Acc: 0.9092 | Fall F1: 0.6394 | Fallen F1: 0.7097 | Normal F1: 0.9540 | Avg F1: 0.7677 | LR: 1.00e-03
+  [BEST] New best model saved! (Fall F1=0.6394)
+  [     1/125]    1% | loss=0.0257 | elapsed=0s | eta=3s
+  [    12/125]   10% | loss=0.0399 | elapsed=0s | eta=3s
+  [    24/125]   19% | loss=0.0354 | elapsed=1s | eta=3s
+  [    36/125]   29% | loss=0.0352 | elapsed=1s | eta=2s
+  [    48/125]   38% | loss=0.0329 | elapsed=1s | eta=2s
+  [    60/125]   48% | loss=0.0309 | elapsed=2s | eta=2s
+  [    72/125]   58% | loss=0.0292 | elapsed=2s | eta=1s
+  [    84/125]   67% | loss=0.0275 | elapsed=2s | eta=1s
+  [    96/125]   77% | loss=0.0261 | elapsed=3s | eta=1s
+  [   108/125]   86% | loss=0.0253 | elapsed=3s | eta=0s
+  [   120/125]   96% | loss=0.0244 | elapsed=3s | eta=0s
+C:\Users\Lizhe\Documents\KPDT0507\experiments\train_phase6.py:174: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+Epoch   8/100 | Train Loss: 0.0241 | Val Loss: 0.6967 (gap=-0.673) | Acc: 0.9112 | Fall F1: 0.6375 | Fallen F1: 0.7042 | Normal F1: 0.9561 | Avg F1: 0.7659 | LR: 1.00e-03
+  [     1/125]    1% | loss=0.0109 | elapsed=0s | eta=4s
+  [    12/125]   10% | loss=0.0203 | elapsed=0s | eta=3s
+  [    24/125]   19% | loss=0.0218 | elapsed=1s | eta=3s
+  [    36/125]   29% | loss=0.0215 | elapsed=1s | eta=2s
+  [    48/125]   38% | loss=0.0224 | elapsed=1s | eta=2s
+  [    60/125]   48% | loss=0.0230 | elapsed=2s | eta=2s
+  [    72/125]   58% | loss=0.0223 | elapsed=2s | eta=1s
+  [    84/125]   67% | loss=0.0216 | elapsed=2s | eta=1s
+  [    96/125]   77% | loss=0.0207 | elapsed=2s | eta=1s
+  [   108/125]   86% | loss=0.0197 | elapsed=3s | eta=0s
+  [   120/125]   96% | loss=0.0193 | elapsed=3s | eta=0s
+C:\Users\Lizhe\Documents\KPDT0507\experiments\train_phase6.py:174: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+Epoch   9/100 | Train Loss: 0.0191 | Val Loss: 0.7183 (gap=-0.699) | Acc: 0.9088 | Fall F1: 0.6319 | Fallen F1: 0.7078 | Normal F1: 0.9540 | Avg F1: 0.7646 | LR: 1.00e-03
+  [     1/125]    1% | loss=0.0145 | elapsed=0s | eta=3s
+  [    12/125]   10% | loss=0.0132 | elapsed=0s | eta=3s
+  [    24/125]   19% | loss=0.0139 | elapsed=1s | eta=3s
+  [    36/125]   29% | loss=0.0139 | elapsed=1s | eta=2s
+  [    48/125]   38% | loss=0.0140 | elapsed=1s | eta=2s
+  [    60/125]   48% | loss=0.0148 | elapsed=2s | eta=2s
+  [    72/125]   58% | loss=0.0153 | elapsed=2s | eta=1s
+  [    84/125]   67% | loss=0.0158 | elapsed=2s | eta=1s
+  [    96/125]   77% | loss=0.0157 | elapsed=2s | eta=1s
+  [   108/125]   86% | loss=0.0156 | elapsed=3s | eta=0s
+  [   120/125]   96% | loss=0.0155 | elapsed=3s | eta=0s
+C:\Users\Lizhe\Documents\KPDT0507\experiments\train_phase6.py:174: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+Epoch  10/100 | Train Loss: 0.0152 | Val Loss: 0.6790 (gap=-0.664) | Acc: 0.9049 | Fall F1: 0.6293 | Fallen F1: 0.7067 | Normal F1: 0.9517 | Avg F1: 0.7626 | LR: 1.00e-03
+  [     1/125]    1% | loss=0.0149 | elapsed=0s | eta=3s
+  [    12/125]   10% | loss=0.0110 | elapsed=0s | eta=3s
+  [    24/125]   19% | loss=0.0105 | elapsed=1s | eta=3s
+  [    36/125]   29% | loss=0.0115 | elapsed=1s | eta=2s
+  [    48/125]   38% | loss=0.0128 | elapsed=1s | eta=2s
+  [    60/125]   48% | loss=0.0135 | elapsed=1s | eta=2s
+  [    72/125]   58% | loss=0.0154 | elapsed=2s | eta=1s
+  [    84/125]   67% | loss=0.0162 | elapsed=2s | eta=1s
+  [    96/125]   77% | loss=0.0162 | elapsed=2s | eta=1s
+  [   108/125]   86% | loss=0.0157 | elapsed=3s | eta=0s
+  [   120/125]   96% | loss=0.0154 | elapsed=3s | eta=0s
+C:\Users\Lizhe\Documents\KPDT0507\experiments\train_phase6.py:174: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+Epoch  11/100 | Train Loss: 0.0152 | Val Loss: 0.7295 (gap=-0.714) | Acc: 0.9084 | Fall F1: 0.6356 | Fallen F1: 0.7089 | Normal F1: 0.9536 | Avg F1: 0.7660 | LR: 1.00e-03
+  [     1/125]    1% | loss=0.0048 | elapsed=0s | eta=4s
+  [    12/125]   10% | loss=0.0110 | elapsed=0s | eta=3s
+  [    24/125]   19% | loss=0.0129 | elapsed=1s | eta=3s
+  [    36/125]   29% | loss=0.0158 | elapsed=1s | eta=2s
+  [    48/125]   38% | loss=0.0185 | elapsed=1s | eta=2s
+  [    60/125]   48% | loss=0.0236 | elapsed=2s | eta=2s
+  [    72/125]   58% | loss=0.0241 | elapsed=2s | eta=1s
+  [    84/125]   67% | loss=0.0234 | elapsed=2s | eta=1s
+  [    96/125]   77% | loss=0.0223 | elapsed=2s | eta=1s
+  [   108/125]   86% | loss=0.0214 | elapsed=3s | eta=0s
+  [   120/125]   96% | loss=0.0209 | elapsed=3s | eta=0s
+C:\Users\Lizhe\Documents\KPDT0507\experiments\train_phase6.py:174: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+Epoch  12/100 | Train Loss: 0.0213 | Val Loss: 0.6769 (gap=-0.656) | Acc: 0.9073 | Fall F1: 0.6373 | Fallen F1: 0.7155 | Normal F1: 0.9524 | Avg F1: 0.7684 | LR: 1.00e-03
+  [     1/125]    1% | loss=0.0180 | elapsed=0s | eta=3s
+  [    12/125]   10% | loss=0.0145 | elapsed=0s | eta=3s
+  [    24/125]   19% | loss=0.0143 | elapsed=1s | eta=3s
+  [    36/125]   29% | loss=0.0147 | elapsed=1s | eta=2s
+  [    48/125]   38% | loss=0.0165 | elapsed=1s | eta=2s
+  [    60/125]   48% | loss=0.0166 | elapsed=2s | eta=2s
+  [    72/125]   58% | loss=0.0162 | elapsed=2s | eta=1s
+  [    84/125]   67% | loss=0.0158 | elapsed=2s | eta=1s
+  [    96/125]   77% | loss=0.0151 | elapsed=2s | eta=1s
+  [   108/125]   86% | loss=0.0147 | elapsed=3s | eta=0s
+  [   120/125]   96% | loss=0.0143 | elapsed=3s | eta=0s
+C:\Users\Lizhe\Documents\KPDT0507\experiments\train_phase6.py:174: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+Epoch  13/100 | Train Loss: 0.0142 | Val Loss: 0.6972 (gap=-0.683) | Acc: 0.9092 | Fall F1: 0.6293 | Fallen F1: 0.7087 | Normal F1: 0.9543 | Avg F1: 0.7641 | LR: 1.00e-03
+  [     1/125]    1% | loss=0.0064 | elapsed=0s | eta=4s
+  [    12/125]   10% | loss=0.0067 | elapsed=0s | eta=3s
+  [    24/125]   19% | loss=0.0069 | elapsed=1s | eta=3s
+  [    36/125]   29% | loss=0.0081 | elapsed=1s | eta=2s
+  [    48/125]   38% | loss=0.0097 | elapsed=1s | eta=2s
+  [    60/125]   48% | loss=0.0103 | elapsed=1s | eta=2s
+  [    72/125]   58% | loss=0.0109 | elapsed=2s | eta=1s
+  [    84/125]   67% | loss=0.0111 | elapsed=2s | eta=1s
+  [    96/125]   77% | loss=0.0115 | elapsed=2s | eta=1s
+  [   108/125]   86% | loss=0.0116 | elapsed=3s | eta=0s
+  [   120/125]   96% | loss=0.0114 | elapsed=3s | eta=0s
+C:\Users\Lizhe\Documents\KPDT0507\experiments\train_phase6.py:174: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+Epoch  14/100 | Train Loss: 0.0114 | Val Loss: 0.6978 (gap=-0.686) | Acc: 0.9083 | Fall F1: 0.6381 | Fallen F1: 0.7088 | Normal F1: 0.9533 | Avg F1: 0.7667 | LR: 1.00e-03
+  [     1/125]    1% | loss=0.0100 | elapsed=0s | eta=4s
+  [    12/125]   10% | loss=0.0106 | elapsed=0s | eta=3s
+  [    24/125]   19% | loss=0.0096 | elapsed=1s | eta=3s
+  [    36/125]   29% | loss=0.0084 | elapsed=1s | eta=2s
+  [    48/125]   38% | loss=0.0077 | elapsed=1s | eta=2s
+  [    60/125]   48% | loss=0.0074 | elapsed=2s | eta=2s
+  [    72/125]   58% | loss=0.0069 | elapsed=2s | eta=1s
+  [    84/125]   67% | loss=0.0065 | elapsed=2s | eta=1s
+  [    96/125]   77% | loss=0.0068 | elapsed=2s | eta=1s
+  [   108/125]   86% | loss=0.0071 | elapsed=3s | eta=0s
+  [   120/125]   96% | loss=0.0071 | elapsed=3s | eta=0s
+C:\Users\Lizhe\Documents\KPDT0507\experiments\train_phase6.py:174: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+Epoch  15/100 | Train Loss: 0.0069 | Val Loss: 0.8436 (gap=-0.837) | Acc: 0.9128 | Fall F1: 0.6521 | Fallen F1: 0.7040 | Normal F1: 0.9564 | Avg F1: 0.7708 | LR: 5.00e-04
+  [BEST] New best model saved! (Fall F1=0.6521)
+  [     1/125]    1% | loss=0.0031 | elapsed=0s | eta=3s
+  [    12/125]   10% | loss=0.0062 | elapsed=0s | eta=3s
+  [    24/125]   19% | loss=0.0064 | elapsed=1s | eta=3s
+  [    36/125]   29% | loss=0.0063 | elapsed=1s | eta=2s
+  [    48/125]   38% | loss=0.0060 | elapsed=1s | eta=2s
+  [    60/125]   48% | loss=0.0060 | elapsed=1s | eta=2s
+  [    72/125]   58% | loss=0.0063 | elapsed=2s | eta=1s
+  [    84/125]   67% | loss=0.0074 | elapsed=2s | eta=1s
+  [    96/125]   77% | loss=0.0073 | elapsed=2s | eta=1s
+  [   108/125]   86% | loss=0.0071 | elapsed=3s | eta=0s
+  [   120/125]   96% | loss=0.0068 | elapsed=3s | eta=0s
+C:\Users\Lizhe\Documents\KPDT0507\experiments\train_phase6.py:174: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+Epoch  16/100 | Train Loss: 0.0068 | Val Loss: 0.8769 (gap=-0.870) | Acc: 0.9134 | Fall F1: 0.6499 | Fallen F1: 0.7003 | Normal F1: 0.9567 | Avg F1: 0.7690 | LR: 5.00e-04
+  [     1/125]    1% | loss=0.0060 | elapsed=0s | eta=4s
+  [    12/125]   10% | loss=0.0085 | elapsed=0s | eta=3s
+  [    24/125]   19% | loss=0.0082 | elapsed=1s | eta=3s
+  [    36/125]   29% | loss=0.0065 | elapsed=1s | eta=2s
+  [    48/125]   38% | loss=0.0062 | elapsed=1s | eta=2s
+  [    60/125]   48% | loss=0.0060 | elapsed=2s | eta=2s
+  [    72/125]   58% | loss=0.0056 | elapsed=2s | eta=1s
+  [    84/125]   67% | loss=0.0053 | elapsed=2s | eta=1s
+  [    96/125]   77% | loss=0.0053 | elapsed=2s | eta=1s
+  [   108/125]   86% | loss=0.0052 | elapsed=3s | eta=0s
+  [   120/125]   96% | loss=0.0057 | elapsed=3s | eta=0s
+C:\Users\Lizhe\Documents\KPDT0507\experiments\train_phase6.py:174: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+Epoch  17/100 | Train Loss: 0.0057 | Val Loss: 0.7960 (gap=-0.790) | Acc: 0.9109 | Fall F1: 0.6456 | Fallen F1: 0.7008 | Normal F1: 0.9556 | Avg F1: 0.7673 | LR: 5.00e-04
+  [     1/125]    1% | loss=0.0032 | elapsed=0s | eta=4s
+  [    12/125]   10% | loss=0.0035 | elapsed=0s | eta=3s
+  [    24/125]   19% | loss=0.0035 | elapsed=1s | eta=3s
+  [    36/125]   29% | loss=0.0050 | elapsed=1s | eta=2s
+  [    48/125]   38% | loss=0.0051 | elapsed=1s | eta=2s
+  [    60/125]   48% | loss=0.0049 | elapsed=2s | eta=2s
+  [    72/125]   58% | loss=0.0048 | elapsed=2s | eta=1s
+  [    84/125]   67% | loss=0.0048 | elapsed=2s | eta=1s
+  [    96/125]   77% | loss=0.0047 | elapsed=2s | eta=1s
+  [   108/125]   86% | loss=0.0046 | elapsed=3s | eta=0s
+  [   120/125]   96% | loss=0.0051 | elapsed=3s | eta=0s
+C:\Users\Lizhe\Documents\KPDT0507\experiments\train_phase6.py:174: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+Epoch  18/100 | Train Loss: 0.0053 | Val Loss: 0.7857 (gap=-0.780) | Acc: 0.9095 | Fall F1: 0.6398 | Fallen F1: 0.6993 | Normal F1: 0.9546 | Avg F1: 0.7646 | LR: 5.00e-04
+  [     1/125]    1% | loss=0.0066 | elapsed=0s | eta=3s
+  [    12/125]   10% | loss=0.0072 | elapsed=0s | eta=3s
+  [    24/125]   19% | loss=0.0077 | elapsed=1s | eta=3s
+  [    36/125]   29% | loss=0.0075 | elapsed=1s | eta=2s
+  [    48/125]   38% | loss=0.0072 | elapsed=1s | eta=2s
+  [    60/125]   48% | loss=0.0069 | elapsed=2s | eta=2s
+  [    72/125]   58% | loss=0.0064 | elapsed=2s | eta=1s
+  [    84/125]   67% | loss=0.0061 | elapsed=2s | eta=1s
+  [    96/125]   77% | loss=0.0061 | elapsed=2s | eta=1s
+  [   108/125]   86% | loss=0.0059 | elapsed=3s | eta=0s
+  [   120/125]   96% | loss=0.0062 | elapsed=3s | eta=0s
+C:\Users\Lizhe\Documents\KPDT0507\experiments\train_phase6.py:174: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+Epoch  19/100 | Train Loss: 0.0065 | Val Loss: 0.7979 (gap=-0.791) | Acc: 0.9129 | Fall F1: 0.6454 | Fallen F1: 0.7065 | Normal F1: 0.9564 | Avg F1: 0.7694 | LR: 5.00e-04
+  [     1/125]    1% | loss=0.0098 | elapsed=0s | eta=3s
+  [    12/125]   10% | loss=0.0083 | elapsed=0s | eta=3s
+  [    24/125]   19% | loss=0.0066 | elapsed=1s | eta=3s
+  [    36/125]   29% | loss=0.0083 | elapsed=1s | eta=2s
+  [    48/125]   38% | loss=0.0071 | elapsed=1s | eta=2s
+  [    60/125]   48% | loss=0.0065 | elapsed=2s | eta=2s
+  [    72/125]   58% | loss=0.0060 | elapsed=2s | eta=1s
+  [    84/125]   67% | loss=0.0059 | elapsed=2s | eta=1s
+  [    96/125]   77% | loss=0.0055 | elapsed=2s | eta=1s
+  [   108/125]   86% | loss=0.0057 | elapsed=3s | eta=0s
+  [   120/125]   96% | loss=0.0058 | elapsed=3s | eta=0s
+C:\Users\Lizhe\Documents\KPDT0507\experiments\train_phase6.py:174: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+Epoch  20/100 | Train Loss: 0.0058 | Val Loss: 0.8936 (gap=-0.888) | Acc: 0.9116 | Fall F1: 0.6475 | Fallen F1: 0.7042 | Normal F1: 0.9557 | Avg F1: 0.7691 | LR: 5.00e-04
+  [     1/125]    1% | loss=0.0114 | elapsed=0s | eta=4s
+  [    12/125]   10% | loss=0.0055 | elapsed=0s | eta=3s
+  [    24/125]   19% | loss=0.0058 | elapsed=1s | eta=3s
+  [    36/125]   29% | loss=0.0059 | elapsed=1s | eta=2s
+  [    48/125]   38% | loss=0.0058 | elapsed=1s | eta=2s
+  [    60/125]   48% | loss=0.0069 | elapsed=2s | eta=2s
+  [    72/125]   58% | loss=0.0064 | elapsed=2s | eta=1s
+  [    84/125]   67% | loss=0.0061 | elapsed=2s | eta=1s
+  [    96/125]   77% | loss=0.0058 | elapsed=3s | eta=1s
+  [   108/125]   86% | loss=0.0054 | elapsed=3s | eta=0s
+  [   120/125]   96% | loss=0.0053 | elapsed=3s | eta=0s
+C:\Users\Lizhe\Documents\KPDT0507\experiments\train_phase6.py:174: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+Epoch  21/100 | Train Loss: 0.0052 | Val Loss: 0.9066 (gap=-0.901) | Acc: 0.9120 | Fall F1: 0.6461 | Fallen F1: 0.7048 | Normal F1: 0.9560 | Avg F1: 0.7690 | LR: 5.00e-04
+  [     1/125]    1% | loss=0.0017 | elapsed=0s | eta=4s
+  [    12/125]   10% | loss=0.0036 | elapsed=0s | eta=3s
+  [    24/125]   19% | loss=0.0075 | elapsed=1s | eta=3s
+  [    36/125]   29% | loss=0.0074 | elapsed=1s | eta=2s
+  [    48/125]   38% | loss=0.0069 | elapsed=1s | eta=2s
+  [    60/125]   48% | loss=0.0067 | elapsed=2s | eta=2s
+  [    72/125]   58% | loss=0.0062 | elapsed=2s | eta=1s
+  [    84/125]   67% | loss=0.0060 | elapsed=2s | eta=1s
+  [    96/125]   77% | loss=0.0057 | elapsed=2s | eta=1s
+  [   108/125]   86% | loss=0.0056 | elapsed=3s | eta=0s
+  [   120/125]   96% | loss=0.0056 | elapsed=3s | eta=0s
+C:\Users\Lizhe\Documents\KPDT0507\experiments\train_phase6.py:174: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+Epoch  22/100 | Train Loss: 0.0057 | Val Loss: 0.9122 (gap=-0.906) | Acc: 0.9138 | Fall F1: 0.6517 | Fallen F1: 0.7038 | Normal F1: 0.9568 | Avg F1: 0.7708 | LR: 5.00e-04
+  [     1/125]    1% | loss=0.0080 | elapsed=0s | eta=4s
+  [    12/125]   10% | loss=0.0035 | elapsed=0s | eta=3s
+  [    24/125]   19% | loss=0.0030 | elapsed=1s | eta=3s
+  [    36/125]   29% | loss=0.0029 | elapsed=1s | eta=2s
+  [    48/125]   38% | loss=0.0027 | elapsed=1s | eta=2s
+  [    60/125]   48% | loss=0.0029 | elapsed=2s | eta=2s
+  [    72/125]   58% | loss=0.0030 | elapsed=2s | eta=1s
+  [    84/125]   67% | loss=0.0030 | elapsed=2s | eta=1s
+  [    96/125]   77% | loss=0.0030 | elapsed=3s | eta=1s
+  [   108/125]   86% | loss=0.0029 | elapsed=3s | eta=0s
+  [   120/125]   96% | loss=0.0028 | elapsed=3s | eta=0s
+C:\Users\Lizhe\Documents\KPDT0507\experiments\train_phase6.py:174: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+Epoch  23/100 | Train Loss: 0.0029 | Val Loss: 0.9368 (gap=-0.934) | Acc: 0.9160 | Fall F1: 0.6495 | Fallen F1: 0.7037 | Normal F1: 0.9585 | Avg F1: 0.7706 | LR: 2.50e-04
+  [     1/125]    1% | loss=0.0004 | elapsed=0s | eta=3s
+  [    12/125]   10% | loss=0.0016 | elapsed=0s | eta=3s
+  [    24/125]   19% | loss=0.0020 | elapsed=1s | eta=3s
+  [    36/125]   29% | loss=0.0023 | elapsed=1s | eta=2s
+  [    48/125]   38% | loss=0.0023 | elapsed=1s | eta=2s
+  [    60/125]   48% | loss=0.0023 | elapsed=2s | eta=2s
+  [    72/125]   58% | loss=0.0025 | elapsed=2s | eta=1s
+  [    84/125]   67% | loss=0.0025 | elapsed=2s | eta=1s
+  [    96/125]   77% | loss=0.0031 | elapsed=2s | eta=1s
+  [   108/125]   86% | loss=0.0031 | elapsed=3s | eta=0s
+  [   120/125]   96% | loss=0.0030 | elapsed=3s | eta=0s
+C:\Users\Lizhe\Documents\KPDT0507\experiments\train_phase6.py:174: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+Epoch  24/100 | Train Loss: 0.0030 | Val Loss: 0.9306 (gap=-0.928) | Acc: 0.9147 | Fall F1: 0.6519 | Fallen F1: 0.7010 | Normal F1: 0.9576 | Avg F1: 0.7702 | LR: 2.50e-04
+  [     1/125]    1% | loss=0.0018 | elapsed=0s | eta=3s
+  [    12/125]   10% | loss=0.0023 | elapsed=0s | eta=3s
+  [    24/125]   19% | loss=0.0020 | elapsed=1s | eta=3s
+  [    36/125]   29% | loss=0.0024 | elapsed=1s | eta=2s
+  [    48/125]   38% | loss=0.0025 | elapsed=1s | eta=2s
+  [    60/125]   48% | loss=0.0026 | elapsed=2s | eta=2s
+  [    72/125]   58% | loss=0.0026 | elapsed=2s | eta=1s
+  [    84/125]   67% | loss=0.0026 | elapsed=2s | eta=1s
+  [    96/125]   77% | loss=0.0027 | elapsed=2s | eta=1s
+  [   108/125]   86% | loss=0.0026 | elapsed=3s | eta=0s
+  [   120/125]   96% | loss=0.0026 | elapsed=3s | eta=0s
+C:\Users\Lizhe\Documents\KPDT0507\experiments\train_phase6.py:174: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+Epoch  25/100 | Train Loss: 0.0026 | Val Loss: 0.9757 (gap=-0.973) | Acc: 0.9157 | Fall F1: 0.6488 | Fallen F1: 0.7036 | Normal F1: 0.9583 | Avg F1: 0.7702 | LR: 2.50e-04
+  [     1/125]    1% | loss=0.0013 | elapsed=0s | eta=4s
+  [    12/125]   10% | loss=0.0023 | elapsed=0s | eta=3s
+  [    24/125]   19% | loss=0.0020 | elapsed=1s | eta=3s
+  [    36/125]   29% | loss=0.0021 | elapsed=1s | eta=2s
+  [    48/125]   38% | loss=0.0019 | elapsed=1s | eta=2s
+  [    60/125]   48% | loss=0.0020 | elapsed=1s | eta=2s
+  [    72/125]   58% | loss=0.0021 | elapsed=2s | eta=1s
+  [    84/125]   67% | loss=0.0021 | elapsed=2s | eta=1s
+  [    96/125]   77% | loss=0.0019 | elapsed=2s | eta=1s
+  [   108/125]   86% | loss=0.0020 | elapsed=3s | eta=0s
+  [   120/125]   96% | loss=0.0025 | elapsed=3s | eta=0s
+C:\Users\Lizhe\Documents\KPDT0507\experiments\train_phase6.py:174: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+Epoch  26/100 | Train Loss: 0.0025 | Val Loss: 0.9607 (gap=-0.958) | Acc: 0.9148 | Fall F1: 0.6509 | Fallen F1: 0.7027 | Normal F1: 0.9577 | Avg F1: 0.7704 | LR: 2.50e-04
+  [     1/125]    1% | loss=0.0013 | elapsed=0s | eta=3s
+  [    12/125]   10% | loss=0.0021 | elapsed=0s | eta=3s
+  [    24/125]   19% | loss=0.0029 | elapsed=1s | eta=3s
+  [    36/125]   29% | loss=0.0024 | elapsed=1s | eta=2s
+  [    48/125]   38% | loss=0.0024 | elapsed=1s | eta=2s
+  [    60/125]   48% | loss=0.0024 | elapsed=2s | eta=2s
+  [    72/125]   58% | loss=0.0024 | elapsed=2s | eta=1s
+  [    84/125]   67% | loss=0.0024 | elapsed=2s | eta=1s
+  [    96/125]   77% | loss=0.0023 | elapsed=3s | eta=1s
+  [   108/125]   86% | loss=0.0023 | elapsed=3s | eta=0s
+  [   120/125]   96% | loss=0.0022 | elapsed=3s | eta=0s
+C:\Users\Lizhe\Documents\KPDT0507\experiments\train_phase6.py:174: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+Epoch  27/100 | Train Loss: 0.0022 | Val Loss: 1.0287 (gap=-1.027) | Acc: 0.9156 | Fall F1: 0.6468 | Fallen F1: 0.7024 | Normal F1: 0.9582 | Avg F1: 0.7692 | LR: 2.50e-04
+  [     1/125]    1% | loss=0.0029 | elapsed=0s | eta=4s
+  [    12/125]   10% | loss=0.0013 | elapsed=0s | eta=3s
+  [    24/125]   19% | loss=0.0014 | elapsed=1s | eta=3s
+  [    36/125]   29% | loss=0.0015 | elapsed=1s | eta=2s
+  [    48/125]   38% | loss=0.0017 | elapsed=1s | eta=2s
+  [    60/125]   48% | loss=0.0019 | elapsed=1s | eta=2s
+  [    72/125]   58% | loss=0.0020 | elapsed=2s | eta=1s
+  [    84/125]   67% | loss=0.0019 | elapsed=2s | eta=1s
+  [    96/125]   77% | loss=0.0018 | elapsed=2s | eta=1s
+  [   108/125]   86% | loss=0.0018 | elapsed=3s | eta=0s
+  [   120/125]   96% | loss=0.0018 | elapsed=3s | eta=0s
+C:\Users\Lizhe\Documents\KPDT0507\experiments\train_phase6.py:174: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+Epoch  28/100 | Train Loss: 0.0018 | Val Loss: 1.0345 (gap=-1.033) | Acc: 0.9178 | Fall F1: 0.6548 | Fallen F1: 0.7095 | Normal F1: 0.9592 | Avg F1: 0.7745 | LR: 2.50e-04
+  [BEST] New best model saved! (Fall F1=0.6548)
+  [     1/125]    1% | loss=0.0009 | elapsed=0s | eta=4s
+  [    12/125]   10% | loss=0.0037 | elapsed=0s | eta=3s
+  [    24/125]   19% | loss=0.0041 | elapsed=1s | eta=3s
+  [    36/125]   29% | loss=0.0035 | elapsed=1s | eta=2s
+  [    48/125]   38% | loss=0.0030 | elapsed=1s | eta=2s
+  [    60/125]   48% | loss=0.0026 | elapsed=2s | eta=2s
+  [    72/125]   58% | loss=0.0025 | elapsed=2s | eta=1s
+  [    84/125]   67% | loss=0.0024 | elapsed=2s | eta=1s
+  [    96/125]   77% | loss=0.0023 | elapsed=3s | eta=1s
+  [   108/125]   86% | loss=0.0023 | elapsed=3s | eta=0s
+  [   120/125]   96% | loss=0.0023 | elapsed=3s | eta=0s
+C:\Users\Lizhe\Documents\KPDT0507\experiments\train_phase6.py:174: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+Epoch  29/100 | Train Loss: 0.0023 | Val Loss: 0.9712 (gap=-0.969) | Acc: 0.9154 | Fall F1: 0.6488 | Fallen F1: 0.7014 | Normal F1: 0.9581 | Avg F1: 0.7694 | LR: 2.50e-04
+  [     1/125]    1% | loss=0.0034 | elapsed=0s | eta=4s
+  [    12/125]   10% | loss=0.0025 | elapsed=0s | eta=3s
+  [    24/125]   19% | loss=0.0022 | elapsed=1s | eta=3s
+  [    36/125]   29% | loss=0.0025 | elapsed=1s | eta=2s
+  [    48/125]   38% | loss=0.0023 | elapsed=1s | eta=2s
+  [    60/125]   48% | loss=0.0024 | elapsed=2s | eta=2s
+  [    72/125]   58% | loss=0.0024 | elapsed=2s | eta=1s
+  [    84/125]   67% | loss=0.0023 | elapsed=2s | eta=1s
+  [    96/125]   77% | loss=0.0023 | elapsed=2s | eta=1s
+  [   108/125]   86% | loss=0.0023 | elapsed=3s | eta=0s
+  [   120/125]   96% | loss=0.0023 | elapsed=3s | eta=0s
+C:\Users\Lizhe\Documents\KPDT0507\experiments\train_phase6.py:174: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+Epoch  30/100 | Train Loss: 0.0023 | Val Loss: 1.0719 (gap=-1.070) | Acc: 0.9157 | Fall F1: 0.6526 | Fallen F1: 0.7052 | Normal F1: 0.9579 | Avg F1: 0.7719 | LR: 2.50e-04
+  [     1/125]    1% | loss=0.0005 | elapsed=0s | eta=4s
+  [    12/125]   10% | loss=0.0017 | elapsed=0s | eta=3s
+  [    24/125]   19% | loss=0.0020 | elapsed=1s | eta=3s
+  [    36/125]   29% | loss=0.0020 | elapsed=1s | eta=2s
+  [    48/125]   38% | loss=0.0037 | elapsed=1s | eta=2s
+  [    60/125]   48% | loss=0.0036 | elapsed=2s | eta=2s
+  [    72/125]   58% | loss=0.0035 | elapsed=2s | eta=1s
+  [    84/125]   67% | loss=0.0032 | elapsed=2s | eta=1s
+  [    96/125]   77% | loss=0.0033 | elapsed=2s | eta=1s
+  [   108/125]   86% | loss=0.0033 | elapsed=3s | eta=0s
+  [   120/125]   96% | loss=0.0035 | elapsed=3s | eta=0s
+C:\Users\Lizhe\Documents\KPDT0507\experiments\train_phase6.py:174: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+Epoch  31/100 | Train Loss: 0.0035 | Val Loss: 0.9744 (gap=-0.971) | Acc: 0.9169 | Fall F1: 0.6533 | Fallen F1: 0.7089 | Normal F1: 0.9583 | Avg F1: 0.7735 | LR: 2.50e-04
+  [     1/125]    1% | loss=0.0027 | elapsed=0s | eta=4s
+  [    12/125]   10% | loss=0.0037 | elapsed=0s | eta=3s
+  [    24/125]   19% | loss=0.0035 | elapsed=1s | eta=3s
+  [    36/125]   29% | loss=0.0032 | elapsed=1s | eta=2s
+  [    48/125]   38% | loss=0.0030 | elapsed=1s | eta=2s
+  [    60/125]   48% | loss=0.0028 | elapsed=2s | eta=2s
+  [    72/125]   58% | loss=0.0027 | elapsed=2s | eta=1s
+  [    84/125]   67% | loss=0.0028 | elapsed=2s | eta=1s
+  [    96/125]   77% | loss=0.0027 | elapsed=3s | eta=1s
+  [   108/125]   86% | loss=0.0026 | elapsed=3s | eta=0s
+  [   120/125]   96% | loss=0.0026 | elapsed=3s | eta=0s
+C:\Users\Lizhe\Documents\KPDT0507\experiments\train_phase6.py:174: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+Epoch  32/100 | Train Loss: 0.0025 | Val Loss: 1.0197 (gap=-1.017) | Acc: 0.9157 | Fall F1: 0.6531 | Fallen F1: 0.7045 | Normal F1: 0.9583 | Avg F1: 0.7720 | LR: 2.50e-04
+  [     1/125]    1% | loss=0.0038 | elapsed=0s | eta=4s
+  [    12/125]   10% | loss=0.0031 | elapsed=0s | eta=3s
+  [    24/125]   19% | loss=0.0032 | elapsed=1s | eta=3s
+  [    36/125]   29% | loss=0.0030 | elapsed=1s | eta=3s
+  [    48/125]   38% | loss=0.0035 | elapsed=1s | eta=2s
+  [    60/125]   48% | loss=0.0034 | elapsed=2s | eta=2s
+  [    72/125]   58% | loss=0.0035 | elapsed=2s | eta=2s
+  [    84/125]   67% | loss=0.0034 | elapsed=2s | eta=1s
+  [    96/125]   77% | loss=0.0032 | elapsed=3s | eta=1s
+  [   108/125]   86% | loss=0.0031 | elapsed=3s | eta=0s
+  [   120/125]   96% | loss=0.0031 | elapsed=4s | eta=0s
+C:\Users\Lizhe\Documents\KPDT0507\experiments\train_phase6.py:174: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+Epoch  33/100 | Train Loss: 0.0031 | Val Loss: 0.9677 (gap=-0.965) | Acc: 0.9138 | Fall F1: 0.6441 | Fallen F1: 0.7066 | Normal F1: 0.9566 | Avg F1: 0.7691 | LR: 2.50e-04
+  [     1/125]    1% | loss=0.0007 | elapsed=0s | eta=4s
+  [    12/125]   10% | loss=0.0020 | elapsed=0s | eta=3s
+  [    24/125]   19% | loss=0.0018 | elapsed=1s | eta=3s
+  [    36/125]   29% | loss=0.0020 | elapsed=1s | eta=2s
+  [    48/125]   38% | loss=0.0020 | elapsed=1s | eta=2s
+  [    60/125]   48% | loss=0.0020 | elapsed=2s | eta=2s
+  [    72/125]   58% | loss=0.0020 | elapsed=2s | eta=1s
+  [    84/125]   67% | loss=0.0020 | elapsed=2s | eta=1s
+  [    96/125]   77% | loss=0.0021 | elapsed=2s | eta=1s
+  [   108/125]   86% | loss=0.0021 | elapsed=3s | eta=0s
+  [   120/125]   96% | loss=0.0021 | elapsed=3s | eta=0s
+C:\Users\Lizhe\Documents\KPDT0507\experiments\train_phase6.py:174: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+Epoch  34/100 | Train Loss: 0.0021 | Val Loss: 1.0795 (gap=-1.077) | Acc: 0.9150 | Fall F1: 0.6510 | Fallen F1: 0.7029 | Normal F1: 0.9579 | Avg F1: 0.7706 | LR: 2.50e-04
+  [     1/125]    1% | loss=0.0021 | elapsed=0s | eta=4s
+  [    12/125]   10% | loss=0.0033 | elapsed=0s | eta=3s
+  [    24/125]   19% | loss=0.0029 | elapsed=1s | eta=3s
+  [    36/125]   29% | loss=0.0030 | elapsed=1s | eta=2s
+  [    48/125]   38% | loss=0.0027 | elapsed=1s | eta=2s
+  [    60/125]   48% | loss=0.0026 | elapsed=2s | eta=2s
+  [    72/125]   58% | loss=0.0027 | elapsed=2s | eta=1s
+  [    84/125]   67% | loss=0.0030 | elapsed=2s | eta=1s
+  [    96/125]   77% | loss=0.0031 | elapsed=2s | eta=1s
+  [   108/125]   86% | loss=0.0031 | elapsed=3s | eta=0s
+  [   120/125]   96% | loss=0.0030 | elapsed=3s | eta=0s
+C:\Users\Lizhe\Documents\KPDT0507\experiments\train_phase6.py:174: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+Epoch  35/100 | Train Loss: 0.0033 | Val Loss: 0.9631 (gap=-0.960) | Acc: 0.9143 | Fall F1: 0.6525 | Fallen F1: 0.7034 | Normal F1: 0.9572 | Avg F1: 0.7710 | LR: 2.50e-04
+  [     1/125]    1% | loss=0.0015 | elapsed=0s | eta=4s
+  [    12/125]   10% | loss=0.0013 | elapsed=0s | eta=3s
+  [    24/125]   19% | loss=0.0015 | elapsed=1s | eta=3s
+  [    36/125]   29% | loss=0.0029 | elapsed=1s | eta=2s
+  [    48/125]   38% | loss=0.0028 | elapsed=1s | eta=2s
+  [    60/125]   48% | loss=0.0025 | elapsed=2s | eta=2s
+  [    72/125]   58% | loss=0.0024 | elapsed=2s | eta=1s
+  [    84/125]   67% | loss=0.0023 | elapsed=2s | eta=1s
+  [    96/125]   77% | loss=0.0021 | elapsed=3s | eta=1s
+  [   108/125]   86% | loss=0.0020 | elapsed=3s | eta=0s
+  [   120/125]   96% | loss=0.0019 | elapsed=3s | eta=0s
+C:\Users\Lizhe\Documents\KPDT0507\experiments\train_phase6.py:174: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+Epoch  36/100 | Train Loss: 0.0019 | Val Loss: 1.0423 (gap=-1.040) | Acc: 0.9159 | Fall F1: 0.6514 | Fallen F1: 0.7063 | Normal F1: 0.9582 | Avg F1: 0.7719 | LR: 1.25e-04
+  [     1/125]    1% | loss=0.0015 | elapsed=0s | eta=4s
+  [    12/125]   10% | loss=0.0011 | elapsed=0s | eta=3s
+  [    24/125]   19% | loss=0.0010 | elapsed=1s | eta=3s
+  [    36/125]   29% | loss=0.0012 | elapsed=1s | eta=2s
+  [    48/125]   38% | loss=0.0012 | elapsed=1s | eta=2s
+  [    60/125]   48% | loss=0.0013 | elapsed=1s | eta=2s
+  [    72/125]   58% | loss=0.0013 | elapsed=2s | eta=1s
+  [    84/125]   67% | loss=0.0012 | elapsed=2s | eta=1s
+  [    96/125]   77% | loss=0.0013 | elapsed=2s | eta=1s
+  [   108/125]   86% | loss=0.0013 | elapsed=3s | eta=0s
+  [   120/125]   96% | loss=0.0013 | elapsed=3s | eta=0s
+C:\Users\Lizhe\Documents\KPDT0507\experiments\train_phase6.py:174: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+Epoch  37/100 | Train Loss: 0.0013 | Val Loss: 1.1246 (gap=-1.123) | Acc: 0.9161 | Fall F1: 0.6504 | Fallen F1: 0.7065 | Normal F1: 0.9586 | Avg F1: 0.7718 | LR: 1.25e-04
+  [     1/125]    1% | loss=0.0027 | elapsed=0s | eta=4s
+  [    12/125]   10% | loss=0.0010 | elapsed=0s | eta=3s
+  [    24/125]   19% | loss=0.0011 | elapsed=1s | eta=3s
+  [    36/125]   29% | loss=0.0011 | elapsed=1s | eta=2s
+  [    48/125]   38% | loss=0.0010 | elapsed=1s | eta=2s
+  [    60/125]   48% | loss=0.0010 | elapsed=2s | eta=2s
+  [    72/125]   58% | loss=0.0010 | elapsed=2s | eta=1s
+  [    84/125]   67% | loss=0.0010 | elapsed=2s | eta=1s
+  [    96/125]   77% | loss=0.0010 | elapsed=2s | eta=1s
+  [   108/125]   86% | loss=0.0009 | elapsed=3s | eta=0s
+  [   120/125]   96% | loss=0.0012 | elapsed=3s | eta=0s
+C:\Users\Lizhe\Documents\KPDT0507\experiments\train_phase6.py:174: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+Epoch  38/100 | Train Loss: 0.0012 | Val Loss: 1.0818 (gap=-1.081) | Acc: 0.9143 | Fall F1: 0.6444 | Fallen F1: 0.7034 | Normal F1: 0.9575 | Avg F1: 0.7684 | LR: 1.25e-04
+  [     1/125]    1% | loss=0.0009 | elapsed=0s | eta=4s
+  [    12/125]   10% | loss=0.0013 | elapsed=0s | eta=3s
+  [    24/125]   19% | loss=0.0013 | elapsed=1s | eta=3s
+  [    36/125]   29% | loss=0.0011 | elapsed=1s | eta=2s
+  [    48/125]   38% | loss=0.0010 | elapsed=1s | eta=2s
+  [    60/125]   48% | loss=0.0010 | elapsed=2s | eta=2s
+  [    72/125]   58% | loss=0.0010 | elapsed=2s | eta=1s
+  [    84/125]   67% | loss=0.0011 | elapsed=2s | eta=1s
+  [    96/125]   77% | loss=0.0011 | elapsed=3s | eta=1s
+  [   108/125]   86% | loss=0.0011 | elapsed=3s | eta=0s
+  [   120/125]   96% | loss=0.0011 | elapsed=3s | eta=0s
+C:\Users\Lizhe\Documents\KPDT0507\experiments\train_phase6.py:174: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+Epoch  39/100 | Train Loss: 0.0013 | Val Loss: 1.1125 (gap=-1.111) | Acc: 0.9166 | Fall F1: 0.6504 | Fallen F1: 0.7060 | Normal F1: 0.9587 | Avg F1: 0.7717 | LR: 1.25e-04
+  [     1/125]    1% | loss=0.0001 | elapsed=0s | eta=4s
+  [    12/125]   10% | loss=0.0013 | elapsed=0s | eta=4s
+  [    24/125]   19% | loss=0.0012 | elapsed=1s | eta=3s
+  [    36/125]   29% | loss=0.0011 | elapsed=1s | eta=3s
+  [    48/125]   38% | loss=0.0013 | elapsed=1s | eta=2s
+  [    60/125]   48% | loss=0.0012 | elapsed=2s | eta=2s
+  [    72/125]   58% | loss=0.0013 | elapsed=2s | eta=2s
+  [    84/125]   67% | loss=0.0013 | elapsed=2s | eta=1s
+  [    96/125]   77% | loss=0.0012 | elapsed=3s | eta=1s
+  [   108/125]   86% | loss=0.0011 | elapsed=3s | eta=0s
+  [   120/125]   96% | loss=0.0011 | elapsed=4s | eta=0s
+C:\Users\Lizhe\Documents\KPDT0507\experiments\train_phase6.py:174: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+Epoch  40/100 | Train Loss: 0.0011 | Val Loss: 1.1710 (gap=-1.170) | Acc: 0.9164 | Fall F1: 0.6503 | Fallen F1: 0.7053 | Normal F1: 0.9588 | Avg F1: 0.7714 | LR: 1.25e-04
+  [     1/125]    1% | loss=0.0009 | elapsed=0s | eta=4s
+  [    12/125]   10% | loss=0.0047 | elapsed=0s | eta=3s
+  [    24/125]   19% | loss=0.0028 | elapsed=1s | eta=3s
+  [    36/125]   29% | loss=0.0022 | elapsed=1s | eta=2s
+  [    48/125]   38% | loss=0.0020 | elapsed=1s | eta=2s
+  [    60/125]   48% | loss=0.0018 | elapsed=2s | eta=2s
+  [    72/125]   58% | loss=0.0016 | elapsed=2s | eta=1s
+  [    84/125]   67% | loss=0.0015 | elapsed=2s | eta=1s
+  [    96/125]   77% | loss=0.0016 | elapsed=3s | eta=1s
+  [   108/125]   86% | loss=0.0016 | elapsed=3s | eta=0s
+  [   120/125]   96% | loss=0.0015 | elapsed=3s | eta=0s
+C:\Users\Lizhe\Documents\KPDT0507\experiments\train_phase6.py:174: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+Epoch  41/100 | Train Loss: 0.0015 | Val Loss: 1.1467 (gap=-1.145) | Acc: 0.9159 | Fall F1: 0.6515 | Fallen F1: 0.7036 | Normal F1: 0.9583 | Avg F1: 0.7711 | LR: 1.25e-04
+  [     1/125]    1% | loss=0.0007 | elapsed=0s | eta=3s
+  [    12/125]   10% | loss=0.0008 | elapsed=0s | eta=3s
+  [    24/125]   19% | loss=0.0007 | elapsed=1s | eta=3s
+  [    36/125]   29% | loss=0.0016 | elapsed=1s | eta=2s
+  [    48/125]   38% | loss=0.0014 | elapsed=1s | eta=2s
+  [    60/125]   48% | loss=0.0014 | elapsed=2s | eta=2s
+  [    72/125]   58% | loss=0.0014 | elapsed=2s | eta=1s
+  [    84/125]   67% | loss=0.0014 | elapsed=2s | eta=1s
+  [    96/125]   77% | loss=0.0013 | elapsed=3s | eta=1s
+  [   108/125]   86% | loss=0.0012 | elapsed=3s | eta=0s
+  [   120/125]   96% | loss=0.0012 | elapsed=3s | eta=0s
+C:\Users\Lizhe\Documents\KPDT0507\experiments\train_phase6.py:174: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+Epoch  42/100 | Train Loss: 0.0012 | Val Loss: 1.1631 (gap=-1.162) | Acc: 0.9163 | Fall F1: 0.6485 | Fallen F1: 0.7061 | Normal F1: 0.9586 | Avg F1: 0.7711 | LR: 1.25e-04
+  [     1/125]    1% | loss=0.0003 | elapsed=0s | eta=4s
+  [    12/125]   10% | loss=0.0006 | elapsed=0s | eta=3s
+  [    24/125]   19% | loss=0.0007 | elapsed=1s | eta=3s
+  [    36/125]   29% | loss=0.0007 | elapsed=1s | eta=2s
+  [    48/125]   38% | loss=0.0007 | elapsed=1s | eta=2s
+  [    60/125]   48% | loss=0.0007 | elapsed=2s | eta=2s
+  [    72/125]   58% | loss=0.0007 | elapsed=2s | eta=1s
+  [    84/125]   67% | loss=0.0008 | elapsed=2s | eta=1s
+  [    96/125]   77% | loss=0.0007 | elapsed=3s | eta=1s
+  [   108/125]   86% | loss=0.0008 | elapsed=3s | eta=0s
+  [   120/125]   96% | loss=0.0012 | elapsed=3s | eta=0s
+Epoch  43/100 | Train Loss: 0.0011 | Val Loss: 1.1447 (gap=-1.144) | Acc: 0.9167 | Fall F1: 0.6483 | Fallen F1: 0.7048 | Normal F1: 0.9589 | Avg F1: 0.7707 | LR: 6.25e-05
+
+[INFO] Early stopping at epoch 43 (best epoch: 28, best Fall F1: 0.6548)
+[INFO] Ternary training curves saved: logs/phase9/e3_stage2_2000\training_curves.png
+
+============================================================
+Evaluating on test set...
+============================================================
+
+============================================================
+TEST RESULTS
+============================================================
+  ternary_acc:     0.9010  (random: 0.3333)
+  fall_f1:         0.6354
+  fall_precision:  0.5724
+  fall_recall:     0.7139
+  fallen_f1:       0.6243
+  fallen_precision:0.6321
+  fallen_recall:   0.6166
+  normal_f1:       0.9498
+  normal_precision:0.9577
+  normal_recall:   0.9422
+  avg_f1 (macro):  0.7365
+
+  --- Classification Report (3-class) ---
+              precision    recall  f1-score   support
+
+        fall       0.57      0.71      0.64     14763
+      fallen       0.63      0.62      0.62     18791
+      normal       0.96      0.94      0.95    196846
+
+    accuracy                           0.90    230400
+   macro avg       0.72      0.76      0.74    230400
+weighted avg       0.91      0.90      0.90    230400
+
+[INFO] Confusion matrix saved: logs/phase9/e3_stage2_2000\confusion_matrix.png
+[INFO] Confusion matrix saved: logs/phase9/e3_stage2_2000\confusion_matrix_counts.png
+
+============================================================
+EXPERIMENT SUMMARY
+============================================================
+  Log directory:   logs/phase9/e3_stage2_2000
+  Decoder:         transformer (bidirectional)
+  Input dim:       3072
+  Window:          T=64, stride=16
+  Train windows:   4,000
+  Best epoch:      28
+  Best Fall F1:    0.6548 (val)
+  Test Fall F1:    0.6354
+  Test Fallen F1:  0.6243
+  Test Normal F1:  0.9498
+  Test Avg F1:     0.7365
+  Train-Val gap:   -1.1435
+  FP16:            enabled
+  Focal gamma:     N/A (CE)
+============================================================

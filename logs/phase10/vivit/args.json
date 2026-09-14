@@ -1,0 +1,24 @@
+{
+  "model": "vivit",
+  "tag": "vivit",
+  "protocol": "linear_probe_T1",
+  "backbone": "google/vivit-b-16x2-kinetics400",
+  "feature": "cls_token_last_hidden_state",
+  "num_frames": 32,
+  "crop": 224,
+  "train_stride": 8,
+  "test_stride": 1,
+  "head": "Linear(768,3)",
+  "optimizer": "adamw",
+  "lr": 0.001,
+  "weight_decay": 0.01,
+  "head_epochs": 60,
+  "head_batch": 512,
+  "patience": 5,
+  "class_weights": [
+    1.4237,
+    1.4367,
+    0.1396
+  ],
+  "best_val_avg_f1": 0.6735255745410548
+}

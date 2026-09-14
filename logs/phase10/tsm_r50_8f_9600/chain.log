@@ -1,0 +1,46 @@
+[watch] started at Sun Sep 13 00:46:21 CST 2026, waiting for training (tag=tsm_r50_8f_9600)
+[watch] training process gone at Sun Sep 13 04:08:22 CST 2026
+/root/miniconda3/lib/python3.10/site-packages/torchvision/io/image.py:13: UserWarning: Failed to load image Python extension: '/root/miniconda3/lib/python3.10/site-packages/torchvision/image.so: undefined symbol: _ZN3c1017RegisterOperatorsD1Ev'If you don't plan on using image functionality from `torchvision.io`, you can ignore this warning. Otherwise, there might be something wrong with your environment. Did you have `libjpeg` or `libpng` installed before building `torchvision` from source?
+  warn(
+/root/autodl-tmp/experiments/train_p10_tsm.py:334: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  ckpt = torch.load(ckpt_path, map_location="cpu")
+[data] train clips=96000 (missing video dirs=0), val clips=2000 (missing=0)
+[data] window label counts=[8278, 7164, 80558] -> class weights=[1.328, 1.535, 0.137]
+=> base model: resnet50
+Adding temporal shift...
+=> n_segment per stage: [8, 8, 8, 8]
+=> Processing stage with 3 blocks residual
+=> Using fold div: 8
+=> Using fold div: 8
+=> Using fold div: 8
+=> Processing stage with 4 blocks residual
+=> Using fold div: 8
+=> Using fold div: 8
+=> Using fold div: 8
+=> Using fold div: 8
+=> Processing stage with 6 blocks residual
+=> Using fold div: 8
+=> Using fold div: 8
+=> Using fold div: 8
+=> Using fold div: 8
+=> Using fold div: 8
+=> Using fold div: 8
+=> Processing stage with 3 blocks residual
+=> Using fold div: 8
+=> Using fold div: 8
+=> Using fold div: 8
+=> converted 16 TemporalShift modules to FastTemporalShift
+[model] TSN-TSM resnet50 params=23.51M, num_frames=8
+[test] 1200 videos -> 87600 clips (stride=1)
+[test] avg_f1=0.7083 acc=0.8846 fall_f1=0.6268 fallen_f1=0.5590 (n=96000)
+[train] eval-only mode finished; logs -> /root/autodl-tmp/logs/phase10/tsm_r50_8f_9600
+=== timeline (event-level, per-video) ===
+  videos=1200  has_fall=211  has_fallen=150
+  fall_f1=0.6982  fallen_f1=0.5678  avg_f1=0.6389
+  coverage: fall=0.948  fallen=0.747
+  false alarm: fall=0.082  fallen=0.091
+  flips/video=0.69  order_correct=0.993
+=== instance (same frames) ===
+  avg_f1=0.7083 acc=0.8846 fall_f1=0.6268 fallen_f1=0.5590 n=96000
+saved -> logs/phase10/tsm_r50_8f_9600/timeline_results.json
+[watch] all done at Sun Sep 13 04:13:29 CST 2026

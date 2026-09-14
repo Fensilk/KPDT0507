@@ -1,0 +1,488 @@
+{
+  "comparison": [
+    {
+      "tag": "baseline(p7d_delta)",
+      "n_videos": 1200,
+      "rule_stats": {
+        "events": 260,
+        "fallen_kept": 6082,
+        "fallen_suppressed": 896,
+        "videos_skipped_no_fallen": 996,
+        "videos_skipped_pure_fallen": 24,
+        "videos_processed": 180
+      },
+      "raw": {
+        "ternary": {
+          "ternary_acc": 0.9082604166666667,
+          "fall_f1": 0.6906408483171969,
+          "fall_precision": 0.6044500807009453,
+          "fall_recall": 0.8055000768167153,
+          "fallen_f1": 0.657102779903086,
+          "fallen_precision": 0.6204695966285371,
+          "fallen_recall": 0.6983331074671365,
+          "normal_f1": 0.9532125635344715,
+          "avg_f1": 0.7669853972515849,
+          "confusion_matrix": [
+            [
+              5243,
+              278,
+              988
+            ],
+            [
+              990,
+              5153,
+              1236
+            ],
+            [
+              2441,
+              2874,
+              76797
+            ]
+          ]
+        },
+        "binary_event": {
+          "event_f1": 0.7557585771211974,
+          "event_precision": 0.6869662524294717,
+          "event_recall": 0.8398617511520737,
+          "event_tp": 11664,
+          "event_fp": 5315,
+          "event_fn": 2224,
+          "binary_cm": [
+            [
+              76797,
+              5315
+            ],
+            [
+              2224,
+              11664
+            ]
+          ]
+        }
+      },
+      "rulev2": {
+        "ternary": {
+          "ternary_acc": 0.9164270833333333,
+          "fall_f1": 0.6906408483171969,
+          "fall_precision": 0.6044500807009453,
+          "fall_recall": 0.8055000768167153,
+          "fallen_f1": 0.6916418717879361,
+          "fallen_precision": 0.6902415980564178,
+          "fallen_recall": 0.693047838460496,
+          "normal_f1": 0.9581000931931938,
+          "avg_f1": 0.7801276044327755,
+          "confusion_matrix": [
+            [
+              5243,
+              244,
+              1022
+            ],
+            [
+              990,
+              5114,
+              1275
+            ],
+            [
+              2441,
+              2051,
+              77620
+            ]
+          ]
+        },
+        "binary_event": {
+          "event_f1": 0.7734810316639419,
+          "event_precision": 0.7206988745880744,
+          "event_recall": 0.8346054147465438,
+          "event_tp": 11591,
+          "event_fp": 4492,
+          "event_fn": 2297,
+          "binary_cm": [
+            [
+              77620,
+              4492
+            ],
+            [
+              2297,
+              11591
+            ]
+          ]
+        }
+      },
+      "event_fp_by_class": {
+        "raw": {
+          "walk": {
+            "total": 10893,
+            "event": 73
+          },
+          "fall": {
+            "total": 6509,
+            "event": 5521
+          },
+          "fallen": {
+            "total": 7379,
+            "event": 6143
+          },
+          "sit_down": {
+            "total": 4652,
+            "event": 227
+          },
+          "sitting": {
+            "total": 15765,
+            "event": 568
+          },
+          "lie_down": {
+            "total": 4844,
+            "event": 403
+          },
+          "lying": {
+            "total": 15601,
+            "event": 1941
+          },
+          "stand_up": {
+            "total": 6684,
+            "event": 722
+          },
+          "standing": {
+            "total": 12706,
+            "event": 135
+          },
+          "other": {
+            "total": 9093,
+            "event": 1007
+          },
+          "kneel_down": {
+            "total": 31,
+            "event": 31
+          },
+          "kneeling": {
+            "total": 529,
+            "event": 22
+          },
+          "squat_down": {
+            "total": 220,
+            "event": 58
+          },
+          "squatting": {
+            "total": 152,
+            "event": 9
+          },
+          "crawl": {
+            "total": 421,
+            "event": 15
+          },
+          "jump": {
+            "total": 521,
+            "event": 104
+          }
+        },
+        "corrected": {
+          "walk": {
+            "total": 10893,
+            "event": 73
+          },
+          "fall": {
+            "total": 6509,
+            "event": 5487
+          },
+          "fallen": {
+            "total": 7379,
+            "event": 6104
+          },
+          "sit_down": {
+            "total": 4652,
+            "event": 227
+          },
+          "sitting": {
+            "total": 15765,
+            "event": 493
+          },
+          "lie_down": {
+            "total": 4844,
+            "event": 403
+          },
+          "lying": {
+            "total": 15601,
+            "event": 1270
+          },
+          "stand_up": {
+            "total": 6684,
+            "event": 689
+          },
+          "standing": {
+            "total": 12706,
+            "event": 135
+          },
+          "other": {
+            "total": 9093,
+            "event": 964
+          },
+          "kneel_down": {
+            "total": 31,
+            "event": 31
+          },
+          "kneeling": {
+            "total": 529,
+            "event": 22
+          },
+          "squat_down": {
+            "total": 220,
+            "event": 58
+          },
+          "squatting": {
+            "total": 152,
+            "event": 9
+          },
+          "crawl": {
+            "total": 421,
+            "event": 15
+          },
+          "jump": {
+            "total": 521,
+            "event": 103
+          }
+        }
+      }
+    },
+    {
+      "tag": "E3-full(e3_stage2)",
+      "n_videos": 1200,
+      "rule_stats": {
+        "events": 237,
+        "fallen_kept": 5853,
+        "fallen_suppressed": 617,
+        "videos_skipped_no_fallen": 1002,
+        "videos_skipped_pure_fallen": 36,
+        "videos_processed": 162
+      },
+      "raw": {
+        "ternary": {
+          "ternary_acc": 0.9068854166666667,
+          "fall_f1": 0.7080212534408808,
+          "fall_precision": 0.6068920105355575,
+          "fall_recall": 0.8495928714088186,
+          "fallen_f1": 0.6507063382922865,
+          "fallen_precision": 0.6038983640793596,
+          "fallen_recall": 0.7053801328093238,
+          "normal_f1": 0.9518085059950991,
+          "avg_f1": 0.7701786992427554,
+          "confusion_matrix": [
+            [
+              5530,
+              240,
+              739
+            ],
+            [
+              970,
+              5205,
+              1204
+            ],
+            [
+              2612,
+              3174,
+              76326
+            ]
+          ]
+        },
+        "binary_event": {
+          "event_f1": 0.7555583668047693,
+          "event_precision": 0.6736788675201624,
+          "event_recall": 0.8600950460829493,
+          "event_tp": 11945,
+          "event_fp": 5786,
+          "event_fn": 1943,
+          "binary_cm": [
+            [
+              76326,
+              5786
+            ],
+            [
+              1943,
+              11945
+            ]
+          ]
+        }
+      },
+      "rulev2": {
+        "ternary": {
+          "ternary_acc": 0.9101875,
+          "fall_f1": 0.7080212534408808,
+          "fall_precision": 0.6068920105355575,
+          "fall_recall": 0.8495928714088186,
+          "fallen_f1": 0.6586047721214485,
+          "fallen_precision": 0.6329667583104224,
+          "fallen_recall": 0.6864073722726657,
+          "normal_f1": 0.9538379358749798,
+          "avg_f1": 0.7734879871457697,
+          "confusion_matrix": [
+            [
+              5530,
+              220,
+              759
+            ],
+            [
+              970,
+              5065,
+              1344
+            ],
+            [
+              2612,
+              2717,
+              76783
+            ]
+          ]
+        },
+        "binary_event": {
+          "event_f1": 0.7602735307399522,
+          "event_precision": 0.6886175061353278,
+          "event_recall": 0.8485743087557603,
+          "event_tp": 11785,
+          "event_fp": 5329,
+          "event_fn": 2103,
+          "binary_cm": [
+            [
+              76783,
+              5329
+            ],
+            [
+              2103,
+              11785
+            ]
+          ]
+        }
+      },
+      "event_fp_by_class": {
+        "raw": {
+          "walk": {
+            "total": 10893,
+            "event": 83
+          },
+          "fall": {
+            "total": 6509,
+            "event": 5770
+          },
+          "fallen": {
+            "total": 7379,
+            "event": 6175
+          },
+          "sit_down": {
+            "total": 4652,
+            "event": 65
+          },
+          "sitting": {
+            "total": 15765,
+            "event": 364
+          },
+          "lie_down": {
+            "total": 4844,
+            "event": 683
+          },
+          "lying": {
+            "total": 15601,
+            "event": 2295
+          },
+          "stand_up": {
+            "total": 6684,
+            "event": 799
+          },
+          "standing": {
+            "total": 12706,
+            "event": 55
+          },
+          "other": {
+            "total": 9093,
+            "event": 1113
+          },
+          "kneel_down": {
+            "total": 31,
+            "event": 0
+          },
+          "kneeling": {
+            "total": 529,
+            "event": 62
+          },
+          "squat_down": {
+            "total": 220,
+            "event": 21
+          },
+          "squatting": {
+            "total": 152,
+            "event": 13
+          },
+          "crawl": {
+            "total": 421,
+            "event": 73
+          },
+          "jump": {
+            "total": 521,
+            "event": 160
+          }
+        },
+        "corrected": {
+          "walk": {
+            "total": 10893,
+            "event": 83
+          },
+          "fall": {
+            "total": 6509,
+            "event": 5750
+          },
+          "fallen": {
+            "total": 7379,
+            "event": 6035
+          },
+          "sit_down": {
+            "total": 4652,
+            "event": 65
+          },
+          "sitting": {
+            "total": 15765,
+            "event": 364
+          },
+          "lie_down": {
+            "total": 4844,
+            "event": 653
+          },
+          "lying": {
+            "total": 15601,
+            "event": 1923
+          },
+          "stand_up": {
+            "total": 6684,
+            "event": 774
+          },
+          "standing": {
+            "total": 12706,
+            "event": 55
+          },
+          "other": {
+            "total": 9093,
+            "event": 1083
+          },
+          "kneel_down": {
+            "total": 31,
+            "event": 0
+          },
+          "kneeling": {
+            "total": 529,
+            "event": 62
+          },
+          "squat_down": {
+            "total": 220,
+            "event": 21
+          },
+          "squatting": {
+            "total": 152,
+            "event": 13
+          },
+          "crawl": {
+            "total": 421,
+            "event": 73
+          },
+          "jump": {
+            "total": 521,
+            "event": 160
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+[1] 加载 facebook/dinov2-giant(fp16) + LoRA(r=16) + Phase6 bridge 头
+  梯度 checkpointing: True
+  torch.compile: ON
+  可训练参数: 10.82M (LoRA + 时序头；主干冻结 fp16)
+[2] mp4 现解码数据集: DATASET-omnifall/splits/syn/random/train.csv (window=64, stride=16, workers=4)
+  训练视频: 8 | 窗口: 16 | 类权重 fall/fallen/normal: [0.471, 1.81, 0.719]

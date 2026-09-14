@@ -1,0 +1,95 @@
+{
+  "dump": "logs/phase10/x3d_s/test_dense_preds.npz",
+  "n_videos": 1200,
+  "n_videos_missing_gt": 0,
+  "instance": {
+    "ternary_acc": 0.8722291666666667,
+    "random_baseline": 0.3333333333333333,
+    "fall_f1": 0.6491290018832392,
+    "fall_precision": 0.5260898597729657,
+    "fall_recall": 0.847288369949301,
+    "fallen_f1": 0.5341408383802398,
+    "fallen_precision": 0.47532494980450174,
+    "fallen_recall": 0.6095676920992005,
+    "normal_f1": 0.9321978174828978,
+    "normal_precision": 0.9693244273805454,
+    "normal_recall": 0.8978103078721746,
+    "avg_f1": 0.7051558859154589,
+    "confusion_matrix": [
+      [
+        5515,
+        210,
+        784
+      ],
+      [
+        1332,
+        4498,
+        1549
+      ],
+      [
+        3636,
+        4755,
+        73721
+      ]
+    ],
+    "cls_report": "              precision    recall  f1-score   support\n\n        fall       0.53      0.85      0.65      6509\n      fallen       0.48      0.61      0.53      7379\n      normal       0.97      0.90      0.93     82112\n\n    accuracy                           0.87     96000\n   macro avg       0.66      0.78      0.71     96000\nweighted avg       0.90      0.87      0.88     96000\n",
+    "n_instances": 96000
+  },
+  "timeline": {
+    "n_videos": 1200,
+    "n_has_fall": 211,
+    "n_has_fallen": 150,
+    "n_has_both": 139,
+    "order_correct_rate": 0.9712230215827338,
+    "mean_fall_flips": 0.30333333333333334,
+    "mean_fallen_flips": 0.21916666666666668,
+    "mean_total_flips": 0.5225,
+    "flip_distribution": {
+      "0_flips": 887,
+      "1_flips": 110,
+      "2_flips": 140,
+      "3_flips": 37,
+      "4+_flips": 26
+    },
+    "unstable_rate": 0.021666666666666667,
+    "mean_fall_delay": 1.603960396039604,
+    "median_fall_delay": 0.0,
+    "mean_fallen_delay": 5.245098039215686,
+    "median_fallen_delay": 3.0,
+    "mean_fall_as_fallen_rate": 0.040058528753008575,
+    "mean_fallen_as_fall_rate": 0.27784033677999065,
+    "per_video_fall_f1": {
+      "n": 211,
+      "mean": 0.7133230363217834,
+      "median": 0.7692307692307693,
+      "std": 0.2539428593041135,
+      "0.0": 11,
+      "0.0-0.5": 28,
+      "0.5-0.8": 74,
+      "0.8-1.0": 98,
+      "1.0": 19
+    },
+    "per_video_fallen_f1": {
+      "n": 150,
+      "mean": 0.5491957392022634,
+      "median": 0.7788257050392973,
+      "std": 0.42924399809522495,
+      "0.0": 51,
+      "0.0-0.5": 11,
+      "0.5-0.8": 16,
+      "0.8-1.0": 72,
+      "1.0": 5
+    },
+    "per_video_avg_f1": {
+      "n": 222,
+      "mean": 0.6641331031668705,
+      "median": 0.7353838770412118,
+      "std": 0.28955640430940877
+    },
+    "fall_false_alarm_rate": 0.0910010111223458,
+    "fallen_false_alarm_rate": 0.10285714285714286,
+    "fall_detection_rate": 0.957345971563981,
+    "fallen_detection_rate": 0.68,
+    "pass_rate": 0.5179856115107914
+  }
+}

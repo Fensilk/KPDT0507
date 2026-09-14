@@ -1,0 +1,52 @@
+[1] device=cuda | window=64 stride=8 | model=facebook/dinov2-giant
+[2] 重建 E1Model from C:\Users\Lizhe\Documents\KPDT0507\logs\phase9\e1_5ep\best_model.pt
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 12188.89it/s]
+C:\Users\Lizhe\anaconda3\envs\py310\lib\site-packages\torch\nn\modules\transformer.py:379: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 best_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 746 个 = 冻结主干（预期）
+[3] test 视频数 = 1200（limit=None）
+  [checkpoint] cached 100 videos -> C:\Users\Lizhe\Documents\KPDT0507\logs\phase9\e1_rulev2\pv_cache.pt
+  [100/1200] 完成 100 视频 / 300 新窗口, 跳过 0
+  [checkpoint] cached 200 videos -> C:\Users\Lizhe\Documents\KPDT0507\logs\phase9\e1_rulev2\pv_cache.pt
+  [200/1200] 完成 200 视频 / 600 新窗口, 跳过 0
+  [checkpoint] cached 300 videos -> C:\Users\Lizhe\Documents\KPDT0507\logs\phase9\e1_rulev2\pv_cache.pt
+  [300/1200] 完成 300 视频 / 900 新窗口, 跳过 0
+  [checkpoint] cached 400 videos -> C:\Users\Lizhe\Documents\KPDT0507\logs\phase9\e1_rulev2\pv_cache.pt
+  [400/1200] 完成 400 视频 / 1200 新窗口, 跳过 0
+  [checkpoint] cached 500 videos -> C:\Users\Lizhe\Documents\KPDT0507\logs\phase9\e1_rulev2\pv_cache.pt
+  [500/1200] 完成 500 视频 / 1500 新窗口, 跳过 0
+  [checkpoint] cached 600 videos -> C:\Users\Lizhe\Documents\KPDT0507\logs\phase9\e1_rulev2\pv_cache.pt
+  [600/1200] 完成 600 视频 / 1800 新窗口, 跳过 0
+  [checkpoint] cached 700 videos -> C:\Users\Lizhe\Documents\KPDT0507\logs\phase9\e1_rulev2\pv_cache.pt
+  [700/1200] 完成 700 视频 / 2100 新窗口, 跳过 0
+  [checkpoint] cached 800 videos -> C:\Users\Lizhe\Documents\KPDT0507\logs\phase9\e1_rulev2\pv_cache.pt
+  [800/1200] 完成 800 视频 / 2400 新窗口, 跳过 0
+  [checkpoint] cached 900 videos -> C:\Users\Lizhe\Documents\KPDT0507\logs\phase9\e1_rulev2\pv_cache.pt
+  [900/1200] 完成 900 视频 / 2700 新窗口, 跳过 0
+  [checkpoint] cached 1000 videos -> C:\Users\Lizhe\Documents\KPDT0507\logs\phase9\e1_rulev2\pv_cache.pt
+  [1000/1200] 完成 1000 视频 / 3000 新窗口, 跳过 0
+  [checkpoint] cached 1100 videos -> C:\Users\Lizhe\Documents\KPDT0507\logs\phase9\e1_rulev2\pv_cache.pt
+  [1100/1200] 完成 1100 视频 / 3300 新窗口, 跳过 0
+  [checkpoint] cached 1200 videos -> C:\Users\Lizhe\Documents\KPDT0507\logs\phase9\e1_rulev2\pv_cache.pt
+  [1200/1200] 完成 1200 视频 / 3600 新窗口, 跳过 0
+[4] 推理完成 1200 视频 / 3600 窗口, 墙钟 8612.9s (7.2s/视频)
+
+  raw  : ev_f1=0.7606 prec=0.7532 rec=0.7681 | fallen_prec=0.6408 avg_f1=0.7701
+  canonical(K2=7,W=64): ev_f1=0.7624 prec=0.7668 rec=0.7580 | fallen_prec=0.6631 avg_f1=0.7711
+  best(K2=5,W=32): ev_f1=0.7669 prec=0.7662 rec=0.7676 | fallen_prec=0.6626 avg_f1=0.7740
+
+  event_f1 grid（* = best）:
+    K2 | W=32    W=64    W=128
+  K2=3   | 0.7621      0.7618      0.7618   
+  K2=5   | 0.7669*     0.7657      0.7657   
+  K2=7   | 0.7620      0.7624      0.7624   
+  K2=10  | 0.7544      0.7557      0.7557   
+  K2=15  | 0.7132      0.7191      0.7191   
+  K2=20  | 0.6423      0.6547      0.6546   
+
+Saved: C:\Users\Lizhe\Documents\KPDT0507\logs\phase9\e1_rulev2\rulev2_e1.json
+
+  ── 对照（同 merged 口径）──
+  baseline   raw 0.7558  |  best(K2=7,W=32) 0.7735 (prec 0.7212, rec 0.8339, fallen_prec 0.6913)
+  E3-full    raw 0.7556  |  best(K2=5,W=64) 0.7654 (prec 0.6907, rec 0.8581, fallen_prec 0.6378)
+  E1@2000    raw 0.7606  |  best(K2=5,W=32) 0.7669 (prec 0.7662, rec 0.7676, fallen_prec 0.6626)

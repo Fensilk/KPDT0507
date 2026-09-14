@@ -1,0 +1,89 @@
+{
+  "dump": "logs/phase10/tsm_timeline_test/test_dense_preds.npz",
+  "n_videos": 6,
+  "n_videos_missing_gt": 0,
+  "instance": {
+    "fall_precision": 0.0,
+    "fall_recall": 0.0,
+    "fall_f1": 0.0,
+    "fallen_precision": 0.0,
+    "fallen_recall": 0.0,
+    "fallen_f1": 0.0,
+    "normal_precision": 0.9645833333333333,
+    "normal_recall": 1.0,
+    "normal_f1": 0.9819724284199364,
+    "avg_f1": 0.32732414280664546,
+    "ternary_acc": 0.9645833333333333,
+    "confusion_matrix": [
+      [
+        0,
+        0,
+        17
+      ],
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        463
+      ]
+    ],
+    "cls_report": "              precision    recall  f1-score   support\n\n        fall       0.00      0.00      0.00        17\n      fallen       0.00      0.00      0.00         0\n      normal       0.96      1.00      0.98       463\n\n    accuracy                           0.96       480\n   macro avg       0.32      0.33      0.33       480\nweighted avg       0.93      0.96      0.95       480\n",
+    "n_instances": 480
+  },
+  "timeline": {
+    "n_videos": 6,
+    "n_has_fall": 1,
+    "n_has_fallen": 0,
+    "n_has_both": 0,
+    "order_correct_rate": null,
+    "mean_fall_flips": 0.0,
+    "mean_fallen_flips": 0.0,
+    "mean_total_flips": 0.0,
+    "flip_distribution": {
+      "0_flips": 6,
+      "1_flips": 0,
+      "2_flips": 0,
+      "3_flips": 0,
+      "4+_flips": 0
+    },
+    "unstable_rate": 0.0,
+    "mean_fall_delay": null,
+    "median_fall_delay": null,
+    "mean_fallen_delay": null,
+    "median_fallen_delay": null,
+    "mean_fall_as_fallen_rate": 0.0,
+    "mean_fallen_as_fall_rate": null,
+    "per_video_fall_f1": {
+      "n": 1,
+      "mean": 0.0,
+      "median": 0.0,
+      "std": 0.0,
+      "0.0": 1,
+      "0.0-0.5": 0,
+      "0.5-0.8": 0,
+      "0.8-1.0": 0,
+      "1.0": 0
+    },
+    "per_video_fallen_f1": {
+      "n": 0,
+      "mean": null,
+      "median": null,
+      "std": null
+    },
+    "per_video_avg_f1": {
+      "n": 1,
+      "mean": 0.0,
+      "median": 0.0,
+      "std": 0.0
+    },
+    "fall_false_alarm_rate": 0.0,
+    "fallen_false_alarm_rate": 0.0,
+    "fall_detection_rate": 0.0,
+    "fallen_detection_rate": null,
+    "pass_rate": null
+  }
+}

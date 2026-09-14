@@ -1,0 +1,998 @@
+{
+  "meta": {
+    "n_skip": 0,
+    "n_windows": 3600,
+    "resumed": 0,
+    "n_videos": 1200
+  },
+  "raw": {
+    "ternary": {
+      "ternary_acc": 0.917375,
+      "fall_f1": 0.7140186915887851,
+      "fall_precision": 0.6954558695018934,
+      "fall_recall": 0.7335996312797665,
+      "fallen_f1": 0.6372308530934859,
+      "fallen_precision": 0.640811292311909,
+      "fallen_recall": 0.63369020192438,
+      "avg_f1": 0.7700972286119742,
+      "confusion_matrix": [
+        [
+          4775,
+          227,
+          1507
+        ],
+        [
+          990,
+          4676,
+          1713
+        ],
+        [
+          1101,
+          2394,
+          78617
+        ]
+      ]
+    },
+    "binary_event": {
+      "event_f1": 0.7606145948451036,
+      "event_precision": 0.7532302478288498,
+      "event_recall": 0.7681451612903226,
+      "event_fp": 3495,
+      "event_fn": 3220
+    }
+  },
+  "canonical": {
+    "K1": 2,
+    "K2": 7,
+    "W": 64,
+    "ternary": {
+      "ternary_acc": 0.919125,
+      "fall_f1": 0.7140186915887851,
+      "fall_precision": 0.6954558695018934,
+      "fall_recall": 0.7335996312797665,
+      "fallen_f1": 0.6390956326358658,
+      "fallen_precision": 0.6631210840740202,
+      "fallen_recall": 0.6167502371595067,
+      "avg_f1": 0.7710630903824621,
+      "confusion_matrix": [
+        [
+          4775,
+          211,
+          1523
+        ],
+        [
+          990,
+          4551,
+          1838
+        ],
+        [
+          1101,
+          2101,
+          78910
+        ]
+      ]
+    },
+    "binary_event": {
+      "event_f1": 0.762356519535069,
+      "event_precision": 0.7667710685410445,
+      "event_recall": 0.7579925115207373,
+      "event_fp": 3202,
+      "event_fn": 3361
+    },
+    "rule_stats": {
+      "events": 187,
+      "fallen_kept": 5210,
+      "fallen_suppressed": 434,
+      "videos_skipped_no_fallen": 1045,
+      "videos_skipped_pure_fallen": 24,
+      "videos_processed": 131
+    }
+  },
+  "best": {
+    "K1": 2,
+    "K2": 5,
+    "W": 32,
+    "ternary": {
+      "ternary_acc": 0.9198333333333333,
+      "fall_f1": 0.7140186915887851,
+      "fall_precision": 0.6954558695018934,
+      "fall_recall": 0.7335996312797665,
+      "fallen_f1": 0.647490989742168,
+      "fallen_precision": 0.6626471839977301,
+      "fallen_recall": 0.6330126033337851,
+      "avg_f1": 0.774012933946212,
+      "confusion_matrix": [
+        [
+          4775,
+          225,
+          1509
+        ],
+        [
+          990,
+          4671,
+          1718
+        ],
+        [
+          1101,
+          2153,
+          78858
+        ]
+      ]
+    },
+    "binary_event": {
+      "event_f1": 0.7668956587418625,
+      "event_precision": 0.7661516349263385,
+      "event_recall": 0.7676411290322581,
+      "event_fp": 3254,
+      "event_fn": 3227
+    },
+    "rule_stats": {
+      "events": 187,
+      "fallen_kept": 5396,
+      "fallen_suppressed": 248,
+      "videos_skipped_no_fallen": 1045,
+      "videos_skipped_pure_fallen": 24,
+      "videos_processed": 131
+    }
+  },
+  "grid": [
+    {
+      "K1": 2,
+      "K2": 3,
+      "W": 32,
+      "ternary": {
+        "ternary_acc": 0.9179791666666667,
+        "fall_f1": 0.7140186915887851,
+        "fall_precision": 0.6954558695018934,
+        "fall_recall": 0.7335996312797665,
+        "fallen_f1": 0.6397481522036682,
+        "fallen_precision": 0.6462048942347574,
+        "fallen_recall": 0.633419162488142,
+        "avg_f1": 0.7710554678611485,
+        "confusion_matrix": [
+          [
+            4775,
+            225,
+            1509
+          ],
+          [
+            990,
+            4674,
+            1715
+          ],
+          [
+            1101,
+            2334,
+            78677
+          ]
+        ]
+      },
+      "binary_event": {
+        "event_f1": 0.7620681030478437,
+        "event_precision": 0.7563656996950139,
+        "event_recall": 0.7678571428571429,
+        "event_fp": 3435,
+        "event_fn": 3224
+      },
+      "rule_stats": {
+        "events": 192,
+        "fallen_kept": 5580,
+        "fallen_suppressed": 64,
+        "videos_skipped_no_fallen": 1045,
+        "videos_skipped_pure_fallen": 24,
+        "videos_processed": 131
+      }
+    },
+    {
+      "K1": 2,
+      "K2": 3,
+      "W": 64,
+      "ternary": {
+        "ternary_acc": 0.917875,
+        "fall_f1": 0.7140186915887851,
+        "fall_precision": 0.6954558695018934,
+        "fall_recall": 0.7335996312797665,
+        "fallen_f1": 0.6394092711609463,
+        "fallen_precision": 0.6452325100041396,
+        "fallen_recall": 0.63369020192438,
+        "avg_f1": 0.7709210268822639,
+        "confusion_matrix": [
+          [
+            4775,
+            225,
+            1509
+          ],
+          [
+            990,
+            4676,
+            1713
+          ],
+          [
+            1101,
+            2346,
+            78665
+          ]
+        ]
+      },
+      "binary_event": {
+        "event_f1": 0.7618299346451913,
+        "event_precision": 0.7557571033798626,
+        "event_recall": 0.7680011520737328,
+        "event_fp": 3447,
+        "event_fn": 3222
+      },
+      "rule_stats": {
+        "events": 195,
+        "fallen_kept": 5594,
+        "fallen_suppressed": 50,
+        "videos_skipped_no_fallen": 1045,
+        "videos_skipped_pure_fallen": 24,
+        "videos_processed": 131
+      }
+    },
+    {
+      "K1": 2,
+      "K2": 3,
+      "W": 128,
+      "ternary": {
+        "ternary_acc": 0.917875,
+        "fall_f1": 0.7140186915887851,
+        "fall_precision": 0.6954558695018934,
+        "fall_recall": 0.7335996312797665,
+        "fallen_f1": 0.6394092711609463,
+        "fallen_precision": 0.6452325100041396,
+        "fallen_recall": 0.63369020192438,
+        "avg_f1": 0.7709210268822639,
+        "confusion_matrix": [
+          [
+            4775,
+            225,
+            1509
+          ],
+          [
+            990,
+            4676,
+            1713
+          ],
+          [
+            1101,
+            2346,
+            78665
+          ]
+        ]
+      },
+      "binary_event": {
+        "event_f1": 0.7618299346451913,
+        "event_precision": 0.7557571033798626,
+        "event_recall": 0.7680011520737328,
+        "event_fp": 3447,
+        "event_fn": 3222
+      },
+      "rule_stats": {
+        "events": 195,
+        "fallen_kept": 5594,
+        "fallen_suppressed": 50,
+        "videos_skipped_no_fallen": 1045,
+        "videos_skipped_pure_fallen": 24,
+        "videos_processed": 131
+      }
+    },
+    {
+      "K1": 2,
+      "K2": 5,
+      "W": 32,
+      "ternary": {
+        "ternary_acc": 0.9198333333333333,
+        "fall_f1": 0.7140186915887851,
+        "fall_precision": 0.6954558695018934,
+        "fall_recall": 0.7335996312797665,
+        "fallen_f1": 0.647490989742168,
+        "fallen_precision": 0.6626471839977301,
+        "fallen_recall": 0.6330126033337851,
+        "avg_f1": 0.774012933946212,
+        "confusion_matrix": [
+          [
+            4775,
+            225,
+            1509
+          ],
+          [
+            990,
+            4671,
+            1718
+          ],
+          [
+            1101,
+            2153,
+            78858
+          ]
+        ]
+      },
+      "binary_event": {
+        "event_f1": 0.7668956587418625,
+        "event_precision": 0.7661516349263385,
+        "event_recall": 0.7676411290322581,
+        "event_fp": 3254,
+        "event_fn": 3227
+      },
+      "rule_stats": {
+        "events": 187,
+        "fallen_kept": 5396,
+        "fallen_suppressed": 248,
+        "videos_skipped_no_fallen": 1045,
+        "videos_skipped_pure_fallen": 24,
+        "videos_processed": 131
+      }
+    },
+    {
+      "K1": 2,
+      "K2": 5,
+      "W": 64,
+      "ternary": {
+        "ternary_acc": 0.919375,
+        "fall_f1": 0.7140186915887851,
+        "fall_precision": 0.6954558695018934,
+        "fall_recall": 0.7335996312797665,
+        "fallen_f1": 0.6456692913385826,
+        "fallen_precision": 0.6584025919143541,
+        "fallen_recall": 0.633419162488142,
+        "avg_f1": 0.7733123426635448,
+        "confusion_matrix": [
+          [
+            4775,
+            225,
+            1509
+          ],
+          [
+            990,
+            4674,
+            1715
+          ],
+          [
+            1101,
+            2200,
+            78811
+          ]
+        ]
+      },
+      "binary_event": {
+        "event_f1": 0.765734391268445,
+        "event_precision": 0.7636233440744719,
+        "event_recall": 0.7678571428571429,
+        "event_fp": 3301,
+        "event_fn": 3224
+      },
+      "rule_stats": {
+        "events": 192,
+        "fallen_kept": 5446,
+        "fallen_suppressed": 198,
+        "videos_skipped_no_fallen": 1045,
+        "videos_skipped_pure_fallen": 24,
+        "videos_processed": 131
+      }
+    },
+    {
+      "K1": 2,
+      "K2": 5,
+      "W": 128,
+      "ternary": {
+        "ternary_acc": 0.919375,
+        "fall_f1": 0.7140186915887851,
+        "fall_precision": 0.6954558695018934,
+        "fall_recall": 0.7335996312797665,
+        "fallen_f1": 0.6456692913385826,
+        "fallen_precision": 0.6584025919143541,
+        "fallen_recall": 0.633419162488142,
+        "avg_f1": 0.7733123426635448,
+        "confusion_matrix": [
+          [
+            4775,
+            225,
+            1509
+          ],
+          [
+            990,
+            4674,
+            1715
+          ],
+          [
+            1101,
+            2200,
+            78811
+          ]
+        ]
+      },
+      "binary_event": {
+        "event_f1": 0.765734391268445,
+        "event_precision": 0.7636233440744719,
+        "event_recall": 0.7678571428571429,
+        "event_fp": 3301,
+        "event_fn": 3224
+      },
+      "rule_stats": {
+        "events": 192,
+        "fallen_kept": 5446,
+        "fallen_suppressed": 198,
+        "videos_skipped_no_fallen": 1045,
+        "videos_skipped_pure_fallen": 24,
+        "videos_processed": 131
+      }
+    },
+    {
+      "K1": 2,
+      "K2": 7,
+      "W": 32,
+      "ternary": {
+        "ternary_acc": 0.9191041666666667,
+        "fall_f1": 0.7140186915887851,
+        "fall_precision": 0.6954558695018934,
+        "fall_recall": 0.7335996312797665,
+        "fallen_f1": 0.6382439848037147,
+        "fallen_precision": 0.663643013899049,
+        "fallen_recall": 0.6147174413877219,
+        "avg_f1": 0.7707774193704949,
+        "confusion_matrix": [
+          [
+            4775,
+            211,
+            1523
+          ],
+          [
+            990,
+            4536,
+            1853
+          ],
+          [
+            1101,
+            2088,
+            78923
+          ]
+        ]
+      },
+      "binary_event": {
+        "event_f1": 0.7620428431621298,
+        "event_precision": 0.7672432669148237,
+        "event_recall": 0.7569124423963134,
+        "event_fp": 3189,
+        "event_fn": 3376
+      },
+      "rule_stats": {
+        "events": 182,
+        "fallen_kept": 5182,
+        "fallen_suppressed": 462,
+        "videos_skipped_no_fallen": 1045,
+        "videos_skipped_pure_fallen": 24,
+        "videos_processed": 131
+      }
+    },
+    {
+      "K1": 2,
+      "K2": 7,
+      "W": 64,
+      "ternary": {
+        "ternary_acc": 0.919125,
+        "fall_f1": 0.7140186915887851,
+        "fall_precision": 0.6954558695018934,
+        "fall_recall": 0.7335996312797665,
+        "fallen_f1": 0.6390956326358658,
+        "fallen_precision": 0.6631210840740202,
+        "fallen_recall": 0.6167502371595067,
+        "avg_f1": 0.7710630903824621,
+        "confusion_matrix": [
+          [
+            4775,
+            211,
+            1523
+          ],
+          [
+            990,
+            4551,
+            1838
+          ],
+          [
+            1101,
+            2101,
+            78910
+          ]
+        ]
+      },
+      "binary_event": {
+        "event_f1": 0.762356519535069,
+        "event_precision": 0.7667710685410445,
+        "event_recall": 0.7579925115207373,
+        "event_fp": 3202,
+        "event_fn": 3361
+      },
+      "rule_stats": {
+        "events": 187,
+        "fallen_kept": 5210,
+        "fallen_suppressed": 434,
+        "videos_skipped_no_fallen": 1045,
+        "videos_skipped_pure_fallen": 24,
+        "videos_processed": 131
+      }
+    },
+    {
+      "K1": 2,
+      "K2": 7,
+      "W": 128,
+      "ternary": {
+        "ternary_acc": 0.919125,
+        "fall_f1": 0.7140186915887851,
+        "fall_precision": 0.6954558695018934,
+        "fall_recall": 0.7335996312797665,
+        "fallen_f1": 0.6390956326358658,
+        "fallen_precision": 0.6631210840740202,
+        "fallen_recall": 0.6167502371595067,
+        "avg_f1": 0.7710630903824621,
+        "confusion_matrix": [
+          [
+            4775,
+            211,
+            1523
+          ],
+          [
+            990,
+            4551,
+            1838
+          ],
+          [
+            1101,
+            2101,
+            78910
+          ]
+        ]
+      },
+      "binary_event": {
+        "event_f1": 0.762356519535069,
+        "event_precision": 0.7667710685410445,
+        "event_recall": 0.7579925115207373,
+        "event_fp": 3202,
+        "event_fn": 3361
+      },
+      "rule_stats": {
+        "events": 187,
+        "fallen_kept": 5210,
+        "fallen_suppressed": 434,
+        "videos_skipped_no_fallen": 1045,
+        "videos_skipped_pure_fallen": 24,
+        "videos_processed": 131
+      }
+    },
+    {
+      "K1": 2,
+      "K2": 10,
+      "W": 32,
+      "ternary": {
+        "ternary_acc": 0.9184375,
+        "fall_f1": 0.7140186915887851,
+        "fall_precision": 0.6954558695018934,
+        "fall_recall": 0.7335996312797665,
+        "fallen_f1": 0.6193510583754486,
+        "fallen_precision": 0.6738922537456168,
+        "fallen_recall": 0.5729773682070741,
+        "avg_f1": 0.7643775396049017,
+        "confusion_matrix": [
+          [
+            4775,
+            202,
+            1532
+          ],
+          [
+            990,
+            4228,
+            2161
+          ],
+          [
+            1101,
+            1844,
+            79167
+          ]
+        ]
+      },
+      "binary_event": {
+        "event_f1": 0.7544028414977061,
+        "event_precision": 0.775875190258752,
+        "event_recall": 0.7340869815668203,
+        "event_fp": 2945,
+        "event_fn": 3693
+      },
+      "rule_stats": {
+        "events": 167,
+        "fallen_kept": 4621,
+        "fallen_suppressed": 1023,
+        "videos_skipped_no_fallen": 1045,
+        "videos_skipped_pure_fallen": 24,
+        "videos_processed": 131
+      }
+    },
+    {
+      "K1": 2,
+      "K2": 10,
+      "W": 64,
+      "ternary": {
+        "ternary_acc": 0.9186770833333333,
+        "fall_f1": 0.7140186915887851,
+        "fall_precision": 0.6954558695018934,
+        "fall_recall": 0.7335996312797665,
+        "fallen_f1": 0.6223908918406073,
+        "fallen_precision": 0.6743634350782857,
+        "fallen_recall": 0.5778560780593577,
+        "avg_f1": 0.7654333188375295,
+        "confusion_matrix": [
+          [
+            4775,
+            202,
+            1532
+          ],
+          [
+            990,
+            4264,
+            2125
+          ],
+          [
+            1101,
+            1857,
+            79154
+          ]
+        ]
+      },
+      "binary_event": {
+        "event_f1": 0.755696716770691,
+        "event_precision": 0.7757221927363712,
+        "event_recall": 0.7366791474654378,
+        "event_fp": 2958,
+        "event_fn": 3657
+      },
+      "rule_stats": {
+        "events": 175,
+        "fallen_kept": 4670,
+        "fallen_suppressed": 974,
+        "videos_skipped_no_fallen": 1045,
+        "videos_skipped_pure_fallen": 24,
+        "videos_processed": 131
+      }
+    },
+    {
+      "K1": 2,
+      "K2": 10,
+      "W": 128,
+      "ternary": {
+        "ternary_acc": 0.9186770833333333,
+        "fall_f1": 0.7140186915887851,
+        "fall_precision": 0.6954558695018934,
+        "fall_recall": 0.7335996312797665,
+        "fallen_f1": 0.6223908918406073,
+        "fallen_precision": 0.6743634350782857,
+        "fallen_recall": 0.5778560780593577,
+        "avg_f1": 0.7654333188375295,
+        "confusion_matrix": [
+          [
+            4775,
+            202,
+            1532
+          ],
+          [
+            990,
+            4264,
+            2125
+          ],
+          [
+            1101,
+            1857,
+            79154
+          ]
+        ]
+      },
+      "binary_event": {
+        "event_f1": 0.755696716770691,
+        "event_precision": 0.7757221927363712,
+        "event_recall": 0.7366791474654378,
+        "event_fp": 2958,
+        "event_fn": 3657
+      },
+      "rule_stats": {
+        "events": 175,
+        "fallen_kept": 4670,
+        "fallen_suppressed": 974,
+        "videos_skipped_no_fallen": 1045,
+        "videos_skipped_pure_fallen": 24,
+        "videos_processed": 131
+      }
+    },
+    {
+      "K1": 2,
+      "K2": 15,
+      "W": 32,
+      "ternary": {
+        "ternary_acc": 0.9101770833333334,
+        "fall_f1": 0.7140186915887851,
+        "fall_precision": 0.6954558695018934,
+        "fall_recall": 0.7335996312797665,
+        "fallen_f1": 0.5287465401344404,
+        "fallen_precision": 0.6348271933156096,
+        "fallen_recall": 0.4530424176717712,
+        "avg_f1": 0.7326026693204422,
+        "confusion_matrix": [
+          [
+            4775,
+            171,
+            1563
+          ],
+          [
+            990,
+            3343,
+            3046
+          ],
+          [
+            1101,
+            1752,
+            79259
+          ]
+        ]
+      },
+      "binary_event": {
+        "event_f1": 0.7132205995388163,
+        "event_precision": 0.7648367952522255,
+        "event_recall": 0.6681307603686636,
+        "event_fp": 2853,
+        "event_fn": 4609
+      },
+      "rule_stats": {
+        "events": 134,
+        "fallen_kept": 3613,
+        "fallen_suppressed": 2031,
+        "videos_skipped_no_fallen": 1045,
+        "videos_skipped_pure_fallen": 24,
+        "videos_processed": 131
+      }
+    },
+    {
+      "K1": 2,
+      "K2": 15,
+      "W": 64,
+      "ternary": {
+        "ternary_acc": 0.91125,
+        "fall_f1": 0.7140186915887851,
+        "fall_precision": 0.6954558695018934,
+        "fall_recall": 0.7335996312797665,
+        "fallen_f1": 0.5413604378420641,
+        "fallen_precision": 0.6398077989281095,
+        "fallen_recall": 0.46916926412793064,
+        "avg_f1": 0.7370213323065394,
+        "confusion_matrix": [
+          [
+            4775,
+            181,
+            1553
+          ],
+          [
+            990,
+            3462,
+            2927
+          ],
+          [
+            1101,
+            1768,
+            79243
+          ]
+        ]
+      },
+      "binary_event": {
+        "event_f1": 0.7191286069176381,
+        "event_precision": 0.7663109880263909,
+        "event_recall": 0.6774193548387096,
+        "event_fp": 2869,
+        "event_fn": 4480
+      },
+      "rule_stats": {
+        "events": 152,
+        "fallen_kept": 3758,
+        "fallen_suppressed": 1886,
+        "videos_skipped_no_fallen": 1045,
+        "videos_skipped_pure_fallen": 24,
+        "videos_processed": 131
+      }
+    },
+    {
+      "K1": 2,
+      "K2": 15,
+      "W": 128,
+      "ternary": {
+        "ternary_acc": 0.91125,
+        "fall_f1": 0.7140186915887851,
+        "fall_precision": 0.6954558695018934,
+        "fall_recall": 0.7335996312797665,
+        "fallen_f1": 0.5413604378420641,
+        "fallen_precision": 0.6398077989281095,
+        "fallen_recall": 0.46916926412793064,
+        "avg_f1": 0.7370213323065394,
+        "confusion_matrix": [
+          [
+            4775,
+            181,
+            1553
+          ],
+          [
+            990,
+            3462,
+            2927
+          ],
+          [
+            1101,
+            1768,
+            79243
+          ]
+        ]
+      },
+      "binary_event": {
+        "event_f1": 0.7191286069176381,
+        "event_precision": 0.7663109880263909,
+        "event_recall": 0.6774193548387096,
+        "event_fp": 2869,
+        "event_fn": 4480
+      },
+      "rule_stats": {
+        "events": 152,
+        "fallen_kept": 3758,
+        "fallen_suppressed": 1886,
+        "videos_skipped_no_fallen": 1045,
+        "videos_skipped_pure_fallen": 24,
+        "videos_processed": 131
+      }
+    },
+    {
+      "K1": 2,
+      "K2": 20,
+      "W": 32,
+      "ternary": {
+        "ternary_acc": 0.8979270833333334,
+        "fall_f1": 0.7140186915887851,
+        "fall_precision": 0.6954558695018934,
+        "fall_recall": 0.7335996312797665,
+        "fallen_f1": 0.35659620991253643,
+        "fallen_precision": 0.5440644981929386,
+        "fallen_recall": 0.26521208835885624,
+        "avg_f1": 0.6728850507544434,
+        "confusion_matrix": [
+          [
+            4775,
+            98,
+            1636
+          ],
+          [
+            990,
+            1957,
+            4432
+          ],
+          [
+            1101,
+            1542,
+            79469
+          ]
+        ]
+      },
+      "binary_event": {
+        "event_f1": 0.6422734179294486,
+        "event_precision": 0.7473955844404091,
+        "event_recall": 0.5630760368663594,
+        "event_fp": 2643,
+        "event_fn": 6068
+      },
+      "rule_stats": {
+        "events": 86,
+        "fallen_kept": 1944,
+        "fallen_suppressed": 3700,
+        "videos_skipped_no_fallen": 1045,
+        "videos_skipped_pure_fallen": 24,
+        "videos_processed": 131
+      }
+    },
+    {
+      "K1": 2,
+      "K2": 20,
+      "W": 64,
+      "ternary": {
+        "ternary_acc": 0.89996875,
+        "fall_f1": 0.7140186915887851,
+        "fall_precision": 0.6954558695018934,
+        "fall_recall": 0.7335996312797665,
+        "fallen_f1": 0.38800925102294964,
+        "fallen_precision": 0.5645871084649237,
+        "fallen_recall": 0.29556850521750916,
+        "avg_f1": 0.6837467427360803,
+        "confusion_matrix": [
+          [
+            4775,
+            112,
+            1622
+          ],
+          [
+            990,
+            2181,
+            4208
+          ],
+          [
+            1101,
+            1570,
+            79441
+          ]
+        ]
+      },
+      "binary_event": {
+        "event_f1": 0.654669537311614,
+        "event_precision": 0.7510485599776308,
+        "event_recall": 0.580213133640553,
+        "event_fp": 2671,
+        "event_fn": 5830
+      },
+      "rule_stats": {
+        "events": 115,
+        "fallen_kept": 2210,
+        "fallen_suppressed": 3434,
+        "videos_skipped_no_fallen": 1045,
+        "videos_skipped_pure_fallen": 24,
+        "videos_processed": 131
+      }
+    },
+    {
+      "K1": 2,
+      "K2": 20,
+      "W": 128,
+      "ternary": {
+        "ternary_acc": 0.8999583333333333,
+        "fall_f1": 0.7140186915887851,
+        "fall_precision": 0.6954558695018934,
+        "fall_recall": 0.7335996312797665,
+        "fallen_f1": 0.3879747398381215,
+        "fallen_precision": 0.5644409937888198,
+        "fallen_recall": 0.29556850521750916,
+        "avg_f1": 0.6837331464137889,
+        "confusion_matrix": [
+          [
+            4775,
+            112,
+            1622
+          ],
+          [
+            990,
+            2181,
+            4208
+          ],
+          [
+            1101,
+            1571,
+            79440
+          ]
+        ]
+      },
+      "binary_event": {
+        "event_f1": 0.6546429441871802,
+        "event_precision": 0.7509785647716682,
+        "event_recall": 0.580213133640553,
+        "event_fp": 2672,
+        "event_fn": 5830
+      },
+      "rule_stats": {
+        "events": 116,
+        "fallen_kept": 2211,
+        "fallen_suppressed": 3433,
+        "videos_skipped_no_fallen": 1045,
+        "videos_skipped_pure_fallen": 24,
+        "videos_processed": 131
+      }
+    }
+  ],
+  "args": {
+    "model_name": "facebook/dinov2-giant",
+    "ckpt": "C:\\Users\\Lizhe\\Documents\\KPDT0507\\logs\\phase9\\e1_5ep\\best_model.pt",
+    "npz": "C:\\Users\\Lizhe\\Documents\\KPDT0507\\data\\omnifall_dinov2_giant_frame.npz",
+    "test_csv": "C:\\Users\\Lizhe\\Documents\\KPDT0507\\DATASET-omnifall\\splits\\syn\\random\\test.csv",
+    "out_dir": "C:\\Users\\Lizhe\\Documents\\KPDT0507\\logs\\phase9\\e1_rulev2",
+    "cache": null,
+    "window": 64,
+    "stride": 8,
+    "limit": null,
+    "device": "cuda"
+  }
+}

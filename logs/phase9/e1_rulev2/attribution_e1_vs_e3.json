@@ -1,0 +1,30 @@
+{
+  "E1@2000": {
+    "causal_n": 6298,
+    "causal_rec": 0.6686249603048587,
+    "noncausal_n": 1081,
+    "noncausal_rec": 0.4301572617946346,
+    "fp_total": 2394,
+    "fp_vid_fall": 261,
+    "fp_vid_nofall": 2133,
+    "fp_lying_vid_fall": 8,
+    "fp_lying_vid_nofall": 1945,
+    "fallen_tp": 0,
+    "fallen_fp": 0,
+    "fallen_fn": 0
+  },
+  "E3@2000": {
+    "causal_n": 6298,
+    "causal_rec": 0.6103524928548746,
+    "noncausal_n": 1081,
+    "noncausal_rec": 0.6318223866790009,
+    "fp_total": 2483,
+    "fp_vid_fall": 231,
+    "fp_vid_nofall": 2252,
+    "fp_lying_vid_fall": 12,
+    "fp_lying_vid_nofall": 2034,
+    "fallen_tp": 0,
+    "fallen_fp": 0,
+    "fallen_fn": 0
+  }
+}

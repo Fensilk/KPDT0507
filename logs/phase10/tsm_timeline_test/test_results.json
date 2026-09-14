@@ -1,0 +1,35 @@
+{
+  "fall_precision": 0.0,
+  "fall_recall": 0.0,
+  "fall_f1": 0.0,
+  "fallen_precision": 0.0,
+  "fallen_recall": 0.0,
+  "fallen_f1": 0.0,
+  "normal_precision": 0.9645833333333333,
+  "normal_recall": 1.0,
+  "normal_f1": 0.9819724284199364,
+  "avg_f1": 0.32732414280664546,
+  "ternary_acc": 0.9645833333333333,
+  "confusion_matrix": [
+    [
+      0,
+      0,
+      17
+    ],
+    [
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      463
+    ]
+  ],
+  "cls_report": "              precision    recall  f1-score   support\n\n        fall       0.00      0.00      0.00        17\n      fallen       0.00      0.00      0.00         0\n      normal       0.96      1.00      0.98       463\n\n    accuracy                           0.96       480\n   macro avg       0.32      0.33      0.33       480\nweighted avg       0.93      0.96      0.95       480\n",
+  "n": 480,
+  "n_videos": 6,
+  "protocol": "dense_per_frame",
+  "stride": 1
+}

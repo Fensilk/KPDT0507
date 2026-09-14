@@ -1,0 +1,47 @@
+[1] 加载 facebook/dinov2-giant(fp16) + LoRA(r=16) + Phase6 bridge 头
+/root/miniconda3/lib/python3.10/site-packages/torchvision/io/image.py:13: UserWarning: Failed to load image Python extension: '/root/miniconda3/lib/python3.10/site-packages/torchvision/image.so: undefined symbol: _ZN3c1017RegisterOperatorsD1Ev'If you don't plan on using image functionality from `torchvision.io`, you can ignore this warning. Otherwise, there might be something wrong with your environment. Did you have `libjpeg` or `libpng` installed before building `torchvision` from source?
+  warn(
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 8800.50it/s]
+/root/miniconda3/lib/python3.10/site-packages/torch/nn/modules/transformer.py:379: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+  梯度 checkpointing: True
+  torch.compile: ON
+  可训练参数: 10.82M (LoRA + 时序头；主干冻结 fp16)
+[2] mp4 现解码数据集: DATASET-omnifall/splits/syn/random/train.csv (window=64, stride=16, workers=4)
+  训练视频: 8 | 窗口: 16 | 类权重 fall/fallen/normal: [0.471, 1.81, 0.719]
+Traceback (most recent call last):
+  File "/root/autodl-tmp/experiments/train_p9e1.py", line 450, in <module>
+    main()
+  File "/root/autodl-tmp/experiments/train_p9e1.py", line 352, in main
+    logits = model(x)
+  File "/root/miniconda3/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/root/miniconda3/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/root/miniconda3/lib/python3.10/site-packages/torch/_dynamo/eval_frame.py", line 465, in _fn
+    return fn(*args, **kwargs)
+  File "/root/miniconda3/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/root/miniconda3/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/root/autodl-tmp/models/phase9_e1_model.py", line 91, in forward
+    cls = self.vit(x).last_hidden_state[:, 0, :]             # (B*T, cls_dim) fp16
+  File "/root/miniconda3/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/root/miniconda3/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/root/miniconda3/lib/python3.10/site-packages/transformers/utils/generic.py", line 911, in wrapper
+    output = func(self, *args, **kwargs)
+  File "/root/miniconda3/lib/python3.10/site-packages/transformers/models/dinov2/modeling_dinov2.py", line 467, in forward
+    encoder_outputs: BaseModelOutput = self.encoder(embedding_output, **kwargs)
+  File "/root/miniconda3/lib/python3.10/site-packages/transformers/models/dinov2/modeling_dinov2.py", line 469, in torch_dynamo_resume_in_forward_at_467
+    sequence_output = self.layernorm(sequence_output)
+  File "/root/miniconda3/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/root/miniconda3/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/root/miniconda3/lib/python3.10/site-packages/torch/nn/modules/normalization.py", line 217, in forward
+    return F.layer_norm(
+  File "/root/miniconda3/lib/python3.10/site-packages/torch/nn/functional.py", line 2900, in layer_norm
+    return torch.layer_norm(
+TypeError: layer_norm(): argument 'input' (position 1) must be Tensor, not NoneType

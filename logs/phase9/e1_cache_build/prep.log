@@ -1,0 +1,11 @@
+NPZ 视频索引: 12000 条
+训练候选: 2000（train.csv 9600 条, seed=42）
+  [500/2000] 已存 500 视频
+  [1000/2000] 已存 1000 视频
+  [1500/2000] 已存 1500 视频
+  [2000/2000] 已存 2000 视频
+首训练视频 lie_down/lie_down_to_088: 帧均值 121.4（>20 为真实解码帧）
+完成：训练 2000 视频 × 80 帧 → C:\Users\Lizhe\Documents\KPDT0507\data\p9e1_frames
+验证候选: 150（val.csv 1200 条, fresh rng seed=42）
+首验证视频 fall/fall_to_043: 帧均值 123.6（>20 为真实解码帧）
+完成：验证 150 视频 × 80 帧 → C:\Users\Lizhe\Documents\KPDT0507\data\p9e1_frames_val

@@ -1,0 +1,36 @@
+{
+  "ternary_acc": 0.7796458333333334,
+  "random_baseline": 0.3333333333333333,
+  "fall_f1": 0.5144904626409527,
+  "fall_precision": 0.3915309968722432,
+  "fall_recall": 0.7500384083576587,
+  "fallen_f1": 0.4170220326936745,
+  "fallen_precision": 0.3101830436793762,
+  "fallen_recall": 0.6361295568505217,
+  "normal_f1": 0.8673177861936084,
+  "normal_precision": 0.954267668645282,
+  "normal_recall": 0.7948899064692128,
+  "avg_f1": 0.5996100938427452,
+  "confusion_matrix": [
+    [
+      4882,
+      291,
+      1336
+    ],
+    [
+      893,
+      4694,
+      1792
+    ],
+    [
+      6694,
+      10148,
+      65270
+    ]
+  ],
+  "cls_report": "              precision    recall  f1-score   support\n\n        fall       0.39      0.75      0.51      6509\n      fallen       0.31      0.64      0.42      7379\n      normal       0.95      0.79      0.87     82112\n\n    accuracy                           0.78     96000\n   macro avg       0.55      0.73      0.60     96000\nweighted avg       0.87      0.78      0.81     96000\n",
+  "n": 96000,
+  "n_videos": 1200,
+  "protocol": "dense_per_frame",
+  "stride": 1
+}

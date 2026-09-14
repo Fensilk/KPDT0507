@@ -1,0 +1,7 @@
+== rank-trunc eval start Sat Sep 12 13:17:59 CST 2026 (py=/root/miniconda3/bin/python) ==
+== skip k=16 (json+pv 均在位) @ Sat Sep 12 13:17:59 CST 2026 ==
+== eval k=8 -> logs/phase9/e1_rank_trunc/eval_k8.json (+logs/phase9/e1_rank_trunc/pv_k8.pt) @ Sat Sep 12 13:17:59 CST 2026 ==
+== done k=8 rc=0 @ Sat Sep 12 14:11:26 CST 2026 ==
+== eval k=4 -> logs/phase9/e1_rank_trunc/eval_k4.json (+logs/phase9/e1_rank_trunc/pv_k4.pt) @ Sat Sep 12 14:11:26 CST 2026 ==
+== done k=4 rc=0 @ Sat Sep 12 15:04:46 CST 2026 ==
+== ALL_DONE Sat Sep 12 15:04:46 CST 2026 ==

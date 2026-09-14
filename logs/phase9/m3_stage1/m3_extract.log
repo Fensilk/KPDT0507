@@ -1,0 +1,46 @@
+[1] 加载 facebook/dinov2-giant + 注入 LoRA + 合并 ...
+/root/miniconda3/lib/python3.10/site-packages/torchvision/io/image.py:13: UserWarning: Failed to load image Python extension: '/root/miniconda3/lib/python3.10/site-packages/torchvision/image.so: undefined symbol: _ZN3c1017RegisterOperatorsD1Ev'If you don't plan on using image functionality from `torchvision.io`, you can ignore this warning. Otherwise, there might be something wrong with your environment. Did you have `libjpeg` or `libpng` installed before building `torchvision` from source?
+  warn(
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 12357.54it/s]
+[2] 读取旧 NPZ（标签 + 视频列表）...
+[3] 重抽特征（12000 视频）→ data/p9_features_m3 ...
+/root/autodl-tmp/preprocessing/step7_extract_dinov2.py:103: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast():
+  [500/12000] 已抽 500
+  [1000/12000] 已抽 1000
+  [1500/12000] 已抽 1500
+  [2000/12000] 已抽 2000
+  [2500/12000] 已抽 2500
+  [3000/12000] 已抽 3000
+  [3500/12000] 已抽 3500
+  [4000/12000] 已抽 4000
+  [4500/12000] 已抽 4500
+  [5000/12000] 已抽 5000
+  [5500/12000] 已抽 5500
+  [6000/12000] 已抽 6000
+  [6500/12000] 已抽 6500
+  [7000/12000] 已抽 7000
+  [7500/12000] 已抽 7500
+  [8000/12000] 已抽 8000
+  [8500/12000] 已抽 8500
+  [9000/12000] 已抽 9000
+  [9500/12000] 已抽 9500
+  [10000/12000] 已抽 10000
+  [10500/12000] 已抽 10500
+  [11000/12000] 已抽 11000
+  [11500/12000] 已抽 11500
+  [12000/12000] 已抽 12000
+[4] 聚合 NPZ ...
+  Aggregated 2,000/12,000 videos...
+  Aggregated 4,000/12,000 videos...
+  Aggregated 6,000/12,000 videos...
+  Aggregated 8,000/12,000 videos...
+  Aggregated 10,000/12,000 videos...
+  Aggregated 12,000/12,000 videos...
+
+[DONE] NPZ saved: data/omnifall_dinov2_finetuned_m3_frame.npz
+  Videos: 12000, Frames: 960000
+  Features: [960000, 1536], dtype=float16
+  File size: 2429.9 MB
+完成: 12000 视频 → data/omnifall_dinov2_finetuned_m3_frame.npz
+下一步: python experiments/train_phase6.py --frame_npz .../new.npz ...
