@@ -26,6 +26,23 @@ data/p9_features_finetuned/
 data/p9e1_frames/
 data/p9e1_frames_val/
 
+# Phase 10 全画面抽帧缓存（23 GB / 97 万文件；experiments/prep_p10_frames.py 可重生成）
+data/ref_frames/
+data/.frames_geometry_squash
+
+# 预训练权重（可重新下载；*.pth 不在 LFS 规则里，入库会变成 93 MB 普通对象）
+data/*.pth
+
+# 第三方参考仓库克隆（体积大；改造补丁记录在 docs/0912实验第十阶段总结.md 附录 A.2）
+reference/
+
+# Phase 9/10 与本次回填的 checkpoint：只保留在本地磁盘（约 5 GB，各阶段 runner 可重训）。
+# 若要像 phase1–8 那样走 LFS 入库，删掉下面几行再 `git add -f` 即可。
+logs/phase9/**/*.pt
+logs/phase10/**/*.pt
+logs/phase6/p6d_bt_*/**/*.pt
+logs/phase6/p6e_bilstm_*/**/*.pt
+
 # Dataset
 DATASET-omnifall/
 
