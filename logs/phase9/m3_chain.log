@@ -1,0 +1,12 @@
+===== [0] 腾盘：删 E1 训练/val 帧缓存（E1 已收官，结果已拷回本地 logs/phase9/e1_5ep） =====
+/dev/nvme1n1     50G   13G   38G  26% /root/autodl-tmp
+===== [1] 视频前置检查（extract + prep 都要 mp4） =====
+  extracted mp4 数: 12000（应为 12000；不足 → 先从本地 scp 回 9.1G 视频树再继续）
+===== [2] 建 9600 训练视频 × 10 帧缓存（≈19G，decode ~0.5-1h） =====
+  prep pid 1896 → tail -f logs/phase9/m3_prep.log
+  prep 完成，p9_frames 文件数: 9600
+完成：9600 视频 × 10 帧 = 96000 帧
+三元标签分布 fall/fallen/normal: [8446, 6948, 80606]
+===== [3] stage1：帧级 LoRA @ 9600 视频（≈3-5h） =====
+  stage1 pid 2009 → tail -f logs/phase9/m3_stage1/run_terminal.log
+ls: cannot access 'logs/phase9/m3_stage1/finetuned_lora.pt': No such file or directory

@@ -1,0 +1,9 @@
+[1] 加载 facebook/dinov2-giant(fp16) + LoRA(r=16) + Phase6 bridge 头
+  梯度 checkpointing: True
+  可训练参数: 10.82M (LoRA + 时序头；主干冻结 fp16)
+[2] mp4 现解码数据集: data/e1_6000_manifest.csv (window=64, stride=16, workers=0)
+  训练视频: 12 | 窗口: 24 | 类权重 fall/fallen/normal: [0.62, 2.269, 0.11]
+[EPOCH 1] 完成，已存 epoch_1_model.pt
+[DONE] 已存 last_model.pt
+[STOP] 原因: max_steps=4 达到
+[TOTAL] 4 步, 22.4s

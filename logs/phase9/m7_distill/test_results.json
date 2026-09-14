@@ -1,0 +1,48 @@
+{
+  "ternary_acc": 0.9048133680555556,
+  "random_baseline": 0.3333333333333333,
+  "fall_f1": 0.6633594059104605,
+  "fall_precision": 0.6022991046755831,
+  "fall_recall": 0.7381968434600014,
+  "fallen_f1": 0.6555863795939411,
+  "fallen_precision": 0.6085133533861999,
+  "fallen_recall": 0.710552924272258,
+  "normal_f1": 0.9515198471113866,
+  "normal_precision": 0.9677197369250489,
+  "normal_recall": 0.9358534082480721,
+  "avg_f1": 0.756821877538596,
+  "confusion_matrix": [
+    [
+      10898,
+      1446,
+      2419
+    ],
+    [
+      1713,
+      13352,
+      3726
+    ],
+    [
+      5483,
+      7144,
+      184219
+    ]
+  ],
+  "cls_report": "              precision    recall  f1-score   support\n\n        fall       0.60      0.74      0.66     14763\n      fallen       0.61      0.71      0.66     18791\n      normal       0.97      0.94      0.95    196846\n\n    accuracy                           0.90    230400\n   macro avg       0.73      0.79      0.76    230400\nweighted avg       0.92      0.90      0.91    230400\n",
+  "config": {
+    "data": "C:\\Users\\Lizhe\\Documents\\KPDT0507\\data\\omnifall_dinov2_finetuned_frame.npz",
+    "labels_npz": "C:\\Users\\Lizhe\\Documents\\KPDT0507\\data\\omnifall_dinov2_giant_frame.npz",
+    "teacher": "C:\\Users\\Lizhe\\Documents\\KPDT0507\\data\\m7_teacher_logits.npz",
+    "splits": "C:\\Users\\Lizhe\\Documents\\KPDT0507\\DATASET-omnifall\\splits\\syn\\e1_2000",
+    "exp_tag": "phase9/m7_distill",
+    "epochs": 100,
+    "patience": 15,
+    "batch": 32,
+    "lr": 0.001,
+    "temp": 2.0,
+    "lam": 1.0,
+    "seed": 42,
+    "val_every": 1,
+    "device": "cuda"
+  }
+}

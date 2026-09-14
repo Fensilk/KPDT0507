@@ -1,0 +1,64 @@
+/root/miniconda3/lib/python3.10/site-packages/torchvision/io/image.py:13: UserWarning: Failed to load image Python extension: '/root/miniconda3/lib/python3.10/site-packages/torchvision/image.so: undefined symbol: _ZN3c1017RegisterOperatorsD1Ev'If you don't plan on using image functionality from `torchvision.io`, you can ignore this warning. Otherwise, there might be something wrong with your environment. Did you have `libjpeg` or `libpng` installed before building `torchvision` from source?
+  warn(
+[0] device=cuda | window=64 stride=8
+[1] 重建 E1Model: /root/e1_out2/best_model.pt
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights:  67%|██████▋   | 484/727 [00:00<00:00, 4830.89it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 4428.21it/s]
+/root/miniconda3/lib/python3.10/site-packages/torch/nn/modules/transformer.py:379: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 best_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 746 个 = 冻结主干（预期）
+[2] test 视频: 1200（limit=None → 评估前 None）
+[3] 解码 + 滑窗推理（逐视频 PyAV→cv2）…
+  [200/1200] 已完成 200 视频 / 600 窗口, 跳过 0
+  [400/1200] 已完成 400 视频 / 1200 窗口, 跳过 0
+  [600/1200] 已完成 600 视频 / 1800 窗口, 跳过 0
+  [800/1200] 已完成 800 视频 / 2400 窗口, 跳过 0
+  [1000/1200] 已完成 1000 视频 / 3000 窗口, 跳过 0
+  [1200/1200] 已完成 1200 视频 / 3600 窗口, 跳过 0
+
+============================================================
+E1 TEST RESULTS
+============================================================
+  三元 acc:        0.9150  (random: 0.3333)
+  帧数: 230400 = 1200 视频 × 3 窗口 × 64 帧（解码跳过 0）
+  fall_precision    0.6795
+  fall_recall       0.7091
+  fall_f1           0.6940
+  fallen_precision  0.6448
+  fallen_recall     0.6301
+  fallen_f1         0.6374
+  avg_f1            0.7632
+  ternary_acc       0.9150
+
+  --- Classification Report (3-class) ---
+              precision    recall  f1-score   support
+
+        fall       0.68      0.71      0.69     14763
+      fallen       0.64      0.63      0.64     18791
+      normal       0.96      0.96      0.96    196846
+
+    accuracy                           0.92    230400
+   macro avg       0.76      0.77      0.76    230400
+weighted avg       0.92      0.92      0.92    230400
+
+==============================================================
+对比: E1 vs baseline(p7d_delta) vs E3(stage2)
+指标                 baseline       E3微调         E1   Δ(E1-E3)
+--------------------------------------------------------------
+fall_precision       0.5918     0.5939     0.6795    +0.0857
+fall_recall          0.7923     0.8418     0.7091    -0.1326
+fall_f1              0.6775     0.6964     0.6940    -0.0024
+fallen_precision     0.6272     0.6194     0.6448    +0.0253
+fallen_recall        0.6984     0.7013     0.6301    -0.0712
+fallen_f1            0.6609     0.6578     0.6374    -0.0205
+avg_f1               0.7641     0.7689     0.7632    -0.0057
+ternary_acc          0.9079     0.9070     0.9150    +0.0081
+
+诊断矩阵观察（主指标视角）:
+  动态轴 lie_down vs fall: fall_rec=0.709 (baseline 0.792, E3 0.842) fall_prec=0.680 (baseline 0.592, E3 0.594)
+  静态轴 lying vs fallen: fallen_rec=0.630 (baseline 0.698, E3 0.701) fallen_prec=0.645 (baseline 0.627, E3 0.619)
+
+注：E1 与 E3 同口径（window-64/stride-8 实例级）。两者唯一差异是训练范式
+    （端到端 LoRA 反传 vs 两段式微调）。若只有动态轴改善而静态轴持平/有限，
+    即支持帧级端到端仍不足以解因果静态区分的判断。
+
+[out] /root/e1_out2/test_results.json

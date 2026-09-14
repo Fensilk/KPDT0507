@@ -1,0 +1,30 @@
+NPZ 视频索引: 12000 条
+训练候选: 2000（train.csv 9600 条, seed=42）
+  [500/2000] 已存 500 视频
+  [1000/2000] 已存 1000 视频
+  [1500/2000] 已存 1500 视频
+  [2000/2000] 已存 2000 视频
+首训练视频 lie_down/lie_down_to_088: 帧均值 121.4（>20 为真实解码帧）
+完成：训练 2000 视频 × 80 帧 → /root/autodl-tmp/data/p9e1_frames
+验证候选: 150（val.csv 1200 条, fresh rng seed=42）
+Traceback (most recent call last):
+  File "/root/miniconda3/lib/python3.10/site-packages/torch/serialization.py", line 850, in save
+    _save(
+  File "/root/miniconda3/lib/python3.10/site-packages/torch/serialization.py", line 1090, in _save
+    zip_file.write_record("data.pkl", data_value, len(data_value))
+RuntimeError: [enforce fail at inline_container.cc:778] . PytorchStreamWriter failed writing file data.pkl: file write failed
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/root/autodl-tmp/experiments/prep_p9e1_frames.py", line 113, in <module>
+    main()
+  File "/root/autodl-tmp/experiments/prep_p9e1_frames.py", line 106, in main
+    n_val_ok, first_val = cache_videos(val_selected, OUT_VAL, path2idx)
+  File "/root/autodl-tmp/experiments/prep_p9e1_frames.py", line 64, in cache_videos
+    torch.save({"frames": imgs, "video": rel},
+  File "/root/miniconda3/lib/python3.10/site-packages/torch/serialization.py", line 849, in save
+    with _open_zipfile_writer(f) as opened_zipfile:
+  File "/root/miniconda3/lib/python3.10/site-packages/torch/serialization.py", line 690, in __exit__
+    self.file_like.write_end_of_file()
+RuntimeError: [enforce fail at inline_container.cc:603] . unexpected pos 128 vs 0

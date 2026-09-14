@@ -1,0 +1,57 @@
+
+==================================================================
+[baseline] sweep K2 x W
+==================================================================
+[Infer] Device: cuda
+C:\Users\Lizhe\anaconda3\envs\py310\lib\site-packages\torch\nn\modules\transformer.py:379: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+  [1600/3600]
+  [3200/3600]
+[baseline] inferred & cached -> logs/phase9/e3_rulev2\cache\baseline.pt (n=1200)
+
+  raw  : ev_f1=0.7558 prec=0.6870 rec=0.8399
+
+  K2 row = event_f1（* = 本模型 best）
+    K2 | W=32    W=64    W=128
+  K2=3   | 0.7638      0.7648      0.7648   
+  K2=5   | 0.7697      0.7707      0.7707   
+  K2=7   | 0.7735*     0.7735      0.7733   
+  K2=10  | 0.7669      0.7682      0.7681   
+  K2=15  | 0.7592      0.7613      0.7615   
+  K2=20  | 0.7081      0.7126      0.7125   
+
+  best: K2=7 W=32  ev_f1=0.7735 prec=0.7212 rec=0.8339 | fallen_prec=0.6913 avg_f1=0.7801 | fp=4476 fn=2307
+
+==================================================================
+[E3-full] sweep K2 x W
+==================================================================
+[Infer] Device: cuda
+C:\Users\Lizhe\anaconda3\envs\py310\lib\site-packages\torch\nn\modules\transformer.py:379: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+  [1600/3600]
+  [3200/3600]
+[E3-full] inferred & cached -> logs/phase9/e3_rulev2\cache\E3-full.pt (n=1200)
+
+  raw  : ev_f1=0.7556 prec=0.6737 rec=0.8601
+
+  K2 row = event_f1（* = 本模型 best）
+    K2 | W=32    W=64    W=128
+  K2=3   | 0.7595      0.7597      0.7597   
+  K2=5   | 0.7646      0.7654*     0.7652   
+  K2=7   | 0.7592      0.7603      0.7601   
+  K2=10  | 0.7562      0.7575      0.7573   
+  K2=15  | 0.7291      0.7296      0.7295   
+  K2=20  | 0.6597      0.6637      0.6638   
+
+  best: K2=5 W=64  ev_f1=0.7654 prec=0.6907 rec=0.8581 | fallen_prec=0.6378 avg_f1=0.7772 | fp=5336 fn=1971
+
+==================================================================
+SUMMARY  (test-selected 上界；K1=2 固定)
+==================================================================
+                ev_f1  ev_prec   ev_rec  fallen_prec   avg_f1
+  baseline raw           0.7558   0.6870   0.8399       0.6205   0.7670
+  baseline best(K2=7,W=32)   0.7735   0.7212   0.8339       0.6913   0.7801
+  E3-full raw            0.7556   0.6737   0.8601       0.6039   0.7702
+  E3-full best(K2=5,W=64)   0.7654   0.6907   0.8581       0.6378   0.7772
+
+Saved: logs/phase9/e3_rulev2\rulev2_sweep.json

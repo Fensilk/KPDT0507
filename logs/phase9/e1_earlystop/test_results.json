@@ -1,0 +1,48 @@
+{
+  "ternary_acc": 0.8970095486111112,
+  "random_baseline": 0.3333333333333333,
+  "fall_f1": 0.6518994191709657,
+  "fall_precision": 0.697360296387774,
+  "fall_recall": 0.612002980424033,
+  "fallen_f1": 0.63779620387472,
+  "fallen_precision": 0.5055602280160733,
+  "fallen_recall": 0.8637113511787557,
+  "normal_f1": 0.9493049214128162,
+  "normal_precision": 0.9787688638779332,
+  "normal_recall": 0.9215630492872601,
+  "avg_f1": 0.7463335148195007,
+  "n_videos_evaluated": 1200,
+  "n_windows": 3600,
+  "n_decode_skips": 0,
+  "n_frames": 230400,
+  "cls_report": "              precision    recall  f1-score   support\n\n        fall       0.70      0.61      0.65     14763\n      fallen       0.51      0.86      0.64     18791\n      normal       0.98      0.92      0.95    196846\n\n    accuracy                           0.90    230400\n   macro avg       0.73      0.80      0.75    230400\nweighted avg       0.92      0.90      0.90    230400\n",
+  "confusion_matrix": [
+    [
+      9035,
+      3725,
+      2003
+    ],
+    [
+      629,
+      16230,
+      1932
+    ],
+    [
+      3292,
+      12148,
+      181406
+    ]
+  ],
+  "config": {
+    "model": "E1 lora16 dinov2-giant",
+    "paradigm": "end-to-end LoRA finetune (window-64/stride-8 instance-based, mirrors E3)",
+    "lora_rank": 16,
+    "window": 64,
+    "stride": 8,
+    "ckpt": "/root/e1_out/best_model.pt",
+    "npz": "/root/autodl-tmp/data/omnifall_dinov2_giant_frame.npz",
+    "test_csv": "/root/autodl-tmp/DATASET-omnifall/splits/syn/random/test.csv",
+    "n_test_videos_requested": 1200,
+    "device": "cuda"
+  }
+}

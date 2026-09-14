@@ -1,0 +1,42 @@
+[load] 载入特征到内存(2.7G)...
+[数据] 4000 窗口 | device cuda
+C:\Users\Lizhe\anaconda3\envs\py310\lib\site-packages\torch\nn\modules\transformer.py:379: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[模型] 2,956,419 参数 | temp=2.0 lam=1.0
+ep   1 loss=32.3120 kl=32.1730 ce=0.1390 | val avgF1=0.7388 fallen_prec=0.6921
+ep   2 loss=13.5741 kl=13.5067 ce=0.0674 | val avgF1=0.7493 fallen_prec=0.6822
+ep   3 loss=12.0134 kl=11.9484 ce=0.0650 | val avgF1=0.7506 fallen_prec=0.6861
+ep   4 loss=9.7940 kl=9.7329 ce=0.0611 | val avgF1=0.7716 fallen_prec=0.6942
+ep   5 loss=8.3427 kl=8.2874 ce=0.0553 | val avgF1=0.7564 fallen_prec=0.6861
+ep   6 loss=6.8993 kl=6.8404 ce=0.0589 | val avgF1=0.7706 fallen_prec=0.6842
+ep   7 loss=6.2530 kl=6.1962 ce=0.0568 | val avgF1=0.7645 fallen_prec=0.6673
+ep   8 loss=6.0317 kl=5.9727 ce=0.0589 | val avgF1=0.7700 fallen_prec=0.7269
+ep   9 loss=5.3570 kl=5.2965 ce=0.0605 | val avgF1=0.7577 fallen_prec=0.6570
+ep  10 loss=4.7118 kl=4.6527 ce=0.0590 | val avgF1=0.7555 fallen_prec=0.7273
+ep  11 loss=5.1762 kl=5.1127 ce=0.0635 | val avgF1=0.7766 fallen_prec=0.6660
+ep  12 loss=5.3183 kl=5.2588 ce=0.0596 | val avgF1=0.7678 fallen_prec=0.7120
+ep  13 loss=4.3956 kl=4.3304 ce=0.0651 | val avgF1=0.7606 fallen_prec=0.6705
+ep  14 loss=4.8282 kl=4.7657 ce=0.0625 | val avgF1=0.7704 fallen_prec=0.7189
+ep  15 loss=3.9439 kl=3.8820 ce=0.0619 | val avgF1=0.7714 fallen_prec=0.7319
+ep  16 loss=3.8741 kl=3.8114 ce=0.0627 | val avgF1=0.7696 fallen_prec=0.6895
+ep  17 loss=3.6165 kl=3.5547 ce=0.0618 | val avgF1=0.7739 fallen_prec=0.6777
+ep  18 loss=3.7447 kl=3.6834 ce=0.0613 | val avgF1=0.7732 fallen_prec=0.7045
+ep  19 loss=3.5000 kl=3.4384 ce=0.0616 | val avgF1=0.7848 fallen_prec=0.6831
+ep  20 loss=3.6158 kl=3.5548 ce=0.0611 | val avgF1=0.7682 fallen_prec=0.6704
+ep  21 loss=3.6197 kl=3.5562 ce=0.0635 | val avgF1=0.7785 fallen_prec=0.6724
+ep  22 loss=3.0905 kl=3.0300 ce=0.0605 | val avgF1=0.7744 fallen_prec=0.7229
+ep  23 loss=3.7146 kl=3.6525 ce=0.0621 | val avgF1=0.7724 fallen_prec=0.6983
+ep  24 loss=3.0610 kl=2.9972 ce=0.0637 | val avgF1=0.7799 fallen_prec=0.6953
+ep  25 loss=2.6773 kl=2.6135 ce=0.0638 | val avgF1=0.7655 fallen_prec=0.7356
+ep  26 loss=3.1806 kl=3.1178 ce=0.0628 | val avgF1=0.7678 fallen_prec=0.6756
+ep  27 loss=2.9972 kl=2.9334 ce=0.0638 | val avgF1=0.7717 fallen_prec=0.7571
+ep  28 loss=3.3340 kl=3.2702 ce=0.0638 | val avgF1=0.7666 fallen_prec=0.6840
+ep  29 loss=2.9054 kl=2.8411 ce=0.0642 | val avgF1=0.7707 fallen_prec=0.6858
+ep  30 loss=2.7009 kl=2.6390 ce=0.0620 | val avgF1=0.7799 fallen_prec=0.6997
+ep  31 loss=2.7842 kl=2.7209 ce=0.0633 | val avgF1=0.7669 fallen_prec=0.7171
+ep  32 loss=2.3917 kl=2.3277 ce=0.0640 | val avgF1=0.7795 fallen_prec=0.7041
+ep  33 loss=2.6594 kl=2.5960 ce=0.0634 | val avgF1=0.7640 fallen_prec=0.7081
+ep  34 loss=2.8794 kl=2.8157 ce=0.0637 | val avgF1=0.7777 fallen_prec=0.6612
+[early stop] ep 34（best ep 19, val avgF1 0.7848）
+[done] logs/phase9/m7_distill/test_results.json (best ep 19)
+  fallen_prec=0.6085 fallen_rec=0.7106 fall_rec=0.7382 avg_f1=0.7568

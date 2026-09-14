@@ -1,0 +1,47 @@
+
+======================================================================
+[baseline(p7d_delta)] infer + RuleV2 (K1=2,K2=7,W=64)
+======================================================================
+[Infer] Device: cuda
+C:\Users\Lizhe\anaconda3\envs\py310\lib\site-packages\torch\nn\modules\transformer.py:379: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+  [1600/3600]
+  [3200/3600]
+[baseline(p7d_delta)] videos=1200
+[baseline(p7d_delta)] rule_stats: {"events": 260, "fallen_kept": 6082, "fallen_suppressed": 896, "videos_skipped_no_fallen": 996, "videos_skipped_pure_fallen": 24, "videos_processed": 180}
+
+======================================================================
+[E3-full(e3_stage2)] infer + RuleV2 (K1=2,K2=7,W=64)
+======================================================================
+[Infer] Device: cuda
+C:\Users\Lizhe\anaconda3\envs\py310\lib\site-packages\torch\nn\modules\transformer.py:379: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+  [1600/3600]
+  [3200/3600]
+[E3-full(e3_stage2)] videos=1200
+[E3-full(e3_stage2)] rule_stats: {"events": 237, "fallen_kept": 5853, "fallen_suppressed": 617, "videos_skipped_no_fallen": 1002, "videos_skipped_pure_fallen": 36, "videos_processed": 162}
+
+==============================================================================
+COMPARISON  (全量 test, stride8 同口径, 帧展平)
+==============================================================================
+
+--- Ternary: raw vs +RuleV2 ---
+model            fall_rec              fallen_prec           avg_f1              
+  baseline(p7d_delta) 0.8055 / 0.8055  0.6205 / 0.6902  0.7670 / 0.7801
+  E3-full(e3_stage2) 0.8496 / 0.8496  0.6039 / 0.6330  0.7702 / 0.7735
+
+--- Binary event (主指标 event_f1) ---
+model                         ev_f1       +R2    ev_prec       +R2     ev_rec       +R2 |    R2后 FP帧 FN帧
+  baseline(p7d_delta)        0.7558    0.7735     0.6870    0.7207     0.8399    0.8346 |      4,492 2,297
+  E3-full(e3_stage2)         0.7556    0.7603     0.6737    0.6886     0.8601    0.8486 |      5,329 2,103
+
+--- RuleV2 对 lying/lie_down 帧误报抑制 (event 帧数: raw → +R2) ---
+  baseline(p7d_delta)    lying: 1,941(12.4%)→1,270(8.1%)  lie_down: 403(8.3%)→403(8.3%)
+  E3-full(e3_stage2)     lying: 2,295(14.7%)→1,923(12.3%)  lie_down: 683(14.1%)→653(13.5%)
+
+--- RuleV2 stats ---
+model                     videos_proc     kept suppressed events_trig
+  baseline(p7d_delta)             180    6,082        896         260
+  E3-full(e3_stage2)              162    5,853        617         237
+
+Saved: logs/phase9/e3_rulev2\rulev2_comparison.json

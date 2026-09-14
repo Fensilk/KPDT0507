@@ -1,0 +1,642 @@
+[1] 加载 facebook/dinov2-giant(fp16) + LoRA(r=16) + Phase6 bridge 头
+  梯度 checkpointing: True
+  可训练参数: 10.82M (LoRA + 时序头；主干冻结 fp16)
+[2] mp4 现解码数据集: DATASET-omnifall/splits/syn/random/train.csv (window=64, stride=16, workers=16)
+  训练视频: 9600 | 窗口: 19200 | 类权重 fall/fallen/normal: [1.318, 1.545, 0.137]
+step 50 | loss 2.8666 | fall/fallen/normal acc 0.015/0.191/0.883 | lr 1.00e-04
+step 100 | loss 1.3707 | fall/fallen/normal acc 0.295/0.319/0.961 | lr 1.00e-04
+step 150 | loss 1.7907 | fall/fallen/normal acc 0.162/0.219/0.947 | lr 1.00e-04
+step 200 | loss 2.3488 | fall/fallen/normal acc 0.274/0.070/0.963 | lr 1.00e-04
+step 250 | loss 1.7053 | fall/fallen/normal acc 0.089/0.318/0.947 | lr 1.00e-04
+step 300 | loss 0.9270 | fall/fallen/normal acc 0.429/0.424/0.953 | lr 1.00e-04
+step 350 | loss 1.0792 | fall/fallen/normal acc 0.269/0.346/0.946 | lr 1.00e-04
+step 400 | loss 1.6021 | fall/fallen/normal acc 0.449/0.240/0.933 | lr 1.00e-04
+step 450 | loss 1.4128 | fall/fallen/normal acc 0.442/0.279/0.925 | lr 1.00e-04
+step 500 | loss 0.9189 | fall/fallen/normal acc 0.621/0.424/0.942 | lr 1.00e-04
+step 550 | loss 1.5653 | fall/fallen/normal acc 0.312/0.253/0.967 | lr 1.00e-04
+step 600 | loss 0.7722 | fall/fallen/normal acc 0.560/0.276/0.962 | lr 1.00e-04
+[VAL] step 600 | f1 0.7426 | fallen prec 0.7711 rec 0.7336 | train_loss 1.5300
+  [BEST] 新最优 f1=0.7426 → best_model.pt
+step 650 | loss 0.6712 | fall/fallen/normal acc 0.566/0.525/0.952 | lr 1.00e-04
+step 700 | loss 1.1754 | fall/fallen/normal acc 0.496/0.513/0.926 | lr 1.00e-04
+step 750 | loss 0.4864 | fall/fallen/normal acc 0.781/0.607/0.965 | lr 1.00e-04
+step 800 | loss 1.4276 | fall/fallen/normal acc 0.481/0.404/0.927 | lr 1.00e-04
+step 850 | loss 0.6869 | fall/fallen/normal acc 0.413/0.604/0.951 | lr 1.00e-04
+step 900 | loss 1.2923 | fall/fallen/normal acc 0.394/0.337/0.946 | lr 1.00e-04
+step 950 | loss 0.7026 | fall/fallen/normal acc 0.245/0.623/0.959 | lr 1.00e-04
+step 1000 | loss 1.0801 | fall/fallen/normal acc 0.659/0.194/0.912 | lr 1.00e-04
+step 1050 | loss 0.6952 | fall/fallen/normal acc 0.454/0.434/0.992 | lr 1.00e-04
+step 1100 | loss 0.4194 | fall/fallen/normal acc 0.642/0.747/0.942 | lr 1.00e-04
+step 1150 | loss 0.2614 | fall/fallen/normal acc 0.767/0.747/0.970 | lr 1.00e-04
+step 1200 | loss 0.5784 | fall/fallen/normal acc 0.705/0.364/0.973 | lr 1.00e-04
+[VAL] step 1200 | f1 0.7886 | fallen prec 0.9423 rec 0.6472 | train_loss 0.7897
+  [BEST] 新最优 f1=0.7886 → best_model.pt
+step 1250 | loss 0.5636 | fall/fallen/normal acc 0.732/0.384/0.934 | lr 1.00e-04
+step 1300 | loss 0.5671 | fall/fallen/normal acc 0.597/0.615/0.967 | lr 1.00e-04
+step 1350 | loss 0.8719 | fall/fallen/normal acc 0.684/0.493/0.964 | lr 1.00e-04
+step 1400 | loss 0.6004 | fall/fallen/normal acc 0.602/0.706/0.913 | lr 1.00e-04
+step 1450 | loss 0.6326 | fall/fallen/normal acc 0.701/0.560/0.946 | lr 1.00e-04
+step 1500 | loss 0.9605 | fall/fallen/normal acc 0.421/0.569/0.946 | lr 1.00e-04
+step 1550 | loss 0.8254 | fall/fallen/normal acc 0.522/0.448/0.927 | lr 1.00e-04
+step 1600 | loss 0.7956 | fall/fallen/normal acc 0.211/0.630/0.974 | lr 1.00e-04
+step 1650 | loss 0.4103 | fall/fallen/normal acc 0.612/0.279/0.941 | lr 1.00e-04
+step 1700 | loss 0.3920 | fall/fallen/normal acc 0.572/0.730/0.963 | lr 1.00e-04
+step 1750 | loss 0.6560 | fall/fallen/normal acc 0.719/0.634/0.953 | lr 1.00e-04
+step 1800 | loss 0.3899 | fall/fallen/normal acc 0.688/0.539/0.972 | lr 1.00e-04
+[VAL] step 1800 | f1 0.6615 | fallen prec 0.9639 rec 0.3600 | train_loss 0.6388
+step 1850 | loss 0.3964 | fall/fallen/normal acc 0.850/0.757/0.953 | lr 1.00e-04
+step 1900 | loss 0.5268 | fall/fallen/normal acc 0.670/0.706/0.946 | lr 1.00e-04
+step 1950 | loss 0.5299 | fall/fallen/normal acc 0.649/0.533/0.958 | lr 1.00e-04
+step 2000 | loss 0.6558 | fall/fallen/normal acc 0.460/0.775/0.949 | lr 1.00e-04
+step 2050 | loss 0.6315 | fall/fallen/normal acc 0.502/0.793/0.915 | lr 1.00e-04
+step 2100 | loss 0.3117 | fall/fallen/normal acc 0.561/0.763/0.978 | lr 1.00e-04
+step 2150 | loss 0.4350 | fall/fallen/normal acc 0.657/0.648/0.977 | lr 1.00e-04
+step 2200 | loss 0.7205 | fall/fallen/normal acc 0.757/0.505/0.913 | lr 1.00e-04
+step 2250 | loss 0.6782 | fall/fallen/normal acc 0.667/0.740/0.913 | lr 1.00e-04
+step 2300 | loss 0.3354 | fall/fallen/normal acc 0.784/0.824/0.941 | lr 1.00e-04
+step 2350 | loss 0.6652 | fall/fallen/normal acc 0.447/0.799/0.955 | lr 1.00e-04
+step 2400 | loss 0.4847 | fall/fallen/normal acc 0.753/0.630/0.936 | lr 1.00e-04
+[VAL] step 2400 | f1 0.8228 | fallen prec 0.8662 rec 0.8155 | train_loss 0.5309
+  [BEST] 新最优 f1=0.8228 → best_model.pt
+step 2450 | loss 0.6655 | fall/fallen/normal acc 0.617/0.574/0.938 | lr 1.00e-04
+step 2500 | loss 0.4438 | fall/fallen/normal acc 0.726/0.726/0.963 | lr 1.00e-04
+step 2550 | loss 0.3314 | fall/fallen/normal acc 0.661/0.772/0.949 | lr 1.00e-04
+step 2600 | loss 0.5468 | fall/fallen/normal acc 0.683/0.377/0.960 | lr 1.00e-04
+step 2650 | loss 0.2112 | fall/fallen/normal acc 0.725/0.830/0.968 | lr 1.00e-04
+step 2700 | loss 0.6922 | fall/fallen/normal acc 0.670/0.638/0.922 | lr 1.00e-04
+step 2750 | loss 0.4549 | fall/fallen/normal acc 0.725/0.682/0.966 | lr 1.00e-04
+step 2800 | loss 0.1425 | fall/fallen/normal acc 0.769/0.830/0.989 | lr 1.00e-04
+step 2850 | loss 0.4887 | fall/fallen/normal acc 0.727/0.698/0.956 | lr 1.00e-04
+step 2900 | loss 0.5312 | fall/fallen/normal acc 0.755/0.530/0.948 | lr 1.00e-04
+step 2950 | loss 0.6258 | fall/fallen/normal acc 0.536/0.857/0.933 | lr 1.00e-04
+step 3000 | loss 0.4635 | fall/fallen/normal acc 0.640/0.760/0.948 | lr 1.00e-04
+[VAL] step 3000 | f1 0.8173 | fallen prec 0.6921 rec 0.9712 | train_loss 0.4665
+step 3050 | loss 0.4004 | fall/fallen/normal acc 0.548/0.712/0.957 | lr 1.00e-04
+step 3100 | loss 0.6577 | fall/fallen/normal acc 0.629/0.615/0.954 | lr 1.00e-04
+step 3150 | loss 0.3510 | fall/fallen/normal acc 0.627/0.621/0.968 | lr 1.00e-04
+step 3200 | loss 0.3023 | fall/fallen/normal acc 0.734/0.854/0.958 | lr 1.00e-04
+step 3250 | loss 0.2789 | fall/fallen/normal acc 0.747/0.770/0.981 | lr 1.00e-04
+step 3300 | loss 0.4783 | fall/fallen/normal acc 0.785/0.428/0.955 | lr 1.00e-04
+step 3350 | loss 0.2569 | fall/fallen/normal acc 0.785/0.746/0.948 | lr 1.00e-04
+step 3400 | loss 0.4116 | fall/fallen/normal acc 0.692/0.752/0.940 | lr 1.00e-04
+step 3450 | loss 0.2454 | fall/fallen/normal acc 0.889/0.479/0.952 | lr 1.00e-04
+step 3500 | loss 0.5838 | fall/fallen/normal acc 0.592/0.664/0.967 | lr 1.00e-04
+step 3550 | loss 0.4121 | fall/fallen/normal acc 0.758/0.736/0.932 | lr 1.00e-04
+step 3600 | loss 0.2593 | fall/fallen/normal acc 0.861/0.779/0.960 | lr 1.00e-04
+[VAL] step 3600 | f1 0.8675 | fallen prec 0.7840 rec 0.9703 | train_loss 0.3865
+  [BEST] 新最优 f1=0.8675 → best_model.pt
+step 3650 | loss 0.3712 | fall/fallen/normal acc 0.809/0.674/0.962 | lr 1.00e-04
+step 3700 | loss 0.4652 | fall/fallen/normal acc 0.728/0.849/0.941 | lr 1.00e-04
+step 3750 | loss 0.3883 | fall/fallen/normal acc 0.839/0.746/0.938 | lr 1.00e-04
+step 3800 | loss 0.2719 | fall/fallen/normal acc 0.748/0.884/0.942 | lr 1.00e-04
+step 3850 | loss 0.2300 | fall/fallen/normal acc 0.843/0.861/0.955 | lr 1.00e-04
+step 3900 | loss 0.3776 | fall/fallen/normal acc 0.833/0.547/0.985 | lr 1.00e-04
+step 3950 | loss 0.3491 | fall/fallen/normal acc 0.665/0.826/0.966 | lr 1.00e-04
+step 4000 | loss 0.4689 | fall/fallen/normal acc 0.698/0.953/0.978 | lr 1.00e-04
+step 4050 | loss 0.2781 | fall/fallen/normal acc 0.444/0.945/0.979 | lr 1.00e-04
+step 4100 | loss 0.5585 | fall/fallen/normal acc 0.815/0.460/0.946 | lr 1.00e-04
+step 4150 | loss 0.6233 | fall/fallen/normal acc 0.703/0.449/0.953 | lr 1.00e-04
+step 4200 | loss 0.3060 | fall/fallen/normal acc 0.804/0.777/0.953 | lr 1.00e-04
+[VAL] step 4200 | f1 0.8118 | fallen prec 0.8953 rec 0.7696 | train_loss 0.3907
+step 4250 | loss 0.2327 | fall/fallen/normal acc 0.863/0.696/0.962 | lr 1.00e-04
+step 4300 | loss 0.4389 | fall/fallen/normal acc 0.833/0.805/0.951 | lr 1.00e-04
+step 4350 | loss 0.1993 | fall/fallen/normal acc 0.858/0.548/0.970 | lr 1.00e-04
+step 4400 | loss 0.4568 | fall/fallen/normal acc 0.900/0.341/0.975 | lr 1.00e-04
+step 4450 | loss 0.4830 | fall/fallen/normal acc 0.733/0.705/0.909 | lr 1.00e-04
+step 4500 | loss 0.3162 | fall/fallen/normal acc 0.822/0.723/0.942 | lr 1.00e-04
+step 4550 | loss 0.3461 | fall/fallen/normal acc 0.865/0.590/0.945 | lr 1.00e-04
+step 4600 | loss 0.3951 | fall/fallen/normal acc 0.827/0.703/0.933 | lr 1.00e-04
+step 4650 | loss 0.2142 | fall/fallen/normal acc 0.847/0.738/0.965 | lr 1.00e-04
+step 4700 | loss 0.3603 | fall/fallen/normal acc 0.570/0.678/0.973 | lr 1.00e-04
+step 4750 | loss 0.3823 | fall/fallen/normal acc 0.793/0.625/0.987 | lr 1.00e-04
+step 4800 | loss 0.5940 | fall/fallen/normal acc 0.730/0.449/0.931 | lr 1.00e-04
+[VAL] step 4800 | f1 0.8386 | fallen prec 0.9198 rec 0.7948 | train_loss 0.3682
+step 4850 | loss 0.3508 | fall/fallen/normal acc 0.840/0.771/0.960 | lr 1.00e-04
+step 4900 | loss 0.4285 | fall/fallen/normal acc 0.631/0.866/0.956 | lr 1.00e-04
+step 4950 | loss 0.6123 | fall/fallen/normal acc 0.681/0.648/0.947 | lr 1.00e-04
+step 5000 | loss 0.2760 | fall/fallen/normal acc 0.581/0.881/0.947 | lr 1.00e-04
+step 5050 | loss 0.3176 | fall/fallen/normal acc 0.858/0.628/0.964 | lr 1.00e-04
+step 5100 | loss 0.3594 | fall/fallen/normal acc 0.633/0.790/0.951 | lr 1.00e-04
+step 5150 | loss 0.2766 | fall/fallen/normal acc 0.830/0.743/0.976 | lr 1.00e-04
+step 5200 | loss 0.4391 | fall/fallen/normal acc 0.813/0.408/0.963 | lr 1.00e-04
+step 5250 | loss 0.3957 | fall/fallen/normal acc 0.602/0.818/0.928 | lr 1.00e-04
+step 5300 | loss 0.3280 | fall/fallen/normal acc 0.684/0.709/0.982 | lr 1.00e-04
+step 5350 | loss 0.3442 | fall/fallen/normal acc 0.854/0.179/0.951 | lr 1.00e-04
+step 5400 | loss 0.5199 | fall/fallen/normal acc 0.792/0.603/0.962 | lr 1.00e-04
+[VAL] step 5400 | f1 0.8261 | fallen prec 0.8864 rec 0.7021 | train_loss 0.3873
+step 5450 | loss 0.2836 | fall/fallen/normal acc 0.803/0.721/0.974 | lr 1.00e-04
+step 5500 | loss 0.1489 | fall/fallen/normal acc 0.902/0.837/0.975 | lr 1.00e-04
+step 5550 | loss 0.4535 | fall/fallen/normal acc 0.710/0.747/0.985 | lr 1.00e-04
+step 5600 | loss 0.6453 | fall/fallen/normal acc 0.625/0.703/0.958 | lr 1.00e-04
+step 5650 | loss 0.2443 | fall/fallen/normal acc 0.895/0.819/0.938 | lr 1.00e-04
+step 5700 | loss 0.1976 | fall/fallen/normal acc 0.905/0.311/0.971 | lr 1.00e-04
+step 5750 | loss 0.3315 | fall/fallen/normal acc 0.848/0.472/0.983 | lr 1.00e-04
+step 5800 | loss 0.2271 | fall/fallen/normal acc 0.854/0.832/0.972 | lr 1.00e-04
+step 5850 | loss 0.2773 | fall/fallen/normal acc 0.744/0.805/0.947 | lr 1.00e-04
+step 5900 | loss 0.1700 | fall/fallen/normal acc 0.787/0.754/0.991 | lr 1.00e-04
+step 5950 | loss 0.2251 | fall/fallen/normal acc 0.829/0.807/0.962 | lr 1.00e-04
+step 6000 | loss 0.2335 | fall/fallen/normal acc 0.734/0.800/0.958 | lr 1.00e-04
+[VAL] step 6000 | f1 0.8807 | fallen prec 0.7567 rec 0.9883 | train_loss 0.2865
+  [BEST] 新最优 f1=0.8807 → best_model.pt
+step 6050 | loss 0.3326 | fall/fallen/normal acc 0.901/0.415/0.933 | lr 1.00e-04
+step 6100 | loss 0.2162 | fall/fallen/normal acc 0.849/0.841/0.960 | lr 1.00e-04
+step 6150 | loss 0.2558 | fall/fallen/normal acc 0.722/0.867/0.953 | lr 1.00e-04
+step 6200 | loss 0.5942 | fall/fallen/normal acc 0.757/0.771/0.971 | lr 1.00e-04
+step 6250 | loss 0.3978 | fall/fallen/normal acc 0.969/0.599/0.967 | lr 1.00e-04
+step 6300 | loss 0.3425 | fall/fallen/normal acc 0.746/0.737/0.949 | lr 1.00e-04
+step 6350 | loss 0.3111 | fall/fallen/normal acc 0.834/0.754/0.966 | lr 1.00e-04
+step 6400 | loss 0.3789 | fall/fallen/normal acc 0.710/0.804/0.922 | lr 1.00e-04
+step 6450 | loss 0.4034 | fall/fallen/normal acc 0.856/0.611/0.939 | lr 1.00e-04
+step 6500 | loss 0.3166 | fall/fallen/normal acc 0.891/0.446/0.951 | lr 1.00e-04
+step 6550 | loss 0.2674 | fall/fallen/normal acc 0.801/0.710/0.964 | lr 1.00e-04
+step 6600 | loss 0.3660 | fall/fallen/normal acc 0.671/0.813/0.921 | lr 1.00e-04
+[VAL] step 6600 | f1 0.8181 | fallen prec 0.8386 rec 0.7111 | train_loss 0.3485
+step 6650 | loss 0.1692 | fall/fallen/normal acc 0.757/0.774/0.970 | lr 1.00e-04
+step 6700 | loss 0.2757 | fall/fallen/normal acc 0.856/0.700/0.965 | lr 1.00e-04
+step 6750 | loss 0.3351 | fall/fallen/normal acc 0.801/0.889/0.947 | lr 1.00e-04
+step 6800 | loss 0.4406 | fall/fallen/normal acc 0.802/0.551/0.937 | lr 1.00e-04
+step 6850 | loss 0.4448 | fall/fallen/normal acc 0.764/0.718/0.986 | lr 1.00e-04
+step 6900 | loss 0.3200 | fall/fallen/normal acc 0.758/0.711/0.934 | lr 1.00e-04
+step 6950 | loss 0.2548 | fall/fallen/normal acc 0.646/0.885/0.948 | lr 1.00e-04
+step 7000 | loss 0.6114 | fall/fallen/normal acc 0.923/0.338/0.973 | lr 1.00e-04
+step 7050 | loss 0.1931 | fall/fallen/normal acc 0.841/0.638/0.975 | lr 1.00e-04
+step 7100 | loss 0.1485 | fall/fallen/normal acc 0.820/0.779/0.977 | lr 1.00e-04
+step 7150 | loss 0.2081 | fall/fallen/normal acc 0.695/0.888/0.983 | lr 1.00e-04
+step 7200 | loss 0.3762 | fall/fallen/normal acc 0.607/0.818/0.966 | lr 1.00e-04
+[VAL] step 7200 | f1 0.8593 | fallen prec 0.8776 rec 0.8389 | train_loss 0.3148
+step 7250 | loss 0.3329 | fall/fallen/normal acc 0.665/0.767/0.978 | lr 1.00e-04
+step 7300 | loss 0.3048 | fall/fallen/normal acc 0.806/0.692/0.957 | lr 1.00e-04
+step 7350 | loss 0.2521 | fall/fallen/normal acc 0.913/0.591/0.979 | lr 1.00e-04
+step 7400 | loss 0.1526 | fall/fallen/normal acc 0.843/0.927/0.967 | lr 1.00e-04
+step 7450 | loss 0.4833 | fall/fallen/normal acc 0.850/0.627/0.938 | lr 1.00e-04
+step 7500 | loss 0.1965 | fall/fallen/normal acc 0.795/0.540/0.974 | lr 1.00e-04
+step 7550 | loss 0.3459 | fall/fallen/normal acc 0.632/0.669/0.979 | lr 1.00e-04
+step 7600 | loss 0.2452 | fall/fallen/normal acc 0.786/0.856/0.960 | lr 1.00e-04
+step 7650 | loss 0.4628 | fall/fallen/normal acc 0.738/0.452/0.985 | lr 1.00e-04
+step 7700 | loss 0.3172 | fall/fallen/normal acc 0.794/0.570/0.964 | lr 1.00e-04
+step 7750 | loss 0.3239 | fall/fallen/normal acc 0.864/0.803/0.951 | lr 1.00e-04
+step 7800 | loss 0.3639 | fall/fallen/normal acc 0.765/0.703/0.947 | lr 1.00e-04
+[VAL] step 7800 | f1 0.8423 | fallen prec 0.9629 rec 0.7012 | train_loss 0.3151
+step 7850 | loss 0.2773 | fall/fallen/normal acc 0.787/0.780/0.938 | lr 1.00e-04
+step 7900 | loss 0.2546 | fall/fallen/normal acc 0.805/0.807/0.945 | lr 1.00e-04
+step 7950 | loss 1.0197 | fall/fallen/normal acc 0.833/0.382/0.946 | lr 1.00e-04
+step 8000 | loss 0.3505 | fall/fallen/normal acc 0.756/0.631/0.939 | lr 1.00e-04
+step 8050 | loss 0.4739 | fall/fallen/normal acc 0.755/0.567/0.955 | lr 1.00e-04
+step 8100 | loss 0.2743 | fall/fallen/normal acc 0.767/0.820/0.970 | lr 1.00e-04
+step 8150 | loss 0.4384 | fall/fallen/normal acc 0.833/0.686/0.938 | lr 1.00e-04
+step 8200 | loss 0.2916 | fall/fallen/normal acc 0.892/0.825/0.951 | lr 1.00e-04
+step 8250 | loss 0.3537 | fall/fallen/normal acc 0.638/0.597/0.982 | lr 1.00e-04
+step 8300 | loss 0.0997 | fall/fallen/normal acc 0.907/0.854/0.991 | lr 1.00e-04
+step 8350 | loss 0.1186 | fall/fallen/normal acc 0.907/0.866/0.983 | lr 1.00e-04
+step 8400 | loss 0.3104 | fall/fallen/normal acc 0.723/0.717/0.979 | lr 1.00e-04
+[VAL] step 8400 | f1 0.8364 | fallen prec 0.9602 rec 0.7606 | train_loss 0.3552
+step 8450 | loss 0.2740 | fall/fallen/normal acc 0.723/0.884/0.951 | lr 1.00e-04
+step 8500 | loss 0.2047 | fall/fallen/normal acc 0.819/0.791/0.980 | lr 1.00e-04
+step 8550 | loss 0.2833 | fall/fallen/normal acc 0.871/0.607/0.964 | lr 1.00e-04
+step 8600 | loss 0.3017 | fall/fallen/normal acc 0.646/0.878/0.968 | lr 1.00e-04
+step 8650 | loss 0.3899 | fall/fallen/normal acc 0.706/0.600/0.951 | lr 1.00e-04
+step 8700 | loss 0.2629 | fall/fallen/normal acc 0.820/0.714/0.939 | lr 1.00e-04
+step 8750 | loss 0.3045 | fall/fallen/normal acc 0.896/0.503/0.957 | lr 1.00e-04
+step 8800 | loss 0.0968 | fall/fallen/normal acc 0.794/0.912/0.981 | lr 1.00e-04
+step 8850 | loss 0.3368 | fall/fallen/normal acc 0.662/0.830/0.942 | lr 1.00e-04
+step 8900 | loss 0.1962 | fall/fallen/normal acc 0.872/0.837/0.962 | lr 1.00e-04
+step 8950 | loss 0.0868 | fall/fallen/normal acc 0.891/0.922/0.974 | lr 1.00e-04
+step 9000 | loss 0.3879 | fall/fallen/normal acc 0.807/0.737/0.941 | lr 1.00e-04
+[VAL] step 9000 | f1 0.7638 | fallen prec 0.8839 rec 0.6373 | train_loss 0.2605
+step 9050 | loss 0.4050 | fall/fallen/normal acc 0.718/0.875/0.924 | lr 1.00e-04
+step 9100 | loss 0.2470 | fall/fallen/normal acc 0.838/0.951/0.938 | lr 1.00e-04
+step 9150 | loss 0.2632 | fall/fallen/normal acc 0.924/0.703/0.950 | lr 1.00e-04
+step 9200 | loss 0.2282 | fall/fallen/normal acc 0.744/0.899/0.977 | lr 1.00e-04
+step 9250 | loss 0.1823 | fall/fallen/normal acc 0.813/0.927/0.949 | lr 1.00e-04
+step 9300 | loss 0.3063 | fall/fallen/normal acc 0.818/0.748/0.944 | lr 1.00e-04
+step 9350 | loss 0.2225 | fall/fallen/normal acc 0.898/0.886/0.929 | lr 1.00e-04
+step 9400 | loss 0.4485 | fall/fallen/normal acc 0.850/0.715/0.941 | lr 1.00e-04
+step 9450 | loss 0.3063 | fall/fallen/normal acc 0.757/0.803/0.965 | lr 1.00e-04
+step 9500 | loss 0.3885 | fall/fallen/normal acc 0.596/0.752/0.962 | lr 1.00e-04
+step 9550 | loss 0.2308 | fall/fallen/normal acc 0.898/0.841/0.939 | lr 1.00e-04
+step 9600 | loss 0.4800 | fall/fallen/normal acc 0.739/0.730/0.969 | lr 1.00e-04
+[VAL] step 9600 | f1 0.8512 | fallen prec 0.9022 rec 0.8056 | train_loss 0.3091
+[EPOCH 1] 完成，已存 epoch_1_model.pt
+step 9650 | loss 0.2958 | fall/fallen/normal acc 0.765/0.818/0.960 | lr 1.00e-04
+step 9700 | loss 0.1280 | fall/fallen/normal acc 0.947/0.880/0.974 | lr 1.00e-04
+step 9750 | loss 0.2388 | fall/fallen/normal acc 0.827/0.898/0.976 | lr 1.00e-04
+step 9800 | loss 0.1359 | fall/fallen/normal acc 0.865/0.840/0.974 | lr 1.00e-04
+step 9850 | loss 0.1719 | fall/fallen/normal acc 0.864/0.933/0.977 | lr 1.00e-04
+step 9900 | loss 0.2839 | fall/fallen/normal acc 0.781/0.861/0.941 | lr 1.00e-04
+step 9950 | loss 0.4537 | fall/fallen/normal acc 0.779/0.411/0.973 | lr 1.00e-04
+step 10000 | loss 0.1910 | fall/fallen/normal acc 0.860/0.874/0.973 | lr 1.00e-04
+step 10050 | loss 0.0862 | fall/fallen/normal acc 0.926/0.871/0.970 | lr 1.00e-04
+step 10100 | loss 0.1991 | fall/fallen/normal acc 0.803/0.813/0.978 | lr 1.00e-04
+step 10150 | loss 0.2085 | fall/fallen/normal acc 0.933/0.811/0.970 | lr 1.00e-04
+step 10200 | loss 0.1210 | fall/fallen/normal acc 0.704/0.951/0.988 | lr 1.00e-04
+[VAL] step 10200 | f1 0.8481 | fallen prec 0.6679 rec 0.9973 | train_loss 0.2095
+step 10250 | loss 0.1840 | fall/fallen/normal acc 0.756/0.912/0.990 | lr 1.00e-04
+step 10300 | loss 0.2917 | fall/fallen/normal acc 0.800/0.810/0.967 | lr 1.00e-04
+step 10350 | loss 0.3875 | fall/fallen/normal acc 0.671/0.721/0.971 | lr 1.00e-04
+step 10400 | loss 0.1877 | fall/fallen/normal acc 0.834/0.664/0.994 | lr 1.00e-04
+step 10450 | loss 0.3064 | fall/fallen/normal acc 0.916/0.787/0.964 | lr 1.00e-04
+step 10500 | loss 0.1739 | fall/fallen/normal acc 0.744/0.928/0.973 | lr 1.00e-04
+step 10550 | loss 0.3669 | fall/fallen/normal acc 0.965/0.648/0.958 | lr 1.00e-04
+step 10600 | loss 0.2366 | fall/fallen/normal acc 0.859/0.847/0.969 | lr 1.00e-04
+step 10650 | loss 0.3135 | fall/fallen/normal acc 0.874/0.742/0.947 | lr 1.00e-04
+step 10700 | loss 0.2732 | fall/fallen/normal acc 0.819/0.888/0.954 | lr 1.00e-04
+step 10750 | loss 0.1407 | fall/fallen/normal acc 0.808/0.942/0.973 | lr 1.00e-04
+step 10800 | loss 0.1063 | fall/fallen/normal acc 0.878/0.909/0.968 | lr 1.00e-04
+[VAL] step 10800 | f1 0.8687 | fallen prec 0.8710 rec 0.8569 | train_loss 0.2474
+step 10850 | loss 0.2080 | fall/fallen/normal acc 0.744/0.840/0.989 | lr 1.00e-04
+step 10900 | loss 0.3140 | fall/fallen/normal acc 0.735/0.838/0.944 | lr 1.00e-04
+step 10950 | loss 0.2641 | fall/fallen/normal acc 0.863/0.884/0.965 | lr 1.00e-04
+step 11000 | loss 0.2275 | fall/fallen/normal acc 0.854/0.841/0.946 | lr 1.00e-04
+step 11050 | loss 0.2625 | fall/fallen/normal acc 0.736/0.920/0.998 | lr 1.00e-04
+step 11100 | loss 0.3132 | fall/fallen/normal acc 0.871/0.785/0.962 | lr 1.00e-04
+step 11150 | loss 0.2067 | fall/fallen/normal acc 0.872/0.853/0.965 | lr 1.00e-04
+step 11200 | loss 0.1681 | fall/fallen/normal acc 0.866/0.790/0.991 | lr 1.00e-04
+step 11250 | loss 0.1188 | fall/fallen/normal acc 0.809/0.845/0.996 | lr 1.00e-04
+step 11300 | loss 0.3872 | fall/fallen/normal acc 0.855/0.750/0.963 | lr 1.00e-04
+step 11350 | loss 0.2296 | fall/fallen/normal acc 0.738/0.807/0.971 | lr 1.00e-04
+step 11400 | loss 0.2393 | fall/fallen/normal acc 0.906/0.761/0.950 | lr 1.00e-04
+[VAL] step 11400 | f1 0.8803 | fallen prec 0.8848 rec 0.8713 | train_loss 0.2449
+step 11450 | loss 0.2404 | fall/fallen/normal acc 0.911/0.921/0.961 | lr 1.00e-04
+step 11500 | loss 0.1809 | fall/fallen/normal acc 0.810/0.905/0.946 | lr 1.00e-04
+step 11550 | loss 0.1399 | fall/fallen/normal acc 0.836/0.972/0.988 | lr 1.00e-04
+step 11600 | loss 0.1181 | fall/fallen/normal acc 0.952/0.842/0.983 | lr 1.00e-04
+step 11650 | loss 0.1676 | fall/fallen/normal acc 0.840/0.861/0.961 | lr 1.00e-04
+step 11700 | loss 0.1712 | fall/fallen/normal acc 0.762/0.936/0.973 | lr 1.00e-04
+step 11750 | loss 0.0868 | fall/fallen/normal acc 0.833/0.882/0.989 | lr 1.00e-04
+step 11800 | loss 0.4526 | fall/fallen/normal acc 0.492/0.778/0.968 | lr 1.00e-04
+step 11850 | loss 0.2184 | fall/fallen/normal acc 0.841/0.791/0.976 | lr 1.00e-04
+step 11900 | loss 0.2331 | fall/fallen/normal acc 0.892/0.813/0.964 | lr 1.00e-04
+step 11950 | loss 0.2857 | fall/fallen/normal acc 0.799/0.517/0.980 | lr 1.00e-04
+step 12000 | loss 0.3031 | fall/fallen/normal acc 0.751/0.896/0.924 | lr 1.00e-04
+[VAL] step 12000 | f1 0.8190 | fallen prec 0.9111 rec 0.7192 | train_loss 0.2165
+step 12050 | loss 0.3566 | fall/fallen/normal acc 0.771/0.689/0.948 | lr 1.00e-04
+step 12100 | loss 0.3484 | fall/fallen/normal acc 0.859/0.806/0.966 | lr 1.00e-04
+step 12150 | loss 0.3943 | fall/fallen/normal acc 0.896/0.830/0.978 | lr 1.00e-04
+step 12200 | loss 0.2998 | fall/fallen/normal acc 0.922/0.856/0.949 | lr 1.00e-04
+step 12250 | loss 0.1946 | fall/fallen/normal acc 0.834/0.777/0.958 | lr 1.00e-04
+step 12300 | loss 0.0645 | fall/fallen/normal acc 0.954/0.943/0.988 | lr 1.00e-04
+step 12350 | loss 0.3504 | fall/fallen/normal acc 0.833/0.733/0.934 | lr 1.00e-04
+step 12400 | loss 0.2825 | fall/fallen/normal acc 0.804/0.829/0.941 | lr 1.00e-04
+step 12450 | loss 0.2291 | fall/fallen/normal acc 0.892/0.624/0.971 | lr 1.00e-04
+step 12500 | loss 0.2544 | fall/fallen/normal acc 0.616/0.878/0.981 | lr 1.00e-04
+step 12550 | loss 0.1287 | fall/fallen/normal acc 0.943/0.956/0.987 | lr 1.00e-04
+step 12600 | loss 0.1361 | fall/fallen/normal acc 0.939/0.864/0.960 | lr 1.00e-04
+[VAL] step 12600 | f1 0.8532 | fallen prec 0.7761 rec 0.8830 | train_loss 0.2533
+step 12650 | loss 0.2888 | fall/fallen/normal acc 0.649/0.804/0.959 | lr 1.00e-04
+step 12700 | loss 0.1836 | fall/fallen/normal acc 0.936/0.759/0.970 | lr 1.00e-04
+step 12750 | loss 0.2681 | fall/fallen/normal acc 0.722/0.808/0.968 | lr 1.00e-04
+step 12800 | loss 0.2865 | fall/fallen/normal acc 0.729/0.916/0.970 | lr 1.00e-04
+step 12850 | loss 0.3889 | fall/fallen/normal acc 0.837/0.745/0.949 | lr 1.00e-04
+step 12900 | loss 0.1756 | fall/fallen/normal acc 0.864/0.950/0.942 | lr 1.00e-04
+step 12950 | loss 0.1592 | fall/fallen/normal acc 0.762/0.791/0.991 | lr 1.00e-04
+step 13000 | loss 0.1161 | fall/fallen/normal acc 0.874/0.845/0.980 | lr 1.00e-04
+step 13050 | loss 0.1586 | fall/fallen/normal acc 0.872/0.923/0.971 | lr 1.00e-04
+step 13100 | loss 0.1959 | fall/fallen/normal acc 0.792/0.794/0.981 | lr 1.00e-04
+step 13150 | loss 0.2889 | fall/fallen/normal acc 0.878/0.843/0.963 | lr 1.00e-04
+step 13200 | loss 0.1095 | fall/fallen/normal acc 0.847/0.917/0.979 | lr 1.00e-04
+[VAL] step 13200 | f1 0.8656 | fallen prec 0.9398 rec 0.7588 | train_loss 0.2183
+step 13250 | loss 0.1220 | fall/fallen/normal acc 0.928/0.916/0.962 | lr 1.00e-04
+step 13300 | loss 0.3209 | fall/fallen/normal acc 0.679/0.881/0.959 | lr 1.00e-04
+step 13350 | loss 0.3743 | fall/fallen/normal acc 0.799/0.868/0.968 | lr 1.00e-04
+step 13400 | loss 0.1045 | fall/fallen/normal acc 0.948/0.929/0.977 | lr 1.00e-04
+step 13450 | loss 0.3686 | fall/fallen/normal acc 0.886/0.756/0.986 | lr 1.00e-04
+step 13500 | loss 0.1979 | fall/fallen/normal acc 0.604/0.854/0.966 | lr 1.00e-04
+step 13550 | loss 0.3309 | fall/fallen/normal acc 0.827/0.647/0.950 | lr 1.00e-04
+step 13600 | loss 0.1958 | fall/fallen/normal acc 0.695/0.841/0.970 | lr 1.00e-04
+step 13650 | loss 0.2349 | fall/fallen/normal acc 0.765/0.884/0.978 | lr 1.00e-04
+step 13700 | loss 0.2727 | fall/fallen/normal acc 0.884/0.863/0.969 | lr 1.00e-04
+step 13750 | loss 0.1527 | fall/fallen/normal acc 0.888/0.814/0.980 | lr 1.00e-04
+step 13800 | loss 0.1766 | fall/fallen/normal acc 0.893/0.895/0.957 | lr 1.00e-04
+[VAL] step 13800 | f1 0.8831 | fallen prec 0.8099 rec 0.9433 | train_loss 0.2376
+  [BEST] 新最优 f1=0.8831 → best_model.pt
+step 13850 | loss 0.2959 | fall/fallen/normal acc 0.758/0.570/0.981 | lr 1.00e-04
+step 13900 | loss 0.2014 | fall/fallen/normal acc 0.787/0.903/0.969 | lr 1.00e-04
+step 13950 | loss 0.2075 | fall/fallen/normal acc 0.778/0.834/0.979 | lr 1.00e-04
+step 14000 | loss 0.3860 | fall/fallen/normal acc 0.821/0.759/0.935 | lr 1.00e-04
+step 14050 | loss 0.2766 | fall/fallen/normal acc 0.827/0.742/0.968 | lr 1.00e-04
+step 14100 | loss 0.2981 | fall/fallen/normal acc 0.816/0.692/0.957 | lr 1.00e-04
+step 14150 | loss 0.1895 | fall/fallen/normal acc 0.887/0.780/0.956 | lr 1.00e-04
+step 14200 | loss 0.1577 | fall/fallen/normal acc 0.886/0.816/0.974 | lr 1.00e-04
+step 14250 | loss 0.1771 | fall/fallen/normal acc 0.647/0.895/0.972 | lr 1.00e-04
+step 14300 | loss 0.1233 | fall/fallen/normal acc 0.877/0.953/0.955 | lr 1.00e-04
+step 14350 | loss 0.1712 | fall/fallen/normal acc 0.818/0.923/0.956 | lr 1.00e-04
+step 14400 | loss 0.2123 | fall/fallen/normal acc 0.897/0.753/0.939 | lr 1.00e-04
+[VAL] step 14400 | f1 0.8033 | fallen prec 0.8641 rec 0.6580 | train_loss 0.2247
+step 14450 | loss 0.3796 | fall/fallen/normal acc 0.874/0.706/0.928 | lr 1.00e-04
+step 14500 | loss 0.2520 | fall/fallen/normal acc 0.880/0.586/0.976 | lr 1.00e-04
+step 14550 | loss 0.1876 | fall/fallen/normal acc 0.786/0.835/0.976 | lr 1.00e-04
+step 14600 | loss 0.2097 | fall/fallen/normal acc 0.931/0.933/0.965 | lr 1.00e-04
+step 14650 | loss 0.1194 | fall/fallen/normal acc 0.910/0.787/0.985 | lr 1.00e-04
+step 14700 | loss 0.2508 | fall/fallen/normal acc 0.884/0.845/0.965 | lr 1.00e-04
+step 14750 | loss 0.1495 | fall/fallen/normal acc 0.812/0.992/0.978 | lr 1.00e-04
+step 14800 | loss 0.1058 | fall/fallen/normal acc 0.744/0.979/0.977 | lr 1.00e-04
+step 14850 | loss 0.2195 | fall/fallen/normal acc 0.857/0.817/0.962 | lr 1.00e-04
+step 14900 | loss 0.4834 | fall/fallen/normal acc 0.748/0.607/0.989 | lr 1.00e-04
+step 14950 | loss 0.1304 | fall/fallen/normal acc 0.870/0.883/0.981 | lr 1.00e-04
+step 15000 | loss 0.3739 | fall/fallen/normal acc 0.755/0.844/0.970 | lr 1.00e-04
+[VAL] step 15000 | f1 0.8719 | fallen prec 0.9341 rec 0.7912 | train_loss 0.2385
+step 15050 | loss 0.2562 | fall/fallen/normal acc 0.847/0.837/0.955 | lr 1.00e-04
+step 15100 | loss 0.3139 | fall/fallen/normal acc 0.839/0.728/0.960 | lr 1.00e-04
+step 15150 | loss 0.3122 | fall/fallen/normal acc 0.845/0.688/0.982 | lr 1.00e-04
+step 15200 | loss 0.1539 | fall/fallen/normal acc 0.894/0.862/0.974 | lr 1.00e-04
+step 15250 | loss 0.2600 | fall/fallen/normal acc 0.848/0.813/0.954 | lr 1.00e-04
+step 15300 | loss 0.1653 | fall/fallen/normal acc 0.830/0.944/0.966 | lr 1.00e-04
+step 15350 | loss 0.4002 | fall/fallen/normal acc 0.793/0.824/0.971 | lr 1.00e-04
+step 15400 | loss 0.3066 | fall/fallen/normal acc 0.766/0.820/0.957 | lr 1.00e-04
+step 15450 | loss 0.2334 | fall/fallen/normal acc 0.830/0.905/0.960 | lr 1.00e-04
+step 15500 | loss 0.2735 | fall/fallen/normal acc 0.829/0.738/0.958 | lr 1.00e-04
+step 15550 | loss 0.2498 | fall/fallen/normal acc 0.903/0.652/0.979 | lr 1.00e-04
+step 15600 | loss 0.0537 | fall/fallen/normal acc 0.917/0.992/0.987 | lr 1.00e-04
+[VAL] step 15600 | f1 0.8430 | fallen prec 0.9603 rec 0.7615 | train_loss 0.2482
+step 15650 | loss 0.3823 | fall/fallen/normal acc 0.825/0.814/0.928 | lr 1.00e-04
+step 15700 | loss 0.1426 | fall/fallen/normal acc 0.892/0.890/0.962 | lr 1.00e-04
+step 15750 | loss 0.1589 | fall/fallen/normal acc 0.803/0.911/0.967 | lr 1.00e-04
+step 15800 | loss 0.1284 | fall/fallen/normal acc 0.922/0.786/0.978 | lr 1.00e-04
+step 15850 | loss 0.1513 | fall/fallen/normal acc 0.877/0.890/0.972 | lr 1.00e-04
+step 15900 | loss 0.1380 | fall/fallen/normal acc 0.919/0.947/0.982 | lr 1.00e-04
+step 15950 | loss 0.3119 | fall/fallen/normal acc 0.907/0.657/0.995 | lr 1.00e-04
+step 16000 | loss 0.4065 | fall/fallen/normal acc 0.869/0.742/0.955 | lr 1.00e-04
+step 16050 | loss 0.2039 | fall/fallen/normal acc 0.789/0.918/0.981 | lr 1.00e-04
+step 16100 | loss 0.1955 | fall/fallen/normal acc 0.820/0.878/0.967 | lr 1.00e-04
+step 16150 | loss 0.1894 | fall/fallen/normal acc 0.853/0.859/0.972 | lr 1.00e-04
+step 16200 | loss 0.2025 | fall/fallen/normal acc 0.796/0.916/0.959 | lr 1.00e-04
+[VAL] step 16200 | f1 0.8582 | fallen prec 0.9551 rec 0.7858 | train_loss 0.2176
+step 16250 | loss 0.1924 | fall/fallen/normal acc 0.895/0.587/0.980 | lr 1.00e-04
+step 16300 | loss 0.2624 | fall/fallen/normal acc 0.838/0.943/0.962 | lr 1.00e-04
+step 16350 | loss 0.2274 | fall/fallen/normal acc 0.857/0.898/0.943 | lr 1.00e-04
+step 16400 | loss 0.0944 | fall/fallen/normal acc 0.922/0.886/0.991 | lr 1.00e-04
+step 16450 | loss 0.2261 | fall/fallen/normal acc 0.872/0.729/0.964 | lr 1.00e-04
+step 16500 | loss 0.2252 | fall/fallen/normal acc 0.853/0.783/0.969 | lr 1.00e-04
+step 16550 | loss 0.1345 | fall/fallen/normal acc 0.810/0.954/0.986 | lr 1.00e-04
+step 16600 | loss 0.2509 | fall/fallen/normal acc 0.969/0.554/0.969 | lr 1.00e-04
+step 16650 | loss 0.2733 | fall/fallen/normal acc 0.810/0.689/0.955 | lr 1.00e-04
+step 16700 | loss 0.2142 | fall/fallen/normal acc 0.798/0.723/0.941 | lr 1.00e-04
+step 16750 | loss 0.2476 | fall/fallen/normal acc 0.780/0.725/0.984 | lr 1.00e-04
+step 16800 | loss 0.1608 | fall/fallen/normal acc 0.821/0.946/0.952 | lr 1.00e-04
+[VAL] step 16800 | f1 0.8521 | fallen prec 0.9564 rec 0.7102 | train_loss 0.2091
+step 16850 | loss 0.1113 | fall/fallen/normal acc 0.952/0.773/0.986 | lr 1.00e-04
+step 16900 | loss 0.1485 | fall/fallen/normal acc 0.736/0.980/0.968 | lr 1.00e-04
+step 16950 | loss 0.0461 | fall/fallen/normal acc 0.949/0.976/0.980 | lr 1.00e-04
+step 17000 | loss 0.2222 | fall/fallen/normal acc 0.959/0.692/0.970 | lr 1.00e-04
+step 17050 | loss 0.5131 | fall/fallen/normal acc 0.754/0.623/0.964 | lr 1.00e-04
+step 17100 | loss 0.2222 | fall/fallen/normal acc 0.799/0.773/0.974 | lr 1.00e-04
+step 17150 | loss 0.3128 | fall/fallen/normal acc 0.852/0.807/0.975 | lr 1.00e-04
+step 17200 | loss 0.1100 | fall/fallen/normal acc 0.862/0.923/0.988 | lr 1.00e-04
+step 17250 | loss 0.2232 | fall/fallen/normal acc 0.845/0.842/0.989 | lr 1.00e-04
+step 17300 | loss 0.3266 | fall/fallen/normal acc 0.855/0.760/0.946 | lr 1.00e-04
+step 17350 | loss 0.2286 | fall/fallen/normal acc 0.650/0.838/0.954 | lr 1.00e-04
+step 17400 | loss 0.1718 | fall/fallen/normal acc 0.878/0.835/0.987 | lr 1.00e-04
+[VAL] step 17400 | f1 0.8272 | fallen prec 0.8281 rec 0.8281 | train_loss 0.2197
+step 17450 | loss 0.2407 | fall/fallen/normal acc 0.821/0.786/0.954 | lr 1.00e-04
+step 17500 | loss 0.1866 | fall/fallen/normal acc 0.765/0.961/0.977 | lr 1.00e-04
+step 17550 | loss 0.1110 | fall/fallen/normal acc 0.882/0.849/0.977 | lr 1.00e-04
+step 17600 | loss 0.4672 | fall/fallen/normal acc 0.809/0.681/0.978 | lr 1.00e-04
+step 17650 | loss 0.3002 | fall/fallen/normal acc 0.893/0.767/0.943 | lr 1.00e-04
+step 17700 | loss 0.2619 | fall/fallen/normal acc 0.877/0.804/0.963 | lr 1.00e-04
+step 17750 | loss 0.2204 | fall/fallen/normal acc 0.827/0.785/0.964 | lr 1.00e-04
+step 17800 | loss 0.4448 | fall/fallen/normal acc 0.730/0.886/0.971 | lr 1.00e-04
+step 17850 | loss 0.2156 | fall/fallen/normal acc 0.865/0.595/0.975 | lr 1.00e-04
+step 17900 | loss 0.1680 | fall/fallen/normal acc 0.947/0.659/0.977 | lr 1.00e-04
+step 17950 | loss 0.2789 | fall/fallen/normal acc 0.889/0.792/0.928 | lr 1.00e-04
+step 18000 | loss 0.0990 | fall/fallen/normal acc 0.834/0.927/0.983 | lr 1.00e-04
+[VAL] step 18000 | f1 0.8885 | fallen prec 0.8815 rec 0.9442 | train_loss 0.2495
+  [BEST] 新最优 f1=0.8885 → best_model.pt
+step 18050 | loss 0.1800 | fall/fallen/normal acc 0.782/0.920/0.962 | lr 1.00e-04
+step 18100 | loss 0.2479 | fall/fallen/normal acc 0.770/0.886/0.963 | lr 1.00e-04
+step 18150 | loss 0.1941 | fall/fallen/normal acc 0.862/0.895/0.973 | lr 1.00e-04
+step 18200 | loss 0.1719 | fall/fallen/normal acc 0.772/0.918/0.958 | lr 1.00e-04
+step 18250 | loss 0.1211 | fall/fallen/normal acc 0.920/0.973/0.963 | lr 1.00e-04
+step 18300 | loss 0.1079 | fall/fallen/normal acc 0.891/0.827/0.993 | lr 1.00e-04
+step 18350 | loss 0.3811 | fall/fallen/normal acc 0.714/0.774/0.970 | lr 1.00e-04
+step 18400 | loss 0.2719 | fall/fallen/normal acc 0.839/0.780/0.946 | lr 1.00e-04
+step 18450 | loss 0.1503 | fall/fallen/normal acc 0.861/0.958/0.956 | lr 1.00e-04
+step 18500 | loss 0.2507 | fall/fallen/normal acc 0.749/0.963/0.961 | lr 1.00e-04
+step 18550 | loss 0.2485 | fall/fallen/normal acc 0.628/0.700/0.976 | lr 1.00e-04
+step 18600 | loss 0.1940 | fall/fallen/normal acc 0.854/0.923/0.989 | lr 1.00e-04
+[VAL] step 18600 | f1 0.8029 | fallen prec 0.8606 rec 0.7336 | train_loss 0.2099
+step 18650 | loss 0.2691 | fall/fallen/normal acc 0.809/0.858/0.966 | lr 1.00e-04
+step 18700 | loss 0.1817 | fall/fallen/normal acc 0.878/0.656/0.954 | lr 1.00e-04
+step 18750 | loss 0.1643 | fall/fallen/normal acc 0.830/0.932/0.961 | lr 1.00e-04
+step 18800 | loss 0.3241 | fall/fallen/normal acc 0.833/0.577/0.958 | lr 1.00e-04
+step 18850 | loss 0.0955 | fall/fallen/normal acc 0.869/0.908/0.988 | lr 1.00e-04
+step 18900 | loss 0.1658 | fall/fallen/normal acc 0.863/0.951/0.968 | lr 1.00e-04
+step 18950 | loss 0.2420 | fall/fallen/normal acc 0.915/0.463/0.978 | lr 1.00e-04
+step 19000 | loss 0.1006 | fall/fallen/normal acc 0.844/0.939/0.984 | lr 1.00e-04
+step 19050 | loss 0.1322 | fall/fallen/normal acc 0.828/0.936/0.981 | lr 1.00e-04
+step 19100 | loss 0.2155 | fall/fallen/normal acc 0.806/0.766/0.967 | lr 1.00e-04
+step 19150 | loss 0.1477 | fall/fallen/normal acc 0.831/0.906/0.974 | lr 1.00e-04
+step 19200 | loss 0.1218 | fall/fallen/normal acc 0.928/0.933/0.972 | lr 1.00e-04
+[VAL] step 19200 | f1 0.8327 | fallen prec 0.9677 rec 0.7003 | train_loss 0.1800
+[EPOCH 2] 完成，已存 epoch_2_model.pt
+step 19250 | loss 0.0824 | fall/fallen/normal acc 0.974/0.935/0.986 | lr 1.00e-04
+step 19300 | loss 0.1565 | fall/fallen/normal acc 0.813/0.810/0.982 | lr 1.00e-04
+step 19350 | loss 0.2593 | fall/fallen/normal acc 0.852/0.774/0.962 | lr 1.00e-04
+step 19400 | loss 0.1546 | fall/fallen/normal acc 0.808/0.857/0.978 | lr 1.00e-04
+step 19450 | loss 0.1172 | fall/fallen/normal acc 0.931/0.851/0.981 | lr 1.00e-04
+step 19500 | loss 0.1485 | fall/fallen/normal acc 0.849/0.943/0.978 | lr 1.00e-04
+step 19550 | loss 0.2218 | fall/fallen/normal acc 0.874/0.896/0.972 | lr 1.00e-04
+step 19600 | loss 0.1515 | fall/fallen/normal acc 0.947/0.921/0.972 | lr 1.00e-04
+step 19650 | loss 0.1436 | fall/fallen/normal acc 0.886/0.970/0.967 | lr 1.00e-04
+step 19700 | loss 0.2408 | fall/fallen/normal acc 0.876/0.748/0.970 | lr 1.00e-04
+step 19750 | loss 0.1293 | fall/fallen/normal acc 0.882/0.817/0.982 | lr 1.00e-04
+step 19800 | loss 0.0805 | fall/fallen/normal acc 0.939/0.951/0.967 | lr 1.00e-04
+[VAL] step 19800 | f1 0.9125 | fallen prec 0.9020 rec 0.8866 | train_loss 0.1572
+  [BEST] 新最优 f1=0.9125 → best_model.pt
+step 19850 | loss 0.1720 | fall/fallen/normal acc 0.779/0.864/0.985 | lr 1.00e-04
+step 19900 | loss 0.1206 | fall/fallen/normal acc 0.836/0.904/0.969 | lr 1.00e-04
+step 19950 | loss 0.2429 | fall/fallen/normal acc 0.823/0.922/0.962 | lr 1.00e-04
+step 20000 | loss 0.1161 | fall/fallen/normal acc 0.861/0.912/0.983 | lr 1.00e-04
+step 20050 | loss 0.0793 | fall/fallen/normal acc 0.923/0.915/0.975 | lr 1.00e-04
+step 20100 | loss 0.1342 | fall/fallen/normal acc 0.743/0.901/0.977 | lr 1.00e-04
+step 20150 | loss 0.1061 | fall/fallen/normal acc 0.945/0.899/0.976 | lr 1.00e-04
+step 20200 | loss 0.1249 | fall/fallen/normal acc 0.835/0.869/0.985 | lr 1.00e-04
+step 20250 | loss 0.1259 | fall/fallen/normal acc 0.884/0.838/0.986 | lr 1.00e-04
+step 20300 | loss 0.4038 | fall/fallen/normal acc 0.876/0.753/0.973 | lr 1.00e-04
+step 20350 | loss 0.1084 | fall/fallen/normal acc 0.852/0.950/0.989 | lr 1.00e-04
+step 20400 | loss 0.2138 | fall/fallen/normal acc 0.878/0.759/0.983 | lr 1.00e-04
+[VAL] step 20400 | f1 0.8301 | fallen prec 0.9285 rec 0.7246 | train_loss 0.1623
+step 20450 | loss 0.1590 | fall/fallen/normal acc 0.790/0.945/0.978 | lr 1.00e-04
+step 20500 | loss 0.1170 | fall/fallen/normal acc 0.877/0.965/0.971 | lr 1.00e-04
+step 20550 | loss 0.1630 | fall/fallen/normal acc 0.900/0.908/0.984 | lr 1.00e-04
+step 20600 | loss 0.1191 | fall/fallen/normal acc 0.832/0.932/0.980 | lr 1.00e-04
+step 20650 | loss 0.0765 | fall/fallen/normal acc 0.869/0.960/0.991 | lr 1.00e-04
+step 20700 | loss 0.1648 | fall/fallen/normal acc 0.939/0.963/0.965 | lr 1.00e-04
+step 20750 | loss 0.3421 | fall/fallen/normal acc 0.949/0.880/0.969 | lr 1.00e-04
+step 20800 | loss 0.1791 | fall/fallen/normal acc 0.920/0.757/0.968 | lr 1.00e-04
+step 20850 | loss 0.1353 | fall/fallen/normal acc 0.940/0.871/0.975 | lr 1.00e-04
+step 20900 | loss 0.1990 | fall/fallen/normal acc 0.795/0.873/0.972 | lr 1.00e-04
+step 20950 | loss 0.1568 | fall/fallen/normal acc 0.805/0.918/0.973 | lr 1.00e-04
+step 21000 | loss 0.1375 | fall/fallen/normal acc 0.913/0.898/0.982 | lr 1.00e-04
+[VAL] step 21000 | f1 0.8671 | fallen prec 0.9462 rec 0.7759 | train_loss 0.1624
+step 21050 | loss 0.1785 | fall/fallen/normal acc 0.876/0.903/0.961 | lr 1.00e-04
+step 21100 | loss 0.1177 | fall/fallen/normal acc 0.905/0.951/0.963 | lr 1.00e-04
+step 21150 | loss 0.1688 | fall/fallen/normal acc 0.856/0.911/0.961 | lr 1.00e-04
+step 21200 | loss 0.2289 | fall/fallen/normal acc 0.808/0.826/0.989 | lr 1.00e-04
+step 21250 | loss 0.2864 | fall/fallen/normal acc 0.894/0.802/0.989 | lr 1.00e-04
+step 21300 | loss 0.2069 | fall/fallen/normal acc 0.940/0.824/0.980 | lr 1.00e-04
+step 21350 | loss 0.1243 | fall/fallen/normal acc 0.924/0.913/0.964 | lr 1.00e-04
+step 21400 | loss 0.2235 | fall/fallen/normal acc 0.928/0.817/0.960 | lr 1.00e-04
+step 21450 | loss 0.1029 | fall/fallen/normal acc 0.786/0.944/0.978 | lr 1.00e-04
+step 21500 | loss 0.0955 | fall/fallen/normal acc 0.901/0.943/0.978 | lr 1.00e-04
+step 21550 | loss 0.0694 | fall/fallen/normal acc 0.950/0.795/0.985 | lr 1.00e-04
+step 21600 | loss 0.2704 | fall/fallen/normal acc 0.743/0.907/0.960 | lr 1.00e-04
+[VAL] step 21600 | f1 0.8800 | fallen prec 0.9140 rec 0.8515 | train_loss 0.1728
+step 21650 | loss 0.0477 | fall/fallen/normal acc 0.893/0.929/0.996 | lr 1.00e-04
+step 21700 | loss 0.1412 | fall/fallen/normal acc 0.865/0.903/0.987 | lr 1.00e-04
+step 21750 | loss 0.1320 | fall/fallen/normal acc 0.790/0.964/0.988 | lr 1.00e-04
+step 21800 | loss 0.1732 | fall/fallen/normal acc 0.965/0.955/0.947 | lr 1.00e-04
+step 21850 | loss 0.1922 | fall/fallen/normal acc 0.883/0.909/0.953 | lr 1.00e-04
+step 21900 | loss 0.0732 | fall/fallen/normal acc 0.895/0.952/0.994 | lr 1.00e-04
+step 21950 | loss 0.3027 | fall/fallen/normal acc 0.883/0.757/0.957 | lr 1.00e-04
+step 22000 | loss 0.1493 | fall/fallen/normal acc 0.961/0.946/0.946 | lr 1.00e-04
+step 22050 | loss 0.0765 | fall/fallen/normal acc 0.933/0.899/0.989 | lr 1.00e-04
+step 22100 | loss 0.1955 | fall/fallen/normal acc 0.826/0.969/0.964 | lr 1.00e-04
+step 22150 | loss 0.0606 | fall/fallen/normal acc 0.904/0.927/0.993 | lr 1.00e-04
+step 22200 | loss 0.1004 | fall/fallen/normal acc 0.886/0.960/0.978 | lr 1.00e-04
+[VAL] step 22200 | f1 0.8148 | fallen prec 0.8900 rec 0.6625 | train_loss 0.1370
+step 22250 | loss 0.1660 | fall/fallen/normal acc 0.870/0.874/0.965 | lr 1.00e-04
+step 22300 | loss 0.1080 | fall/fallen/normal acc 0.927/0.951/0.956 | lr 1.00e-04
+step 22350 | loss 0.0822 | fall/fallen/normal acc 0.876/0.963/0.983 | lr 1.00e-04
+step 22400 | loss 0.0547 | fall/fallen/normal acc 0.947/0.884/0.989 | lr 1.00e-04
+step 22450 | loss 0.1921 | fall/fallen/normal acc 0.929/0.912/0.967 | lr 1.00e-04
+step 22500 | loss 0.1480 | fall/fallen/normal acc 0.890/0.919/0.986 | lr 1.00e-04
+step 22550 | loss 0.1073 | fall/fallen/normal acc 0.968/0.946/0.962 | lr 1.00e-04
+step 22600 | loss 0.1034 | fall/fallen/normal acc 0.868/0.942/0.988 | lr 1.00e-04
+step 22650 | loss 0.1392 | fall/fallen/normal acc 0.854/0.891/0.970 | lr 1.00e-04
+step 22700 | loss 0.1401 | fall/fallen/normal acc 0.723/0.952/0.984 | lr 1.00e-04
+step 22750 | loss 0.1510 | fall/fallen/normal acc 0.861/0.903/0.971 | lr 1.00e-04
+step 22800 | loss 0.1591 | fall/fallen/normal acc 0.960/0.766/0.979 | lr 1.00e-04
+[VAL] step 22800 | f1 0.8727 | fallen prec 0.7804 rec 0.8479 | train_loss 0.1292
+step 22850 | loss 0.2093 | fall/fallen/normal acc 0.907/0.825/0.969 | lr 1.00e-04
+step 22900 | loss 0.1009 | fall/fallen/normal acc 0.851/0.943/0.975 | lr 1.00e-04
+step 22950 | loss 0.1175 | fall/fallen/normal acc 0.899/0.912/0.980 | lr 1.00e-04
+step 23000 | loss 0.1062 | fall/fallen/normal acc 0.770/0.943/0.995 | lr 1.00e-04
+step 23050 | loss 0.1818 | fall/fallen/normal acc 0.921/0.767/0.988 | lr 1.00e-04
+step 23100 | loss 0.0916 | fall/fallen/normal acc 0.890/0.911/0.967 | lr 1.00e-04
+step 23150 | loss 0.2311 | fall/fallen/normal acc 0.899/0.834/0.991 | lr 1.00e-04
+step 23200 | loss 0.1996 | fall/fallen/normal acc 0.710/0.928/0.976 | lr 1.00e-04
+step 23250 | loss 0.4913 | fall/fallen/normal acc 0.822/0.688/0.970 | lr 1.00e-04
+step 23300 | loss 0.1615 | fall/fallen/normal acc 0.835/0.866/0.973 | lr 1.00e-04
+step 23350 | loss 0.1047 | fall/fallen/normal acc 0.976/0.875/0.991 | lr 1.00e-04
+step 23400 | loss 0.2979 | fall/fallen/normal acc 0.809/0.842/0.962 | lr 1.00e-04
+[VAL] step 23400 | f1 0.8598 | fallen prec 0.9374 rec 0.7147 | train_loss 0.1911
+step 23450 | loss 0.0693 | fall/fallen/normal acc 0.946/0.931/0.980 | lr 1.00e-04
+step 23500 | loss 0.3246 | fall/fallen/normal acc 0.873/0.781/0.983 | lr 1.00e-04
+step 23550 | loss 0.0546 | fall/fallen/normal acc 0.928/0.962/0.985 | lr 1.00e-04
+step 23600 | loss 0.1597 | fall/fallen/normal acc 0.819/0.966/0.959 | lr 1.00e-04
+step 23650 | loss 0.0897 | fall/fallen/normal acc 0.941/0.950/0.985 | lr 1.00e-04
+step 23700 | loss 0.4251 | fall/fallen/normal acc 0.690/0.890/0.990 | lr 1.00e-04
+step 23750 | loss 0.1408 | fall/fallen/normal acc 0.834/0.917/0.981 | lr 1.00e-04
+step 23800 | loss 0.1675 | fall/fallen/normal acc 0.890/0.888/0.977 | lr 1.00e-04
+step 23850 | loss 0.1208 | fall/fallen/normal acc 0.892/0.920/0.965 | lr 1.00e-04
+step 23900 | loss 0.0514 | fall/fallen/normal acc 0.910/0.956/0.996 | lr 1.00e-04
+step 23950 | loss 0.0837 | fall/fallen/normal acc 0.808/0.975/0.990 | lr 1.00e-04
+step 24000 | loss 0.2561 | fall/fallen/normal acc 0.938/0.870/0.971 | lr 1.00e-04
+[VAL] step 24000 | f1 0.8567 | fallen prec 0.9013 rec 0.7813 | train_loss 0.1619
+step 24050 | loss 0.1591 | fall/fallen/normal acc 0.844/0.869/0.970 | lr 1.00e-04
+step 24100 | loss 0.2699 | fall/fallen/normal acc 0.935/0.819/0.956 | lr 1.00e-04
+step 24150 | loss 0.1378 | fall/fallen/normal acc 0.903/0.876/0.968 | lr 1.00e-04
+step 24200 | loss 0.3519 | fall/fallen/normal acc 0.730/0.962/0.957 | lr 1.00e-04
+step 24250 | loss 0.0706 | fall/fallen/normal acc 0.973/0.976/0.977 | lr 1.00e-04
+step 24300 | loss 0.1288 | fall/fallen/normal acc 0.888/0.869/0.983 | lr 1.00e-04
+step 24350 | loss 0.1598 | fall/fallen/normal acc 0.870/0.757/0.965 | lr 1.00e-04
+step 24400 | loss 0.0918 | fall/fallen/normal acc 0.896/0.941/0.969 | lr 1.00e-04
+step 24450 | loss 0.1855 | fall/fallen/normal acc 0.794/0.962/0.982 | lr 1.00e-04
+step 24500 | loss 0.1375 | fall/fallen/normal acc 0.791/0.946/0.982 | lr 1.00e-04
+step 24550 | loss 0.1492 | fall/fallen/normal acc 0.896/0.650/0.976 | lr 1.00e-04
+step 24600 | loss 0.2021 | fall/fallen/normal acc 0.870/0.861/0.974 | lr 1.00e-04
+[VAL] step 24600 | f1 0.8694 | fallen prec 0.7827 rec 0.9109 | train_loss 0.1703
+step 24650 | loss 0.2365 | fall/fallen/normal acc 0.909/0.854/0.964 | lr 1.00e-04
+step 24700 | loss 0.1507 | fall/fallen/normal acc 0.858/0.911/0.984 | lr 1.00e-04
+step 24750 | loss 0.1642 | fall/fallen/normal acc 0.906/0.915/0.967 | lr 1.00e-04
+step 24800 | loss 0.1452 | fall/fallen/normal acc 0.863/0.934/0.998 | lr 1.00e-04
+step 24850 | loss 0.2579 | fall/fallen/normal acc 0.819/0.717/0.966 | lr 1.00e-04
+step 24900 | loss 0.1099 | fall/fallen/normal acc 0.787/0.930/0.993 | lr 1.00e-04
+step 24950 | loss 0.0596 | fall/fallen/normal acc 0.834/0.973/0.998 | lr 1.00e-04
+step 25000 | loss 0.1957 | fall/fallen/normal acc 0.911/0.709/0.968 | lr 1.00e-04
+step 25050 | loss 0.0889 | fall/fallen/normal acc 0.854/0.921/0.990 | lr 1.00e-04
+step 25100 | loss 0.1019 | fall/fallen/normal acc 0.975/0.837/0.967 | lr 1.00e-04
+step 25150 | loss 0.1086 | fall/fallen/normal acc 0.821/0.913/0.984 | lr 1.00e-04
+step 25200 | loss 0.2075 | fall/fallen/normal acc 0.710/0.908/0.969 | lr 1.00e-04
+[VAL] step 25200 | f1 0.9040 | fallen prec 0.8721 rec 0.9019 | train_loss 0.1522
+step 25250 | loss 0.3147 | fall/fallen/normal acc 0.733/0.841/0.988 | lr 1.00e-04
+step 25300 | loss 0.1721 | fall/fallen/normal acc 0.888/0.915/0.986 | lr 1.00e-04
+step 25350 | loss 0.1789 | fall/fallen/normal acc 0.938/0.849/0.962 | lr 1.00e-04
+step 25400 | loss 0.1040 | fall/fallen/normal acc 0.908/0.722/0.980 | lr 1.00e-04
+step 25450 | loss 0.1885 | fall/fallen/normal acc 0.886/0.828/0.965 | lr 1.00e-04
+step 25500 | loss 0.2539 | fall/fallen/normal acc 0.767/0.966/0.987 | lr 1.00e-04
+step 25550 | loss 0.1485 | fall/fallen/normal acc 0.801/0.927/0.974 | lr 1.00e-04
+step 25600 | loss 0.0533 | fall/fallen/normal acc 0.950/0.845/0.995 | lr 1.00e-04
+step 25650 | loss 0.3087 | fall/fallen/normal acc 0.893/0.897/0.974 | lr 1.00e-04
+step 25700 | loss 0.1227 | fall/fallen/normal acc 0.902/0.923/0.980 | lr 1.00e-04
+step 25750 | loss 0.1611 | fall/fallen/normal acc 0.881/0.894/0.966 | lr 1.00e-04
+step 25800 | loss 0.4389 | fall/fallen/normal acc 0.784/0.848/0.952 | lr 1.00e-04
+[VAL] step 25800 | f1 0.8958 | fallen prec 0.8644 rec 0.9235 | train_loss 0.2038
+step 25850 | loss 0.1246 | fall/fallen/normal acc 0.903/0.945/0.949 | lr 1.00e-04
+step 25900 | loss 0.1772 | fall/fallen/normal acc 0.914/0.751/0.985 | lr 1.00e-04
+step 25950 | loss 0.2008 | fall/fallen/normal acc 0.937/0.852/0.991 | lr 1.00e-04
+step 26000 | loss 0.1891 | fall/fallen/normal acc 0.875/0.794/0.988 | lr 1.00e-04
+step 26050 | loss 0.2079 | fall/fallen/normal acc 0.914/0.828/0.974 | lr 1.00e-04
+step 26100 | loss 0.0678 | fall/fallen/normal acc 0.928/0.959/0.970 | lr 1.00e-04
+step 26150 | loss 0.2820 | fall/fallen/normal acc 0.784/0.951/0.969 | lr 1.00e-04
+step 26200 | loss 0.0537 | fall/fallen/normal acc 0.949/0.925/0.980 | lr 1.00e-04
+step 26250 | loss 0.1671 | fall/fallen/normal acc 0.867/0.877/0.971 | lr 1.00e-04
+step 26300 | loss 0.0861 | fall/fallen/normal acc 0.878/0.948/0.983 | lr 1.00e-04
+step 26350 | loss 0.3382 | fall/fallen/normal acc 0.891/0.834/0.967 | lr 1.00e-04
+step 26400 | loss 0.2843 | fall/fallen/normal acc 0.927/0.805/0.951 | lr 1.00e-04
+[VAL] step 26400 | f1 0.9034 | fallen prec 0.9048 rec 0.9325 | train_loss 0.1816
+step 26450 | loss 0.0809 | fall/fallen/normal acc 0.884/0.975/0.967 | lr 1.00e-04
+step 26500 | loss 0.1481 | fall/fallen/normal acc 0.897/0.953/0.986 | lr 1.00e-04
+step 26550 | loss 0.1173 | fall/fallen/normal acc 0.853/0.956/0.968 | lr 1.00e-04
+step 26600 | loss 0.1670 | fall/fallen/normal acc 0.755/0.939/0.989 | lr 1.00e-04
+step 26650 | loss 0.1445 | fall/fallen/normal acc 0.843/0.899/0.991 | lr 1.00e-04
+step 26700 | loss 0.3057 | fall/fallen/normal acc 0.828/0.736/0.978 | lr 1.00e-04
+step 26750 | loss 0.2176 | fall/fallen/normal acc 0.971/0.695/0.964 | lr 1.00e-04
+step 26800 | loss 0.1434 | fall/fallen/normal acc 0.929/0.900/0.959 | lr 1.00e-04
+step 26850 | loss 0.0502 | fall/fallen/normal acc 0.951/1.000/0.982 | lr 1.00e-04
+step 26900 | loss 0.1556 | fall/fallen/normal acc 0.925/0.778/0.995 | lr 1.00e-04
+step 26950 | loss 0.1511 | fall/fallen/normal acc 0.869/0.962/0.977 | lr 1.00e-04
+step 27000 | loss 0.2180 | fall/fallen/normal acc 0.861/0.819/0.971 | lr 1.00e-04
+[VAL] step 27000 | f1 0.8411 | fallen prec 0.8167 rec 0.8263 | train_loss 0.1583
+step 27050 | loss 0.1819 | fall/fallen/normal acc 0.752/0.964/0.964 | lr 1.00e-04
+step 27100 | loss 0.0698 | fall/fallen/normal acc 0.847/0.947/0.994 | lr 1.00e-04
+step 27150 | loss 0.1041 | fall/fallen/normal acc 0.940/0.895/0.982 | lr 1.00e-04
+step 27200 | loss 0.1039 | fall/fallen/normal acc 0.878/0.867/0.977 | lr 1.00e-04
+step 27250 | loss 0.1006 | fall/fallen/normal acc 0.822/0.962/0.982 | lr 1.00e-04
+step 27300 | loss 0.0765 | fall/fallen/normal acc 0.978/0.911/0.978 | lr 1.00e-04
+step 27350 | loss 0.1150 | fall/fallen/normal acc 0.894/0.945/0.979 | lr 1.00e-04
+step 27400 | loss 0.0708 | fall/fallen/normal acc 0.853/0.998/0.985 | lr 1.00e-04
+step 27450 | loss 0.1175 | fall/fallen/normal acc 0.894/0.908/0.973 | lr 1.00e-04
+step 27500 | loss 0.1116 | fall/fallen/normal acc 0.886/0.901/0.965 | lr 1.00e-04
+step 27550 | loss 0.1216 | fall/fallen/normal acc 0.912/0.748/0.996 | lr 1.00e-04
+step 27600 | loss 0.2425 | fall/fallen/normal acc 0.932/0.909/0.987 | lr 1.00e-04
+[VAL] step 27600 | f1 0.8966 | fallen prec 0.8477 rec 0.9667 | train_loss 0.1180
+step 27650 | loss 0.1961 | fall/fallen/normal acc 0.913/0.811/0.989 | lr 1.00e-04
+step 27700 | loss 0.0935 | fall/fallen/normal acc 0.944/0.940/0.984 | lr 1.00e-04
+step 27750 | loss 0.1477 | fall/fallen/normal acc 0.821/0.937/0.983 | lr 1.00e-04
+step 27800 | loss 0.0893 | fall/fallen/normal acc 0.897/0.918/0.982 | lr 1.00e-04
+step 27850 | loss 0.1448 | fall/fallen/normal acc 0.911/0.899/0.957 | lr 1.00e-04
+step 27900 | loss 0.0870 | fall/fallen/normal acc 0.944/0.817/0.992 | lr 1.00e-04
+step 27950 | loss 0.1362 | fall/fallen/normal acc 0.924/0.836/0.986 | lr 1.00e-04
+step 28000 | loss 0.1089 | fall/fallen/normal acc 0.944/0.814/0.964 | lr 1.00e-04
+step 28050 | loss 0.0858 | fall/fallen/normal acc 0.958/0.918/0.975 | lr 1.00e-04
+step 28100 | loss 0.2292 | fall/fallen/normal acc 0.811/0.694/0.967 | lr 1.00e-04
+step 28150 | loss 0.0937 | fall/fallen/normal acc 0.948/0.993/0.973 | lr 1.00e-04
+step 28200 | loss 0.1232 | fall/fallen/normal acc 0.839/0.774/0.993 | lr 1.00e-04
+[VAL] step 28200 | f1 0.8885 | fallen prec 0.9008 rec 0.8578 | train_loss 0.1280
+step 28250 | loss 0.0600 | fall/fallen/normal acc 0.917/0.941/0.991 | lr 1.00e-04
+step 28300 | loss 0.1662 | fall/fallen/normal acc 0.852/0.869/0.957 | lr 1.00e-04
+step 28350 | loss 0.2199 | fall/fallen/normal acc 0.814/0.965/0.945 | lr 1.00e-04
+step 28400 | loss 0.1221 | fall/fallen/normal acc 0.929/0.953/0.968 | lr 1.00e-04
+step 28450 | loss 0.0816 | fall/fallen/normal acc 0.928/0.906/0.981 | lr 1.00e-04
+step 28500 | loss 0.0716 | fall/fallen/normal acc 0.901/0.942/0.985 | lr 1.00e-04
+step 28550 | loss 0.0948 | fall/fallen/normal acc 0.854/0.988/0.985 | lr 1.00e-04
+step 28600 | loss 0.1125 | fall/fallen/normal acc 0.969/0.831/0.979 | lr 1.00e-04
+step 28650 | loss 0.4418 | fall/fallen/normal acc 0.834/0.972/0.956 | lr 1.00e-04
+step 28700 | loss 0.4461 | fall/fallen/normal acc 0.831/0.837/0.964 | lr 1.00e-04
+step 28750 | loss 0.0542 | fall/fallen/normal acc 0.949/0.951/0.987 | lr 1.00e-04
+step 28800 | loss 0.2469 | fall/fallen/normal acc 0.960/0.784/0.987 | lr 1.00e-04
+[VAL] step 28800 | f1 0.8500 | fallen prec 0.9689 rec 0.7858 | train_loss 0.1765
+[EPOCH 3] 完成，已存 epoch_3_model.pt
+[DONE] 已存 last_model.pt
+[TOTAL] 28800 步, 152144.5s

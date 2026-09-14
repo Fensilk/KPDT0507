@@ -1,0 +1,92 @@
+== rank-trunc eval start Sat Sep 12 11:02:39 CST 2026 (py=/root/miniconda3/bin/python) ==
+== build trunc_k16.pt @ Sat Sep 12 11:02:39 CST 2026 ==
+[truncate] k=16（原 rank=16）→ 160 对已截断；回读重建最大绝对误差 0.00e+00（应≈0，浮点级）
+[saved] logs/phase9/e1_rank_trunc/trunc_k16.pt  (lora_rank=16)
+== eval k=16 -> logs/phase9/e1_rank_trunc/eval_k16.json @ Sat Sep 12 11:05:44 CST 2026 ==
+/root/miniconda3/lib/python3.10/site-packages/torchvision/io/image.py:13: UserWarning: Failed to load image Python extension: '/root/miniconda3/lib/python3.10/site-packages/torchvision/image.so: undefined symbol: _ZN3c1017RegisterOperatorsD1Ev'If you don't plan on using image functionality from `torchvision.io`, you can ignore this warning. Otherwise, there might be something wrong with your environment. Did you have `libjpeg` or `libpng` installed before building `torchvision` from source?
+  warn(
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights:  64%|██████▍   | 465/727 [00:00<00:00, 4594.77it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 4206.09it/s]
+/root/miniconda3/lib/python3.10/site-packages/torch/nn/modules/transformer.py:379: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 trunc_k16.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 746 个 = 冻结主干（预期）
+  [200/1200] videos done, skip 0
+  [400/1200] videos done, skip 0
+  [600/1200] videos done, skip 0
+  [800/1200] videos done, skip 0
+  [1000/1200] videos done, skip 0
+  [1200/1200] videos done, skip 0
+Saved: logs/phase9/e1_rank_trunc/eval_k16.json
+[instance] acc=0.9367 fall_rec=0.8304 fallen_prec=0.7550 fallen_rec=0.7538 avg=0.8267
+[merged] raw ev_f1=0.8269 | canonical=0.8236 | best(K2=7,W=32)=0.8250 fallen_prec=0.7486
+== done k=16 rc=0 @ Sat Sep 12 11:58:48 CST 2026 ==
+== build trunc_k8.pt @ Sat Sep 12 11:58:48 CST 2026 ==
+[truncate] k=8（原 rank=16）→ 160 对已截断；回读重建最大绝对误差 0.00e+00（应≈0，浮点级）
+[saved] logs/phase9/e1_rank_trunc/trunc_k8.pt  (lora_rank=8)
+== eval k=8 -> logs/phase9/e1_rank_trunc/eval_k8.json @ Sat Sep 12 12:01:39 CST 2026 ==
+/root/miniconda3/lib/python3.10/site-packages/torchvision/io/image.py:13: UserWarning: Failed to load image Python extension: '/root/miniconda3/lib/python3.10/site-packages/torchvision/image.so: undefined symbol: _ZN3c1017RegisterOperatorsD1Ev'If you don't plan on using image functionality from `torchvision.io`, you can ignore this warning. Otherwise, there might be something wrong with your environment. Did you have `libjpeg` or `libpng` installed before building `torchvision` from source?
+  warn(
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights:  69%|██████▉   | 501/727 [00:00<00:00, 4989.75it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 4481.42it/s]
+/root/miniconda3/lib/python3.10/site-packages/torch/nn/modules/transformer.py:379: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 trunc_k8.pt 恢复 3.93M LoRA 参数 (rank=8) + 时序头；缺失键 746 个 = 冻结主干（预期）
+  [200/1200] videos done, skip 0
+  [400/1200] videos done, skip 0
+  [600/1200] videos done, skip 0
+  [800/1200] videos done, skip 0
+  [1000/1200] videos done, skip 0
+  [1200/1200] videos done, skip 0
+Saved: logs/phase9/e1_rank_trunc/eval_k8.json
+[instance] acc=0.9371 fall_rec=0.8283 fallen_prec=0.7504 fallen_rec=0.7554 avg=0.8279
+[merged] raw ev_f1=0.8267 | canonical=0.8274 | best(K2=5,W=32)=0.8281 fallen_prec=0.7467
+== done k=8 rc=0 @ Sat Sep 12 12:54:48 CST 2026 ==
+== build trunc_k4.pt @ Sat Sep 12 12:54:48 CST 2026 ==
+[truncate] k=4（原 rank=16）→ 160 对已截断；回读重建最大绝对误差 0.00e+00（应≈0，浮点级）
+[saved] logs/phase9/e1_rank_trunc/trunc_k4.pt  (lora_rank=4)
+== eval k=4 -> logs/phase9/e1_rank_trunc/eval_k4.json @ Sat Sep 12 12:57:34 CST 2026 ==
+/root/miniconda3/lib/python3.10/site-packages/torchvision/io/image.py:13: UserWarning: Failed to load image Python extension: '/root/miniconda3/lib/python3.10/site-packages/torchvision/image.so: undefined symbol: _ZN3c1017RegisterOperatorsD1Ev'If you don't plan on using image functionality from `torchvision.io`, you can ignore this warning. Otherwise, there might be something wrong with your environment. Did you have `libjpeg` or `libpng` installed before building `torchvision` from source?
+  warn(
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights:  68%|██████▊   | 496/727 [00:00<00:00, 4937.45it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 4616.23it/s]
+/root/miniconda3/lib/python3.10/site-packages/torch/nn/modules/transformer.py:379: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 trunc_k4.pt 恢复 1.97M LoRA 参数 (rank=4) + 时序头；缺失键 746 个 = 冻结主干（预期）
+  [200/1200] videos done, skip 0
+  [400/1200] videos done, skip 0
+== rank-trunc eval start Sat Sep 12 13:17:59 CST 2026 (py=/root/miniconda3/bin/python) ==
+== skip k=16 (json+pv 均在位) @ Sat Sep 12 13:17:59 CST 2026 ==
+== eval k=8 -> logs/phase9/e1_rank_trunc/eval_k8.json (+logs/phase9/e1_rank_trunc/pv_k8.pt) @ Sat Sep 12 13:17:59 CST 2026 ==
+/root/miniconda3/lib/python3.10/site-packages/torchvision/io/image.py:13: UserWarning: Failed to load image Python extension: '/root/miniconda3/lib/python3.10/site-packages/torchvision/image.so: undefined symbol: _ZN3c1017RegisterOperatorsD1Ev'If you don't plan on using image functionality from `torchvision.io`, you can ignore this warning. Otherwise, there might be something wrong with your environment. Did you have `libjpeg` or `libpng` installed before building `torchvision` from source?
+  warn(
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights:  66%|██████▌   | 479/727 [00:00<00:00, 4719.07it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 4217.81it/s]
+/root/miniconda3/lib/python3.10/site-packages/torch/nn/modules/transformer.py:379: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 trunc_k8.pt 恢复 3.93M LoRA 参数 (rank=8) + 时序头；缺失键 746 个 = 冻结主干（预期）
+  [200/1200] videos done, skip 0
+  [400/1200] videos done, skip 0
+  [600/1200] videos done, skip 0
+  [800/1200] videos done, skip 0
+  [1000/1200] videos done, skip 0
+  [1200/1200] videos done, skip 0
+Saved: logs/phase9/e1_rank_trunc/eval_k8.json
+Dumped pv: logs/phase9/e1_rank_trunc/pv_k8.pt (1200 videos)
+[instance] acc=0.9371 fall_rec=0.8283 fallen_prec=0.7504 fallen_rec=0.7554 avg=0.8279
+[merged] raw ev_f1=0.8267 | canonical=0.8274 | best(K2=5,W=32)=0.8281 fallen_prec=0.7467
+== done k=8 rc=0 @ Sat Sep 12 14:11:26 CST 2026 ==
+== eval k=4 -> logs/phase9/e1_rank_trunc/eval_k4.json (+logs/phase9/e1_rank_trunc/pv_k4.pt) @ Sat Sep 12 14:11:26 CST 2026 ==
+/root/miniconda3/lib/python3.10/site-packages/torchvision/io/image.py:13: UserWarning: Failed to load image Python extension: '/root/miniconda3/lib/python3.10/site-packages/torchvision/image.so: undefined symbol: _ZN3c1017RegisterOperatorsD1Ev'If you don't plan on using image functionality from `torchvision.io`, you can ignore this warning. Otherwise, there might be something wrong with your environment. Did you have `libjpeg` or `libpng` installed before building `torchvision` from source?
+  warn(
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights:  69%|██████▉   | 503/727 [00:00<00:00, 5028.23it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 4835.99it/s]
+/root/miniconda3/lib/python3.10/site-packages/torch/nn/modules/transformer.py:379: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 trunc_k4.pt 恢复 1.97M LoRA 参数 (rank=4) + 时序头；缺失键 746 个 = 冻结主干（预期）
+  [200/1200] videos done, skip 0
+  [400/1200] videos done, skip 0
+  [600/1200] videos done, skip 0
+  [800/1200] videos done, skip 0
+  [1000/1200] videos done, skip 0
+  [1200/1200] videos done, skip 0
+Saved: logs/phase9/e1_rank_trunc/eval_k4.json
+Dumped pv: logs/phase9/e1_rank_trunc/pv_k4.pt (1200 videos)
+[instance] acc=0.9388 fall_rec=0.8172 fallen_prec=0.7466 fallen_rec=0.7576 avg=0.8323
+[merged] raw ev_f1=0.8290 | canonical=0.8299 | best(K2=5,W=64)=0.8299 fallen_prec=0.7423
+== done k=4 rc=0 @ Sat Sep 12 15:04:46 CST 2026 ==
+== ALL_DONE Sat Sep 12 15:04:46 CST 2026 ==

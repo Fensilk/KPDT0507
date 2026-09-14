@@ -1,0 +1,78 @@
+[1] 加载 facebook/dinov2-giant(fp16) + 注入 LoRA(r=16) ...
+/root/miniconda3/lib/python3.10/site-packages/torchvision/io/image.py:13: UserWarning: Failed to load image Python extension: '/root/miniconda3/lib/python3.10/site-packages/torchvision/image.so: undefined symbol: _ZN3c1017RegisterOperatorsD1Ev'If you don't plan on using image functionality from `torchvision.io`, you can ignore this warning. Otherwise, there might be something wrong with your environment. Did you have `libjpeg` or `libpng` installed before building `torchvision` from source?
+  warn(
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights:  76%|███████▌  | 550/727 [00:00<00:00, 5465.34it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 5160.96it/s]
+  LoRA 可训练参数: 7.86M  (0.69%)
+[2] 加载帧缓存: data/p9_frames
+  帧数: 96000  类别分布 fall/fallen/normal: [8446, 6948, 80606]
+  类权重: [1.293, 1.572, 0.135]
+[3] 训练 5 epochs ...
+/root/autodl-tmp/experiments/train_p9_e3_stage1.py:127: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(dtype=torch.float16):
+    step 0: loss=0.8045
+    step 500: loss=0.4749
+    step 1000: loss=0.2289
+    step 1500: loss=0.1517
+    step 2000: loss=0.8429
+    step 2500: loss=0.0319
+    step 3000: loss=1.1585
+    step 3500: loss=0.6551
+    step 4000: loss=1.0530
+    step 4500: loss=0.0989
+    step 5000: loss=0.1761
+    step 5500: loss=0.1332
+  epoch 1: loss=0.4504 acc=0.9033
+    step 6000: loss=0.9337
+    step 6500: loss=0.2356
+    step 7000: loss=0.0640
+    step 7500: loss=0.1795
+    step 8000: loss=0.1131
+    step 8500: loss=0.5752
+    step 9000: loss=0.0118
+    step 9500: loss=0.0743
+    step 10000: loss=0.0430
+    step 10500: loss=0.7860
+    step 11000: loss=0.0743
+    step 11500: loss=0.1882
+  epoch 2: loss=0.3186 acc=0.9514
+    step 12000: loss=0.1627
+    step 12500: loss=0.0528
+    step 13000: loss=0.0499
+    step 13500: loss=0.0413
+    step 14000: loss=0.2307
+    step 14500: loss=0.5173
+    step 15000: loss=0.0761
+    step 15500: loss=0.0473
+    step 16000: loss=0.1738
+    step 16500: loss=0.0344
+    step 17000: loss=1.0540
+    step 17500: loss=0.0558
+  epoch 3: loss=0.2528 acc=0.9664
+    step 18000: loss=0.0255
+    step 18500: loss=0.0769
+    step 19000: loss=0.0584
+    step 19500: loss=0.0691
+    step 20000: loss=0.0320
+    step 20500: loss=0.0645
+    step 21000: loss=0.0435
+    step 21500: loss=0.6219
+    step 22000: loss=0.1377
+    step 22500: loss=0.0353
+    step 23000: loss=0.0402
+    step 23500: loss=0.0066
+  epoch 4: loss=0.2011 acc=0.9752
+    step 24000: loss=0.0636
+    step 24500: loss=0.1022
+    step 25000: loss=0.0078
+    step 25500: loss=0.0173
+    step 26000: loss=0.0204
+    step 26500: loss=0.0556
+    step 27000: loss=0.0573
+    step 27500: loss=0.0252
+    step 28000: loss=0.0268
+    step 28500: loss=0.0357
+    step 29000: loss=0.1127
+    step 29500: loss=0.0238
+  epoch 5: loss=0.1919 acc=0.9784
+[4] 已保存: logs/phase9/m3_stage1/finetuned_lora.pt
+下一步: python experiments/extract_p9_features.py
