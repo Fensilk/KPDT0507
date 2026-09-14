@@ -1,0 +1,726 @@
+<title>E1 端到端微调</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@600;700&display=swap">
+<style>
+  /* ── tokens ───────────────────────────────────────────────── */
+  :root{
+    color-scheme: light;
+    --ground:#EDF0F4; --surface:#FFFFFF; --surface-2:#E3E8EE; --surface-3:#F6F8FA;
+    --ink:#0B0F14; --ink-2:#46525F; --muted:#6B7684;
+    --rule:#D2DAE2; --rule-soft:#E4E9EF;
+    --accent:#2a78d6; --accent-ink:#1c5cab; --accent-wash:#E8F1FC;
+    --good:#1F7A4D; --good-wash:#E5F2EA;
+    --warn:#8A5A12; --warn-wash:#F8F0DE;
+    --neg:#A33A36; --neg-wash:#F9EAE8;
+    --ref-mark:#6B7684; --bar-base:#BFCAD5; --track:#E7EDF3;
+    --shadow: 0 1px 2px rgba(11,15,20,.05), 0 10px 26px -14px rgba(11,15,20,.16);
+    --mono:"IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+    --sans:"Noto Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, -apple-system, sans-serif;
+    --serif:"Noto Serif SC", "Songti SC", "SimSun", serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      color-scheme: dark;
+      --ground:#0B0F14; --surface:#131A21; --surface-2:#1A232C; --surface-3:#101820;
+      --ink:#E8EDF2; --ink-2:#A7B3BE; --muted:#7C8996;
+      --rule:#28323C; --rule-soft:#1F2831;
+      --accent:#3987e5; --accent-ink:#86b6ef; --accent-wash:#122639;
+      --good:#4FAE7B; --good-wash:#12291F;
+      --warn:#CE9A45; --warn-wash:#2A2214;
+      --neg:#D98A85; --neg-wash:#2C1917;
+      --ref-mark:#94A3B0; --bar-base:#2E3A46; --track:#1B242E;
+      --shadow: 0 1px 2px rgba(0,0,0,.5), 0 12px 30px -16px rgba(0,0,0,.75);
+    }
+  }
+  :root[data-theme="dark"]{
+    color-scheme: dark;
+    --ground:#0B0F14; --surface:#131A21; --surface-2:#1A232C; --surface-3:#101820;
+    --ink:#E8EDF2; --ink-2:#A7B3BE; --muted:#7C8996;
+    --rule:#28323C; --rule-soft:#1F2831;
+    --accent:#3987e5; --accent-ink:#86b6ef; --accent-wash:#122639;
+    --good:#4FAE7B; --good-wash:#12291F;
+    --warn:#CE9A45; --warn-wash:#2A2214;
+    --neg:#D98A85; --neg-wash:#2C1917;
+    --ref-mark:#94A3B0; --bar-base:#2E3A46; --track:#1B242E;
+    --shadow: 0 1px 2px rgba(0,0,0,.5), 0 12px 30px -16px rgba(0,0,0,.75);
+  }
+
+  /* ── base ─────────────────────────────────────────────────── */
+  body{
+    margin:0; background:var(--ground); color:var(--ink);
+    font-family:var(--sans); font-size:15.5px; line-height:1.76;
+    padding-inline:20px; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1060px;margin-inline:auto;padding-block:34px 76px;display:flex;flex-direction:column;gap:46px;}
+  p{margin:0;}
+  strong{font-weight:700;}
+  a{color:var(--accent-ink);}
+  .mono{font-family:var(--mono);font-variant-numeric:tabular-nums;}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:2px;}
+
+  /* ── hero ─────────────────────────────────────────────────── */
+  .hero{display:flex;flex-direction:column;gap:16px;}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:var(--accent-ink);text-transform:uppercase;}
+  h1{font-family:var(--serif);font-weight:700;font-size:clamp(25px,4vw,38px);line-height:1.3;
+     letter-spacing:.01em;margin:0;text-wrap:balance;max-width:22ch;}
+  .lead{color:var(--ink-2);max-width:66ch;font-size:16px;}
+  .lead b{color:var(--ink);font-weight:500;}
+
+  .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(196px,1fr));gap:12px;margin-top:6px;}
+  .tile{background:var(--surface);border:1px solid var(--rule-soft);border-radius:10px;
+        padding:13px 15px;display:flex;flex-direction:column;gap:5px;box-shadow:var(--shadow);}
+  .tile .k{font-family:var(--mono);font-size:11px;letter-spacing:.05em;color:var(--muted);}
+  .tile .v{font-family:var(--mono);font-size:25px;font-weight:600;line-height:1.08;
+           letter-spacing:-.015em;font-variant-numeric:tabular-nums;}
+  .tile .s{font-size:12.5px;line-height:1.5;color:var(--ink-2);}
+  .tile.hero-tile{border-color:var(--accent);background:var(--accent-wash);}
+  .tile.hero-tile .v{color:var(--accent-ink);}
+
+  /* ── section ──────────────────────────────────────────────── */
+  .sec{display:flex;flex-direction:column;gap:18px;}
+  .sec-head{display:flex;align-items:baseline;gap:13px;flex-wrap:wrap;
+            padding-bottom:9px;border-bottom:1px solid var(--rule);}
+  .sec-num{font-family:var(--mono);font-size:12px;letter-spacing:.08em;color:var(--accent-ink);}
+  .sec h2{font-family:var(--serif);font-size:20.5px;font-weight:700;margin:0;letter-spacing:.01em;text-wrap:balance;}
+  .sec-note{margin-left:auto;font-family:var(--mono);font-size:11.5px;color:var(--muted);}
+  .deflist{display:flex;flex-direction:column;gap:12px;}
+
+  /* ── figure / diagram ─────────────────────────────────────── */
+  figure{margin:0;display:flex;flex-direction:column;gap:10px;}
+  .figscroll{overflow-x:auto;background:var(--surface);border:1px solid var(--rule-soft);
+             border-radius:10px;padding:14px 16px;box-shadow:var(--shadow);}
+  .figscroll svg{display:block;min-width:640px;width:100%;height:auto;}
+  figcaption{font-size:13px;color:var(--ink-2);max-width:78ch;line-height:1.65;}
+  .dg-lane{font-family:var(--mono);font-size:11.5px;fill:var(--muted);letter-spacing:.02em;}
+  .dg-lane.on{fill:var(--accent-ink);}
+  .dg-box{fill:var(--surface-3);stroke:var(--rule);stroke-width:1.2;}
+  .dg-box.dashed{stroke-dasharray:4 3;}
+  .dg-box.on{fill:var(--accent-wash);stroke:var(--accent);stroke-width:1.6;}
+  .dg-t{font-family:var(--sans);font-size:11.5px;fill:var(--ink-2);}
+  .dg-t.b{fill:var(--ink);font-weight:500;}
+  .dg-t.on{fill:var(--accent-ink);font-weight:500;}
+  .dg-flow{stroke:var(--ref-mark);stroke-width:1.4;fill:none;}
+  .dg-flow.dashed{stroke-dasharray:4 3;}
+  .dg-back{stroke:var(--accent);stroke-width:1.8;fill:none;}
+  .ar-fill{fill:var(--ref-mark);}
+  .ar-back-fill{fill:var(--accent);}
+  .dg-note{font-family:var(--mono);font-size:10.5px;fill:var(--muted);}
+  .dg-note.on{fill:var(--accent-ink);}
+
+  /* ── tables ───────────────────────────────────────────────── */
+  .tblscroll{overflow-x:auto;background:var(--surface);border:1px solid var(--rule-soft);
+             border-radius:10px;box-shadow:var(--shadow);}
+  table{border-collapse:collapse;width:100%;font-size:14px;}
+  th,td{text-align:left;padding:9px 14px;border-bottom:1px solid var(--rule-soft);white-space:nowrap;}
+  thead th{font-family:var(--mono);font-size:11.5px;font-weight:500;letter-spacing:.04em;
+           color:var(--muted);border-bottom:1px solid var(--rule);}
+  tbody tr:last-child td{border-bottom:none;}
+  td.num,th.num{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums;}
+  td.name{white-space:normal;}
+  .spec td:first-child{width:118px;color:var(--muted);font-family:var(--mono);font-size:12.5px;}
+  .spec td:last-child{white-space:normal;}
+  tr.refrow td{color:var(--muted);}
+  .up{color:var(--good);font-weight:500;}
+  .down{color:var(--neg);font-weight:500;}
+  .flat{color:var(--muted);}
+
+  /* ── dumbbell ─────────────────────────────────────────────── */
+  .chartcard{background:var(--surface);border:1px solid var(--rule-soft);border-radius:10px;
+             padding:16px 18px 14px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:12px;}
+  .chart-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;}
+  .chart-title{font-size:14px;font-weight:500;}
+  .chart-sub{font-family:var(--mono);font-size:11.5px;color:var(--muted);}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12.5px;color:var(--ink-2);}
+  .lg{display:flex;align-items:center;gap:7px;}
+  .sw{width:10px;height:10px;border-radius:50%;display:inline-block;flex:none;}
+  .sw.base{background:var(--ref-mark);}
+  .sw.e1{background:var(--accent);}
+  .chartscroll{overflow-x:auto;}
+  .dumb{min-width:600px;display:flex;flex-direction:column;padding-right:12px;}
+  .dumb-row{display:grid;grid-template-columns:186px minmax(0,1fr) 122px;align-items:center;
+            gap:9px;padding:6px 0;border-radius:6px;}
+  .dumb-row:hover{background:var(--surface-2);}
+  .dumb-label{font-size:13.5px;line-height:1.3;padding-left:6px;}
+  .dumb-label .sub{display:block;font-family:var(--mono);font-size:10.5px;color:var(--muted);margin-top:1px;}
+  .track{position:relative;height:26px;cursor:default;}
+  .track .gl{position:absolute;top:0;bottom:0;width:1px;background:var(--track);}
+  .seg{position:absolute;top:50%;height:2px;transform:translateY(-50%);background:var(--ref-mark);opacity:.45;border-radius:1px;}
+  .dot{position:absolute;top:50%;width:11px;height:11px;border-radius:50%;
+       transform:translate(-50%,-50%);box-shadow:0 0 0 2px var(--surface);}
+  .dot.base{background:var(--ref-mark);}
+  .dot.e1{background:var(--accent);}
+  .vals{font-family:var(--mono);font-size:11.5px;font-variant-numeric:tabular-nums;
+        text-align:right;padding-right:6px;line-height:1.35;}
+  .vals .from{color:var(--muted);}
+  .vals .to{color:var(--ink);font-weight:500;}
+  .vals .d{color:var(--accent-ink);font-weight:600;}
+  .axis{display:grid;grid-template-columns:186px minmax(0,1fr) 122px;gap:9px;margin-top:2px;}
+  .axis .ticks{position:relative;height:16px;}
+  .axis .t{position:absolute;font-family:var(--mono);font-size:10.5px;color:var(--muted);transform:translateX(-50%);}
+
+  /* ── bars ─────────────────────────────────────────────────── */
+  .bars{min-width:520px;display:flex;flex-direction:column;gap:9px;position:relative;}
+  .bar-row{display:grid;grid-template-columns:150px minmax(0,1fr) 54px;align-items:center;gap:10px;}
+  .bar-label{font-size:13px;color:var(--ink);}
+  .bar-label .sub{display:block;font-family:var(--mono);font-size:10.5px;color:var(--muted);}
+  .bar-track{position:relative;height:18px;background:var(--track);border-radius:3px;}
+  .bar-fill{height:100%;border-radius:0 4px 4px 0;}
+  .bar-fill.base{background:var(--bar-base);}
+  .bar-fill.e1{background:var(--accent);}
+  .bar-val{font-family:var(--mono);font-size:12px;font-variant-numeric:tabular-nums;text-align:right;color:var(--ink-2);}
+  .bar-val.b{color:var(--ink);font-weight:500;}
+
+  /* ── chips / inventory ────────────────────────────────────── */
+  .chip{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:11px;
+        padding:1px 8px;border-radius:999px;white-space:nowrap;border:1px solid transparent;}
+  .chip.ok{background:var(--good-wash);color:var(--good);border-color:var(--good);}
+  .chip.no{background:var(--neg-wash);color:var(--neg);border-color:var(--neg);}
+  .chip.skip{background:var(--surface-2);color:var(--muted);border-color:var(--rule);}
+  .chip.hero{background:var(--accent-wash);color:var(--accent-ink);border-color:var(--accent);}
+  .inv{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;}
+  .inv-block{background:var(--surface);border:1px solid var(--rule-soft);border-radius:10px;
+             padding:14px 16px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:10px;}
+  .inv-head{display:flex;align-items:baseline;gap:9px;padding-bottom:8px;border-bottom:1px solid var(--rule-soft);}
+  .inv-head h3{font-size:13.5px;font-weight:700;margin:0;}
+  .inv-head .cnt{font-family:var(--mono);font-size:11px;color:var(--muted);margin-left:auto;white-space:nowrap;}
+  .inv ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:7px;}
+  .inv li{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:baseline;font-size:13px;line-height:1.5;}
+  .inv li .n{color:var(--ink-2);}
+  .inv li .n b{color:var(--ink);font-weight:500;}
+  .inv-foot{font-size:12.5px;color:var(--ink-2);padding-top:8px;border-top:1px solid var(--rule-soft);}
+
+  /* ── boundaries ───────────────────────────────────────────── */
+  .warncard{background:var(--warn-wash);border:1px solid var(--warn);border-radius:10px;
+            padding:16px 18px;display:flex;flex-direction:column;gap:11px;}
+  .warncard .h{font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;color:var(--warn);}
+  .warncard ul{margin:0;padding-left:1.15em;display:flex;flex-direction:column;gap:9px;font-size:14px;}
+  .warncard li::marker{color:var(--warn);}
+  .warncard li b{font-weight:700;}
+
+  /* ── support panel (E3, demoted) ──────────────────────────── */
+  .support{background:var(--surface-3);border:1px dashed var(--rule);border-radius:10px;
+           padding:16px 18px;display:flex;flex-direction:column;gap:11px;}
+  .support .h{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  .support .h h3{font-family:var(--serif);font-size:16px;font-weight:700;margin:0;}
+  .support p{font-size:13.5px;color:var(--ink-2);}
+  .support p b{color:var(--ink);font-weight:500;}
+  .support .tblscroll{background:transparent;border:none;box-shadow:none;}
+  .support table{font-size:13px;}
+  .support th,.support td{padding:7px 12px 7px 0;}
+  .support td:first-child{width:96px;color:var(--muted);font-family:var(--mono);font-size:12px;}
+
+  /* ── notes ────────────────────────────────────────────────── */
+  details{background:var(--surface);border:1px solid var(--rule-soft);border-radius:10px;padding:10px 16px;}
+  summary{cursor:pointer;font-family:var(--mono);font-size:12px;color:var(--accent-ink);}
+  summary::marker{color:var(--muted);}
+  details .inner{padding-top:12px;}
+  .foot{display:flex;flex-direction:column;gap:9px;font-size:12.5px;color:var(--muted);line-height:1.7;}
+  .foot b{color:var(--ink-2);font-weight:500;}
+  code{font-family:var(--mono);font-size:12px;background:var(--surface-2);padding:1px 5px;border-radius:4px;}
+
+  /* ── tooltip ──────────────────────────────────────────────── */
+  #tip{position:fixed;z-index:40;pointer-events:none;opacity:0;transition:opacity .12s ease;
+       background:var(--surface);color:var(--ink);border:1px solid var(--rule);border-radius:8px;
+       padding:8px 11px;font-family:var(--mono);font-size:11.5px;line-height:1.6;
+       box-shadow:var(--shadow);white-space:pre;font-variant-numeric:tabular-nums;}
+  #tip.on{opacity:1;}
+  @media (prefers-reduced-motion: reduce){ *{transition:none !important;animation:none !important;} }
+</style>
+
+<div class="wrap">
+
+  <!-- ══ hero ══════════════════════════════════════════════ -->
+  <header class="hero">
+    <div class="eyebrow">第九阶段 · E1 端到端 LoRA · 全量 9,600 · 2026-09-12</div>
+    <h1>冻结主干之上做 LoRA 端到端反传，增益落在判决精度而非召回</h1>
+    <p class="lead">本页只做一件事：把 <b>E1</b> 与第九阶段 <b>baseline（p7d_delta）</b> 放在同一测试集、同一口径下逐轴对齐。
+      对比主轴是 <b>E1 vs baseline</b>；E3 只作为 E1 可行性的探索与辅证出现（见 §06），不参与主对比。</p>
+
+    <div class="tiles">
+      <div class="tile hero-tile">
+        <div class="k">FALLEN_PREC · 静态轴</div>
+        <div class="v">+0.128</div>
+        <div class="s">0.627 → 0.755，全项目最大单轴跃迁，正对论文核心难点 fallen vs lying</div>
+      </div>
+      <div class="tile">
+        <div class="k">AVG_F1</div>
+        <div class="v">+0.063</div>
+        <div class="s">0.764 → 0.827（instance 口径，230,400 帧）</div>
+      </div>
+      <div class="tile">
+        <div class="k">可训练参数</div>
+        <div class="v">10.82M</div>
+        <div class="s">LoRA 7.86M + 时序头 2.96M；主干 1.1B 全程冻结</div>
+      </div>
+      <div class="tile">
+        <div class="k">训练成本</div>
+        <div class="v">42.3h</div>
+        <div class="s">3 epochs · 28,800 步 · 9,600 视频 · RTX 3090</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ══ 01 ════════════════════════════════════════════════ -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">01</span>
+      <h2>微调做了什么</h2>
+      <span class="sec-note">与 baseline 的唯一变量 = 梯度是否回流到特征侧</span>
+    </div>
+
+    <figure>
+      <div class="figscroll">
+        <svg viewBox="0 0 900 296" role="img"
+             aria-label="管线对比：baseline 先离线固化 DINOv2 特征再训时序头，梯度不回流；E1 在冻结主干上加 LoRA，梯度穿过 64 帧窗口一路反传到 LoRA，其余各环节完全相同。">
+          <defs>
+            <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <polygon class="ar-fill" points="0,0 10,5 0,10"></polygon>
+            </marker>
+            <marker id="arback" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <polygon class="ar-back-fill" points="0,0 10,5 0,10"></polygon>
+            </marker>
+          </defs>
+
+          <!-- lane A -->
+          <text class="dg-lane" x="20" y="16">baseline · p7d_delta ｜ 两阶段：特征离线固化，梯度止于时序头</text>
+          <text class="dg-note" x="206" y="30" text-anchor="middle">离线落盘</text>
+
+          <rect class="dg-box dashed" x="20" y="38" width="176" height="52" rx="8"></rect>
+          <text class="dg-t b" x="108" y="60" text-anchor="middle">DINOv2-giant 冻结</text>
+          <text class="dg-t" x="108" y="77" text-anchor="middle">离线逐帧抽 CLS</text>
+
+          <line class="dg-flow dashed" x1="196" y1="64" x2="214" y2="64" marker-end="url(#ar)"></line>
+          <rect class="dg-box" x="216" y="38" width="150" height="52" rx="8"></rect>
+          <text class="dg-t b" x="291" y="60" text-anchor="middle">逐帧 CLS 1536</text>
+          <text class="dg-t" x="291" y="77" text-anchor="middle">预计算</text>
+
+          <line class="dg-flow" x1="366" y1="64" x2="384" y2="64" marker-end="url(#ar)"></line>
+          <rect class="dg-box" x="386" y="38" width="150" height="52" rx="8"></rect>
+          <text class="dg-t b" x="461" y="60" text-anchor="middle">Δdiff → 3072</text>
+          <text class="dg-t" x="461" y="77" text-anchor="middle">存 NPZ 特征</text>
+
+          <line class="dg-flow" x1="536" y1="64" x2="554" y2="64" marker-end="url(#ar)"></line>
+          <rect class="dg-box" x="556" y="38" width="150" height="52" rx="8"></rect>
+          <text class="dg-t b" x="631" y="60" text-anchor="middle">Phase6 bridge 头</text>
+          <text class="dg-t" x="631" y="77" text-anchor="middle">1 层 / 6 头 / 双向</text>
+
+          <line class="dg-flow" x1="706" y1="64" x2="724" y2="64" marker-end="url(#ar)"></line>
+          <rect class="dg-box" x="726" y="38" width="154" height="52" rx="8"></rect>
+          <text class="dg-t b" x="803" y="60" text-anchor="middle">逐帧 3 类输出</text>
+          <text class="dg-t" x="803" y="77" text-anchor="middle">fall / fallen / normal</text>
+
+          <!-- lane B -->
+          <text class="dg-lane on" x="20" y="136">E1 ｜ 端到端：同一条管线、同一个头，但梯度一路反传进 LoRA</text>
+
+          <rect class="dg-box on" x="20" y="152" width="176" height="52" rx="8"></rect>
+          <text class="dg-t on" x="108" y="174" text-anchor="middle">DINOv2-giant 冻结</text>
+          <text class="dg-t on" x="108" y="191" text-anchor="middle">+ LoRA r16 q/k/v/o</text>
+
+          <line class="dg-flow" x1="196" y1="178" x2="214" y2="178" marker-end="url(#ar)"></line>
+          <rect class="dg-box" x="216" y="152" width="150" height="52" rx="8"></rect>
+          <text class="dg-t b" x="291" y="174" text-anchor="middle">逐帧 CLS 1536</text>
+          <text class="dg-t" x="291" y="191" text-anchor="middle">窗口内在线</text>
+
+          <line class="dg-flow" x1="366" y1="178" x2="384" y2="178" marker-end="url(#ar)"></line>
+          <rect class="dg-box" x="386" y="152" width="150" height="52" rx="8"></rect>
+          <text class="dg-t b" x="461" y="174" text-anchor="middle">Δdiff → 3072</text>
+          <text class="dg-t" x="461" y="191" text-anchor="middle">64 帧窗口</text>
+
+          <line class="dg-flow" x1="536" y1="178" x2="554" y2="178" marker-end="url(#ar)"></line>
+          <rect class="dg-box" x="556" y="152" width="150" height="52" rx="8"></rect>
+          <text class="dg-t b" x="631" y="174" text-anchor="middle">Phase6 bridge 头</text>
+          <text class="dg-t" x="631" y="191" text-anchor="middle">1 层 / 6 头 / 双向</text>
+
+          <line class="dg-flow" x1="706" y1="178" x2="724" y2="178" marker-end="url(#ar)"></line>
+          <rect class="dg-box" x="726" y="152" width="154" height="52" rx="8"></rect>
+          <text class="dg-t b" x="803" y="174" text-anchor="middle">逐帧 3 类输出</text>
+          <text class="dg-t" x="803" y="191" text-anchor="middle">fall / fallen / normal</text>
+
+          <!-- gradient return -->
+          <path class="dg-back" d="M803 208 L803 252 L108 252 L108 206" marker-end="url(#arback)"></path>
+          <text class="dg-note on" x="455" y="270" text-anchor="middle">梯度反传：只更新 LoRA 与时序头，主干仍然冻结</text>
+        </svg>
+      </div>
+      <figcaption>两种范式共用同一个 Δdiff 输入、同一个 Phase6 bridge 头、同一个三元损失；差别只在最左边一格与那条回流箭头——
+        上排的特征在训练开始前就已写进 NPZ 固化，下排的梯度穿过 64 帧窗口一路更新 LoRA。<strong>这就是 E1 微调的全部内容：不是换模型，是让特征侧第一次拿到梯度。</strong></figcaption>
+    </figure>
+
+    <div class="tblscroll">
+      <table class="spec">
+        <tbody>
+          <tr><td>骨干</td><td>facebook/dinov2-giant（ViT-g/14，hidden 1536，40 层），原始预训练权重冷启动，整体冻结并转 fp16</td></tr>
+          <tr><td>LoRA</td><td>r = 16 / α = 16 / scaling = 1.0；注入 q、k、v、output.dense，共 <span class="mono">160</span> 个投影；B 置零、A kaiming 初始化</td></tr>
+          <tr><td>可训练量</td><td><span class="mono">10.82M</span>（LoRA 7.86M + 时序头 ≈2.96M），占 1.1B 主干的 &lt;1%；其余全部 <code>requires_grad=False</code></td></tr>
+          <tr><td>数值精度</td><td>主干 fp16 autocast；LoRA 与时序头保持 fp32 主权重（fp16 前向、fp32 更新）</td></tr>
+          <tr><td>时序头</td><td>Phase6 bridge transformer：1 层 / 6 头 / 双向注意力，输入 3072 = CLS 1536 + Δdiff 1536</td></tr>
+          <tr><td>窗口 / 批</td><td>window 64 帧 / stride 16（2 窗口每视频）；batch 2</td></tr>
+          <tr><td>优化器</td><td>AdamW，lr 1e-4 / weight_decay 0.01，梯度裁剪 1.0</td></tr>
+          <tr><td>损失</td><td>逐帧三元交叉熵 + 逆频类权重 <span class="mono">[1.318, 1.545, 0.137]</span>（按全 80 帧统计，非窗口重叠计数）</td></tr>
+          <tr><td>轮数</td><td>3 epochs（28,800 步 / 42.3h）；<code>--early_stop_patience 0</code> 跑满，按 val 选 best</td></tr>
+          <tr><td>数据</td><td>全量 train <span class="mono">9,600</span> 视频（seed 42 打散；2,000 ⊂ 6,000 ⊂ 9,600 嵌套）</td></tr>
+          <tr><td>评估</td><td>全量 test 1,200 视频 / <span class="mono">230,400</span> 帧；主结果 = val-selected best</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ══ 02 ════════════════════════════════════════════════ -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">02</span>
+      <h2>主对比：E1 相对 baseline 赢在哪</h2>
+      <span class="sec-note">instance 口径 · 同为 9,600 训练数据</span>
+    </div>
+
+    <div class="chartcard">
+      <div class="chart-head">
+        <span class="chart-title">六轴逐项对照</span>
+        <span class="chart-sub">全量 test 1,200 视频 / 230,400 帧</span>
+      </div>
+      <div class="legend">
+        <span class="lg"><i class="sw base"></i>baseline · p7d_delta</span>
+        <span class="lg"><i class="sw e1"></i>E1-full best</span>
+      </div>
+      <div class="chartscroll">
+        <div class="dumb">
+          <div class="dumb-row" data-tip="fall_prec&#10;baseline 0.5918&#10;E1-full 0.6951&#10;Δ +0.103">
+            <div class="dumb-label">fall_prec<span class="sub">跌倒瞬态 · 精度</span></div>
+            <div class="track">
+              <div class="gl" style="left:11.111%"></div><div class="gl" style="left:33.333%"></div>
+              <div class="gl" style="left:55.556%"></div><div class="gl" style="left:77.778%"></div>
+              <div class="gl" style="left:100%"></div>
+              <div class="seg" style="left:9.289%;width:22.956%"></div>
+              <div class="dot base" style="left:9.289%"></div>
+              <div class="dot e1" style="left:32.244%"></div>
+            </div>
+            <div class="vals"><span class="from">0.592</span> → <span class="to">0.695</span><br><span class="d">+0.103</span></div>
+          </div>
+
+          <div class="dumb-row" data-tip="fall_rec&#10;baseline 0.7923&#10;E1-full 0.8305&#10;Δ +0.038">
+            <div class="dumb-label">fall_rec<span class="sub">跌倒瞬态 · 召回</span></div>
+            <div class="track">
+              <div class="gl" style="left:11.111%"></div><div class="gl" style="left:33.333%"></div>
+              <div class="gl" style="left:55.556%"></div><div class="gl" style="left:77.778%"></div>
+              <div class="gl" style="left:100%"></div>
+              <div class="seg" style="left:53.844%;width:8.489%"></div>
+              <div class="dot base" style="left:53.844%"></div>
+              <div class="dot e1" style="left:62.333%"></div>
+            </div>
+            <div class="vals"><span class="from">0.792</span> → <span class="to">0.831</span><br><span class="d">+0.038</span></div>
+          </div>
+
+          <div class="dumb-row" data-tip="fallen_prec（静态轴）&#10;baseline 0.6272&#10;E1-full 0.7551&#10;Δ +0.128">
+            <div class="dumb-label">fallen_prec<span class="sub">倒地状态 · 精度 · 静态轴</span></div>
+            <div class="track">
+              <div class="gl" style="left:11.111%"></div><div class="gl" style="left:33.333%"></div>
+              <div class="gl" style="left:55.556%"></div><div class="gl" style="left:77.778%"></div>
+              <div class="gl" style="left:100%"></div>
+              <div class="seg" style="left:17.156%;width:28.422%"></div>
+              <div class="dot base" style="left:17.156%"></div>
+              <div class="dot e1" style="left:45.578%"></div>
+            </div>
+            <div class="vals"><span class="from">0.627</span> → <span class="to">0.755</span><br><span class="d">+0.128</span></div>
+          </div>
+
+          <div class="dumb-row" data-tip="fallen_rec&#10;baseline 0.6984&#10;E1-full 0.7538&#10;Δ +0.055">
+            <div class="dumb-label">fallen_rec<span class="sub">倒地状态 · 召回</span></div>
+            <div class="track">
+              <div class="gl" style="left:11.111%"></div><div class="gl" style="left:33.333%"></div>
+              <div class="gl" style="left:55.556%"></div><div class="gl" style="left:77.778%"></div>
+              <div class="gl" style="left:100%"></div>
+              <div class="seg" style="left:32.978%;width:12.311%"></div>
+              <div class="dot base" style="left:32.978%"></div>
+              <div class="dot e1" style="left:45.289%"></div>
+            </div>
+            <div class="vals"><span class="from">0.698</span> → <span class="to">0.754</span><br><span class="d">+0.055</span></div>
+          </div>
+
+          <div class="dumb-row" data-tip="avg_f1&#10;baseline 0.7641&#10;E1-full 0.8268&#10;Δ +0.063">
+            <div class="dumb-label">avg_f1<span class="sub">三类宏平均</span></div>
+            <div class="track">
+              <div class="gl" style="left:11.111%"></div><div class="gl" style="left:33.333%"></div>
+              <div class="gl" style="left:55.556%"></div><div class="gl" style="left:77.778%"></div>
+              <div class="gl" style="left:100%"></div>
+              <div class="seg" style="left:47.578%;width:13.933%"></div>
+              <div class="dot base" style="left:47.578%"></div>
+              <div class="dot e1" style="left:61.511%"></div>
+            </div>
+            <div class="vals"><span class="from">0.764</span> → <span class="to">0.827</span><br><span class="d">+0.063</span></div>
+          </div>
+
+          <div class="dumb-row" data-tip="ternary_acc&#10;baseline 0.9079&#10;E1-full 0.9367&#10;Δ +0.029">
+            <div class="dumb-label">ternary_acc<span class="sub">逐帧三分类准确率</span></div>
+            <div class="track">
+              <div class="gl" style="left:11.111%"></div><div class="gl" style="left:33.333%"></div>
+              <div class="gl" style="left:55.556%"></div><div class="gl" style="left:77.778%"></div>
+              <div class="gl" style="left:100%"></div>
+              <div class="seg" style="left:79.533%;width:6.400%"></div>
+              <div class="dot base" style="left:79.533%"></div>
+              <div class="dot e1" style="left:85.933%"></div>
+            </div>
+            <div class="vals"><span class="from">0.908</span> → <span class="to">0.937</span><br><span class="d">+0.029</span></div>
+          </div>
+
+          <div class="axis">
+            <div></div>
+            <div class="ticks">
+              <span class="t" style="left:11.111%">0.6</span>
+              <span class="t" style="left:33.333%">0.7</span>
+              <span class="t" style="left:55.556%">0.8</span>
+              <span class="t" style="left:77.778%">0.9</span>
+              <span class="t" style="left:100%">1.0</span>
+            </div>
+            <div></div>
+          </div>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--ink-2);line-height:1.65;">
+        增益<b>压倒性地落在两个精度轴</b>（fallen_prec +0.128、fall_prec +0.103），召回只 +0.038 / +0.055 —— 端到端修的是<b>判决边界质量</b>，不是召回。
+      </p>
+
+      <details>
+        <summary>数据表（精确值）</summary>
+        <div class="inner tblscroll">
+          <table>
+            <thead><tr><th>轴</th><th class="num">baseline</th><th class="num">E1-full best</th><th class="num">Δ</th></tr></thead>
+            <tbody>
+              <tr><td>fall_prec</td><td class="num">0.5918</td><td class="num">0.6951</td><td class="num up">+0.103</td></tr>
+              <tr><td>fall_rec</td><td class="num">0.7923</td><td class="num">0.8305</td><td class="num up">+0.038</td></tr>
+              <tr><td>fallen_prec</td><td class="num">0.6272</td><td class="num">0.7551</td><td class="num up">+0.128</td></tr>
+              <tr><td>fallen_rec</td><td class="num">0.6984</td><td class="num">0.7538</td><td class="num up">+0.055</td></tr>
+              <tr><td>avg_f1</td><td class="num">0.7641</td><td class="num">0.8268</td><td class="num up">+0.063</td></tr>
+              <tr><td>ternary_acc</td><td class="num">0.9079</td><td class="num">0.9367</td><td class="num up">+0.029</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </div>
+
+    <div class="tblscroll">
+      <table>
+        <thead><tr><th>事件轴（旧口径，仅与历史基线接续）</th><th class="num">baseline</th><th class="num">E1-full</th><th class="num">Δ</th></tr></thead>
+        <tbody>
+          <tr><td class="name">事件 F1 · raw（裸模型）</td><td class="num">0.7558</td><td class="num">0.8269</td><td class="num up">+0.071</td></tr>
+          <tr><td class="name">事件 F1 · canonical</td><td class="num">0.7603</td><td class="num">0.8236</td><td class="num up">+0.063</td></tr>
+          <tr><td class="name">事件 F1 · merged（best K2=7, W=32）</td><td class="num">0.7735</td><td class="num">0.8250</td><td class="num up">+0.052</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:13px;color:var(--ink-2);max-width:80ch;">
+      baseline 必须靠 <b>RuleV2</b>（事件级后处理规则：对逐帧输出施加迟滞与最短段长约束，把帧序列规整成事件段；参数在冻结特征上调得）才够到 0.7735，而 E1 裸模型 0.8269 即已超过它 —— <b>规则红利被内嵌进了网络</b>。
+      注：旧 <code>event_f1</code> 实为逐帧二值 F1（名实不符），已于 §03 废除，此处仅作与历史基线的接续读数。
+    </p>
+  </section>
+
+  <!-- ══ 03 ════════════════════════════════════════════════ -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">03</span>
+      <h2>真·事件级口径（timeline）</h2>
+      <span class="sec-note">逐视频计算 · 每视频等权 · 非事件视频排除而非记 0</span>
+    </div>
+
+    <div class="tblscroll">
+      <table>
+        <thead>
+          <tr><th>指标</th><th class="num">baseline</th><th class="num">E1-full best</th><th class="num">Δ</th><th class="num">GT 天花板</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="name">fall_f1（逐视频）</td><td class="num">0.7291</td><td class="num">0.7827</td><td class="num up">+0.054</td><td class="num">1.0000</td></tr>
+          <tr><td class="name">fallen_f1（逐视频）</td><td class="num">0.6584</td><td class="num">0.6989</td><td class="num up">+0.041</td><td class="num">1.0000</td></tr>
+          <tr><td class="name">avg_f1（逐视频）</td><td class="num">0.7051</td><td class="num">0.7413</td><td class="num up">+0.036</td><td class="num">1.0000</td></tr>
+          <tr><td class="name">覆盖率 · fall（211 视频）</td><td class="num">0.953</td><td class="num">0.962</td><td class="num up">+0.009</td><td class="num">1.000</td></tr>
+          <tr><td class="name">覆盖率 · fallen（150 视频）</td><td class="num">0.807</td><td class="num">0.833</td><td class="num up">+0.026</td><td class="num">1.000</td></tr>
+          <tr><td class="name">误报率 · fall（989 视频）</td><td class="num">0.088</td><td class="num">0.026</td><td class="num up">−0.062</td><td class="num">0.000</td></tr>
+          <tr><td class="name">误报率 · fallen（1,050 视频）</td><td class="num">0.079</td><td class="num">0.035</td><td class="num up">−0.044</td><td class="num">0.000</td></tr>
+          <tr><td class="name">翻转 / 视频（时序抖动）</td><td class="num">1.41</td><td class="num">0.63</td><td class="num up">−0.78</td><td class="num">0.32</td></tr>
+          <tr><td class="name">满分视频（满分 = 211）</td><td class="num">12</td><td class="num">21</td><td class="num up">+9</td><td class="num">211</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);max-width:82ch;">
+      定义：覆盖率 = 含该事件的视频中模型至少报过一次的比例；误报率 = 不含该事件的视频中被误报的比例。
+      lying 属 normal，故"把躺下报成跌倒/倒地"计入误报。两轴分母不同（211 / 150；989 / 1,050），F 与 N 两列不可互比。
+    </p>
+
+    <div class="chartcard">
+      <div class="chart-head">
+        <span class="chart-title">时序稳定性：翻转 / 视频</span>
+        <span class="chart-sub">0 = 从不翻转；虚线 = GT 天花板 0.32</span>
+      </div>
+      <div class="chartscroll">
+        <div class="bars">
+          <div class="bar-row" data-tip="翻转/视频&#10;baseline 1.41&#10;E1-full 0.63">
+            <div class="bar-label">baseline<span class="sub">p7d_delta</span></div>
+            <div class="bar-track"><div class="bar-fill base" style="width:94.0%"></div></div>
+            <div class="bar-val">1.41</div>
+          </div>
+          <div class="bar-row" data-tip="翻转/视频&#10;E1-full 0.63&#10;仅为 baseline 的 45%">
+            <div class="bar-label">E1-full best<span class="sub">端到端 LoRA</span></div>
+            <div class="bar-track"><div class="bar-fill e1" style="width:42.0%"></div></div>
+            <div class="bar-val b">0.63</div>
+          </div>
+        </div>
+      </div>
+      <p style="font-size:12.5px;color:var(--ink-2);line-height:1.65;">
+        端到端模型的输出时间线显著更稳：翻转次数只有 baseline 的 <b>45%</b>，且随数据量继续下降（2,000 时 0.81 → 全量 0.63）。这是旧 <code>event_f1</code> 完全测不到的一维。
+      </p>
+    </div>
+  </section>
+
+  <!-- ══ 04 ════════════════════════════════════════════════ -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">04</span>
+      <h2>实行的优化清单</h2>
+      <span class="sec-note">执行 16 项 · 明确未做 3 项</span>
+    </div>
+
+    <div class="inv">
+      <div class="inv-block">
+        <div class="inv-head"><h3>① 工程手段</h3><span class="cnt">7 项 · 让 9,600 端到端跑得起来</span></div>
+        <ul>
+          <li><span class="n"><b>梯度 checkpointing</b>：128 帧/步，不开必 OOM</span><span class="chip ok">实做</span></li>
+          <li><span class="n"><b>混合精度</b>：主干 fp16 + LoRA/头 fp32 主权重</span><span class="chip ok">实做</span></li>
+          <li><span class="n"><b>Δdiff 帧间差分</b>特征（承接 baseline）</span><span class="chip ok">实做</span></li>
+          <li><span class="n"><b>逆频类权重</b>（全 80 帧统计）</span><span class="chip ok">实做</span></li>
+          <li><span class="n"><b>紧凑 checkpoint</b>：MB 级，可 resume 续训</span><span class="chip ok">实做</span></li>
+          <li><span class="n"><b>mp4 现解码</b> + 16 workers：免 96GB 磁盘缓存</span><span class="chip ok">实做</span></li>
+          <li><span class="n"><b>torch.compile</b>：与 DINOv2 + 梯度 checkpointing 不兼容，首个前向 TypeError</span><span class="chip no">否决</span></li>
+        </ul>
+      </div>
+
+      <div class="inv-block">
+        <div class="inv-head"><h3>② 替代方案验证 A–H</h3><span class="cnt">8 项 · 为省 E1-full 成本</span></div>
+        <ul>
+          <li><span class="n"><b>A</b> 冻头换更好的头</span><span class="chip no">证伪 · 天花板 0.63</span></li>
+          <li><span class="n"><b>B</b> 帧级扩数据 2,000 → 9,600</span><span class="chip no">证伪 · 下游近零</span></li>
+          <li><span class="n"><b>C</b> RuleV2 事件后处理</span><span class="chip no">证伪 · 近冗余</span></li>
+          <li><span class="n"><b>D</b> 课程采样砍窗口</span><span class="chip no">否决 · 删 normal = 删精度保护</span></li>
+          <li><span class="n"><b>E</b> 小骨干 dinov2-base 端到端</span><span class="chip no">证伪 · 0.630 &lt; 0.645</span></li>
+          <li><span class="n"><b>F</b> E3 权重热启动</span><span class="chip no">否决 · 对必要性零信息</span></li>
+          <li><span class="n"><b>G</b> 蒸馏软标签喂冻头</span><span class="chip no">证伪 · 0.608 &lt; 0.632</span></li>
+          <li><span class="n"><b>H</b> E1@6000 数据轨迹</span><span class="chip ok">绿 · 立项条件满足</span></li>
+        </ul>
+        <div class="inv-foot">八个替代解释逐一关闭 → 唯一没被证伪的增益来源 = <b>端到端范式 × 更多数据</b>。</div>
+      </div>
+
+      <div class="inv-block">
+        <div class="inv-head"><h3>③ 零训练诊断（原 E2）</h3><span class="cnt">1 项 · 秩截断探针</span></div>
+        <ul>
+          <li><span class="n"><b>SVD 截断 r=16 → 8 → 4</b>：砍掉 75% 可训练参数，全部指标变动落在 ±0.042 内，<b>fall_prec 反而单调 +0.042</b></span><span class="chip ok">实做</span></li>
+        </ul>
+        <div class="inv-foot">秩大幅过剩、容量从未构成瓶颈 → <b>r=32 一端关闭</b>；"全量微调不升级"由间接推断升级为实测支撑。</div>
+      </div>
+
+      <div class="inv-block">
+        <div class="inv-head"><h3>④ 明确未做</h3><span class="cnt">3 项 · 均有判定理由</span></div>
+        <ul>
+          <li><span class="n"><b>dropout / lr 消融</b>：单 seed 噪声地板高于效应量</span><span class="chip skip">未做</span></li>
+          <li><span class="n"><b>全量微调</b>：触发条件"容量不足"未满足；代码中从未实现该路径</span><span class="chip skip">未做</span></li>
+          <li><span class="n"><b>特征锚定正则</b>：规划过，代码中从未写入；实际 loss 只有 CE + 类权重</span><span class="chip skip">未做</span></li>
+        </ul>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);max-width:82ch;">
+      计数口径：①中 torch.compile 计入"执行"（起了、按闸门判死），故执行项 = 7 + 8 + 1 = <b>16</b>；其中 <b>8 项被否决或证伪</b>（compile + A–G），8 项成立（6 工程 + H + 秩截断诊断）。
+    </p>
+  </section>
+
+  <!-- ══ 05 ════════════════════════════════════════════════ -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">05</span>
+      <h2>诚实边界</h2>
+      <span class="sec-note">写论文必须一并写进去的部分</span>
+    </div>
+
+    <div class="warncard">
+      <div class="h">结论边界 · 5 条</div>
+      <ul>
+        <li><b>"全面新最优"不成立</b>：立项时定的 3 条成功判据只通过 1 条 —— fallen_prec 0.7551 PASS（贴线）｜fall_rec 0.8305 FAIL（差 0.02）｜raw 事件 F1 0.8269 FAIL（差 0.003）。</li>
+        <li><b>静态轴未超自己更早的检查点</b>：fallen_prec 0.7551 &lt; E1@6000 的 0.795 —— 同一数据轨迹内，6,000 视频的 best 在静态轴上反而更高。</li>
+        <li><b>数据红利在 6,000 附近见顶</b>：6,000 → 9,600 只剩 +0.012 avg_f1，事件轴与召回已饱和；且红利有轴依赖性，不是所有轴一起涨。</li>
+        <li><b>主对比不是单变量对照</b>：baseline 配方与 E1 不同（stride 8 vs 16、lr 1e-3 vs 1e-4、49 轮 vs 3 轮、batch 32 vs 2），本页读数是"范式 + 配方"的整体差异；其中 stride 的影响已单独实测 ≤ 0.005。</li>
+        <li><b>val 不可用于跨 checkpoint 选静态轴</b>：val 只测每视频头窗前 64 帧（27% 的 fallen 帧落在从不被覆盖的尾部），且 val→test 的 fallen_rec gap 在不同 ckpt 间从 0.13 摆到 0.36。主结果取 val-selected best，但该选择对静态轴不可靠。</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ══ 06 ════════════════════════════════════════════════ -->
+  <section class="sec">
+    <div class="sec-head">
+      <span class="sec-num">06</span>
+      <h2>E3 的定位</h2>
+      <span class="sec-note">辅证 · 不参与主对比</span>
+    </div>
+
+    <div class="support">
+      <div class="h">
+        <h3>E3 回答"为什么必须做 E1"，E1 回答"做了值多少"</h3>
+        <span class="chip hero">辅证</span>
+      </div>
+
+      <p><b>E3 是什么：</b>它是给 baseline <b>换特征提取器</b>的两阶段帧级 LoRA —— 把 baseline 用的"原始冻结 DINOv2-giant"换成"帧级 LoRA 微调过的 DINOv2-giant"，下游的 Δdiff 与 Phase6 bridge 头逐项不动。
+        一句话：<b>E3 只动了 baseline 的特征侧，而且是"逐帧"（单帧、无时序）动的。</b></p>
+
+      <div class="tblscroll">
+        <table>
+          <tbody>
+            <tr><td>微调对象</td><td>baseline 的<b>特征提取器</b>本身：原始冻结的 DINOv2-giant → 帧级 LoRA 微调后的 DINOv2-giant</td></tr>
+            <tr><td>Stage1</td><td>冻结主干 + LoRA(rank 16, q/k/v/o, 7.86M) + Linear(1536→3) 头；<b>逐帧</b>（单帧输入、不带任何时序）三元 CE + 类权重；batch 16 / 5 epochs / lr 1e-4</td></tr>
+            <tr><td>微调数据</td><td>2,000 训练视频 × 10 帧 = <b>20,000 帧</b>（按类打散采样，非窗口）</td></tr>
+            <tr><td>Stage2</td><td>用微调骨干重抽 12,000 视频的逐帧 CLS → 新 NPZ，再走与 baseline <b>逐项相同</b>的 Δdiff + Phase6 bridge 头（训练集 9,600，与 E1 同量）</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p><b>① 它把瓶颈定位到静态轴：</b>动态轴帧级可学（fall_rec 0.792 → <b>0.842</b>，+0.050），静态轴单帧不可学（fallen_prec 0.627 → <b>0.619</b>，噪声级且方向为负）。
+        结论是"静态 lying-vs-fallen 只在时间序列里有前因可循"→ <b>时序整合是唯一出路，E1 正是据此立项的</b>。</p>
+      <p><b>② 它与 E1 的唯一变量就是训练范式：</b>E3 在<b>帧级</b>改特征（每帧独立，没有时序、没有前因），E1 在<b>窗口级</b>端到端改特征（梯度穿过 64 帧窗口一路反传）—— 这一条正是 E1 的设计依据，也是两者可直接对照的原因。</p>
+      <p><b>③ A–H 中的 B / E / G 也是"用便宜手段替代端到端"的尝试</b>（帧级扩数据、小骨干、蒸馏），逐一被证伪 —— 从反面支撑了 E1 的必要性。</p>
+      <p><b>④ 等数据参照（仅为辅证）：</b>同为 9,600 训练数据时，E1 相对 E3-full 静态轴 +0.136、avg_f1 +0.058；而在 2,000 数据上两者只差 +0.013。
+        差距随数据放大，说明<b>端到端能把更多数据转成静态轴精度，两阶段不能</b>。</p>
+      <p style="font-size:12.5px;color:var(--muted);margin-top:2px;">本节数值不进入主对比表，也不用于 E1 的结论判读 —— E3 是 E1 立项理由的存档，不是 E1 的成绩单。</p>
+    </div>
+  </section>
+
+  <!-- ══ footer ════════════════════════════════════════════ -->
+  <footer class="foot">
+    <div><b>口径</b>　instance：逐帧 TP/FP/FN 聚合到 230,400 帧（1,200 视频）；timeline：逐视频计算、每视频等权，非事件视频排除而非记 0，延迟单位 = 帧。</div>
+    <div><b>来源</b>　docs/0902实验第九阶段总结.md §4.6.3 / §4.6.4 / §4.5 / §5.1 / §六；logs/phase9/e1_full/、logs/phase7/p7d_delta/。</div>
+    <div><b>复现</b>　<code>experiments/train_p9e1.py</code>、<code>experiments/run_p9e1_full.sh</code>、<code>experiments/eval_p9e1_dual.py</code>、<code>experiments/eval_timeline_metrics.py</code>。</div>
+    <div><b>对照完整性</b>　本页所有 E1 与 baseline 数值均取自各自归档的 test 结果文件，未重新挑选 checkpoint。</div>
+  </footer>
+
+</div>
+
+<div id="tip" role="status" aria-live="off"></div>
+<script>
+  (function () {
+    var tip = document.getElementById('tip');
+    var on = false;
+    function show(e) {
+      var el = e.target.closest('[data-tip]');
+      if (!el) { hide(); return; }
+      tip.textContent = el.getAttribute('data-tip');
+      tip.classList.add('on');
+      on = true;
+      move(e);
+    }
+    function move(e) {
+      if (!on) return;
+      var pad = 14, w = tip.offsetWidth, h = tip.offsetHeight;
+      var x = e.clientX + pad, y = e.clientY + pad;
+      if (x + w > window.innerWidth - 8) x = e.clientX - w - pad;
+      if (y + h > window.innerHeight - 8) y = e.clientY - h - pad;
+      tip.style.left = x + 'px';
+      tip.style.top = y + 'px';
+    }
+    function hide() { tip.classList.remove('on'); on = false; }
+    document.addEventListener('pointermove', function (e) {
+      if (e.pointerType === 'touch') return;
+      if (e.target.closest('[data-tip]')) show(e); else hide();
+    });
+    document.addEventListener('scroll', hide, true);
+  })();
+</script>
