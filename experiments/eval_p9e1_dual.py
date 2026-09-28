@@ -67,6 +67,14 @@ def main():
     ap.add_argument("--test_csv", default=os.path.join(BASE, "DATASET-omnifall", "splits", "syn", "random", "test.csv"))
     ap.add_argument("--window", type=int, default=64)
     ap.add_argument("--stride", type=int, default=8)
+    ap.add_argument("--win_batch", type=int, default=0,
+                    help="同一视频内多少个窗口合并成一次前向（0=全部合并，默认）。"
+                         "显存不足时调小；结果与逐窗口前向等价。")
+    ap.add_argument("--limit_videos", type=int, default=None,
+                    help="只评测 N 个视频（**确定性随机子集**，非前 N 个——见下）")
+    ap.add_argument("--subset_seed", type=int, default=42,
+                    help="--limit_videos 的抽样种子。⚠ 不可用「前 N 个」：test.csv 按路径"
+                         "排序、fall/ 打头，前缀样本会严重偏向跌倒视频（本项目已两次踩坑）。")
     ap.add_argument("--device", default="cuda")
     ap.add_argument("--dump_pv", default=None,
                     help="把逐视频预测 pv 存到该路径（供 experiments/eval_timeline_metrics.py 复用）")
@@ -81,6 +89,13 @@ def main():
     idx = {p: i for i, p in enumerate(vp)}
     labels16 = d["labels_16"]; vsi = d["video_start_indices"]
     paths = list(pd.read_csv(args.test_csv)["path"].str.strip())
+    if args.limit_videos and args.limit_videos < len(paths):
+        # 确定性**随机**子集（不用前缀：test.csv 按路径排序、fall/ 打头，前缀有偏）
+        rng = np.random.default_rng(args.subset_seed)
+        keep = np.sort(rng.choice(len(paths), size=args.limit_videos, replace=False))
+        paths = [paths[i] for i in keep]
+        print(f"[subset] 从全集随机抽取 {len(paths)} 个视频评测"
+              f"（seed={args.subset_seed}，确定性可复现）", flush=True)
 
     # instance 累计 + merged 累计
     iy, ip = [], []              # instance 口径 (flatten all window positions)
@@ -96,19 +111,29 @@ def main():
         st = int(vsi[idx[rel]])
         gt80 = ternary(labels16[st:st + 80])
         votes = np.zeros((80, 3), dtype=int)
-        for ws in range(0, 80 - args.window + 1, args.stride):
-            fr = torch.from_numpy(frames[ws:ws + args.window])            # (T,H,W,3) uint8
-            x = preprocess_windows(fr.unsqueeze(0), args.device)          # (1,T,3,H,W)
+        # 把同一视频的多个窗口**合并成一次批量前向**（原实现是每窗口一次 batch=1，
+        # GPU 只用到 ~4GB/24GB，严重欠载）。B=窗口数，默认全并；显存紧张时用
+        # --win_batch 切块。
+        wins = list(range(0, 80 - args.window + 1, args.stride))
+        step = args.win_batch if args.win_batch and args.win_batch > 0 else len(wins)
+        for c0 in range(0, len(wins), step):
+            chunk = wins[c0:c0 + step]
+            batch = torch.stack(
+                [torch.from_numpy(frames[ws:ws + args.window]) for ws in chunk], dim=0
+            )                                                             # (B,T,H,W,3) uint8
+            x = preprocess_windows(batch, args.device)                    # (B,T,3,H,W)
             with torch.no_grad():
-                logits = model(x)                                        # (1,T,3)
+                logits = model(x)                                        # (B,T,3)
             # Phase 11 Exp-1a：开了 boundary head 时 forward 返回 (logits, boundary_logits)
             if isinstance(logits, (tuple, list)):
                 logits = logits[0]
-            p = logits.argmax(-1).cpu().numpy().ravel()                  # (T,)
-            y = gt80[ws:ws + args.window]
-            iy.append(y); ip.append(p)
-            for t in range(args.window):
-                votes[ws + t, p[t]] += 1
+            preds = logits.argmax(-1).cpu().numpy()                       # (B,T)
+            for i, ws in enumerate(chunk):
+                p = preds[i]
+                y = gt80[ws:ws + args.window]
+                iy.append(y); ip.append(p)
+                for t in range(args.window):
+                    votes[ws + t, p[t]] += 1
         pv[rel] = {"ternary_gt": gt80, "bridge_pred": votes.argmax(1), "labels_16": labels16[st:st + 80]}
         if (k + 1) % 200 == 0:
             print(f"  [{k+1}/{len(paths)}] videos done, skip {n_skip}", flush=True)

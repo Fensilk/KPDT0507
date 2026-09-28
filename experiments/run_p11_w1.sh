@@ -107,12 +107,23 @@ rm -f "$OUT/train.pid"
 echo "ALL_DONE arm=$ARM verdict=\$V rc=\$rc @ \$(date)" >> "$RUNLOG"
 
 if [ "\$V" = done ]; then
-  # best 优先，再逐 epoch —— epoch 轨迹供规划 §7.4 判定
-  for ck in "$OUT/best_model.pt" "$OUT"/epoch_*_model.pt; do
+  # 评测预算策略（2026-09-29 实测后定）：
+  #   全量评测 = 53 min/ckpt，且**是真实 GPU 前向成本**（解码仅占 4%，批量前向无收益——
+  #   ViT-g 在 64 帧上 batch=1 已吃满 GPU）。4 个 ckpt × 6 臂 = 21 h，规划未计。
+  #   → best 跑**全量 1200**（最终数字用这个）；
+  #   → epoch_* 跑固定 **300 视频随机子集**（seed=42，跨臂同子集可比），供 §7.4 轨迹判定。
+  #     抽样是**确定性随机**而非前 N 个：test.csv 按路径排序、fall/ 打头，前缀有偏。
+  echo "== EVAL best (full 1200) start @ \$(date) ==" >> "$OUT/eval_all.log"
+  $PY -u experiments/eval_p9e1_dual.py --ckpt "$OUT/best_model.pt" \
+      --out "$OUT/eval_best_model.json" >> "$OUT/eval_all.log" 2>&1 < /dev/null
+  echo "== EVAL best done rc=\$? @ \$(date) ==" >> "$OUT/eval_all.log"
+
+  for ck in "$OUT"/epoch_*_model.pt; do
     [ -f "\$ck" ] || continue
     b=\$(basename "\$ck" .pt)
-    echo "== EVAL \$b start @ \$(date) ==" >> "$OUT/eval_all.log"
-    $PY -u experiments/eval_p9e1_dual.py --ckpt "\$ck" --out "$OUT/eval_\$b.json" >> "$OUT/eval_all.log" 2>&1 < /dev/null
+    echo "== EVAL \$b (subset 300) start @ \$(date) ==" >> "$OUT/eval_all.log"
+    $PY -u experiments/eval_p9e1_dual.py --ckpt "\$ck" --out "$OUT/eval_\$b.subset.json" \
+        --limit_videos 300 --subset_seed 42 >> "$OUT/eval_all.log" 2>&1 < /dev/null
     echo "== EVAL \$b done rc=\$? @ \$(date) ==" >> "$OUT/eval_all.log"
   done
   echo "ALL_EVAL_DONE @ \$(date)" >> "$OUT/eval_all.log"
