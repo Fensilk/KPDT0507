@@ -113,9 +113,12 @@ if [ "\$V" = done ]; then
   #   → best 跑**全量 1200**（最终数字用这个）；
   #   → epoch_* 跑固定 **300 视频随机子集**（seed=42，跨臂同子集可比），供 §7.4 轨迹判定。
   #     抽样是**确定性随机**而非前 N 个：test.csv 按路径排序、fall/ 打头，前缀有偏。
-  echo "== EVAL best (full 1200) start @ \$(date) ==" >> "$OUT/eval_all.log"
+  # best 额外 --dump_pv：逐视频预测是后续算 timeline 指标（§7.2 否决条件之一）
+  # 与边界指标（规划 §5）的必要输入，不存就只能重跑 53 min。
+  echo "== EVAL best (full 1200, dump_pv) start @ \$(date) ==" >> "$OUT/eval_all.log"
   $PY -u experiments/eval_p9e1_dual.py --ckpt "$OUT/best_model.pt" \
-      --out "$OUT/eval_best_model.json" >> "$OUT/eval_all.log" 2>&1 < /dev/null
+      --out "$OUT/eval_best_model.json" --dump_pv "$OUT/pv_best.pt" \
+      >> "$OUT/eval_all.log" 2>&1 < /dev/null
   echo "== EVAL best done rc=\$? @ \$(date) ==" >> "$OUT/eval_all.log"
 
   for ck in "$OUT"/epoch_*_model.pt; do
