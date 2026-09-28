@@ -346,6 +346,34 @@ class MambaDecoder(nn.Module):
 # Unified Ternary Model
 # ============================================================
 
+class _DepthwiseSeparableConv1d(nn.Module):
+    """深度可分离 1D 卷积（Phase 11 Exp-2a 的 Local 分支算子）。
+
+    depthwise(k) → pointwise(1×1) → GELU。感受野固定为 k 帧，用于捕捉短程姿态变化。
+    选它而非"局部窗口注意力"的理由见 docs/0925实验第十一阶段规划.md §4.2：
+    主干前向是 E1 的成本大头，本分支复用同一批逐帧特征、不增加主干前向，几乎免费。
+    """
+
+    def __init__(self, d_model: int, kernel_size: int):
+        super().__init__()
+        # ⚠ 偶数核不能用 padding=k//2：Conv1d 输出长度为
+        #   (L + 2p - k)/s + 1，k 为偶数时 2·(k//2) - k = 0 → 输出变成 L+1，
+        #   与全局分支 (B,T,·) 的 T 不匹配（concat 直接报错）。
+        #   正解是非对称补齐 k-1 帧：左 k//2、右 k-1-k//2（k=8→(4,3)，k=16→(8,7)）。
+        self.pad_left = kernel_size // 2
+        self.pad_right = kernel_size - 1 - self.pad_left
+        self.dw = nn.Conv1d(d_model, d_model, kernel_size, groups=d_model)
+        self.pw = nn.Conv1d(d_model, d_model, 1)
+        self.act = nn.GELU()
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        """x: (B, T, D) → (B, T, D)（长度严格不变）"""
+        y = x.transpose(1, 2)                     # (B, D, T)
+        y = F.pad(y, (self.pad_left, self.pad_right))
+        y = self.act(self.pw(self.dw(y)))
+        return y.transpose(1, 2)
+
+
 class Phase6TernaryModel(nn.Module):
     """
     Unified ternary fall detection model for Phase 6.
@@ -380,6 +408,8 @@ class Phase6TernaryModel(nn.Module):
         max_len: int = 100,
         num_classes: int = 3,  # 3=ternary, 2=binary event
         bidirectional: bool = False,  # Bi-LSTM
+        use_boundary_head: bool = False,  # Phase 11 Exp-1a
+        multiscale: bool = False,         # Phase 11 Exp-2a
     ):
         super().__init__()
 
@@ -427,7 +457,33 @@ class Phase6TernaryModel(nn.Module):
         # Output head
         self.head = nn.Linear(hidden_dim, num_classes)  # 3=ternary, 2=binary event
 
+        # --- Phase 11 Exp-1a：Boundary Head（可选）---
+        # 判断当前帧是否位于状态切换邻域（标签定义见 docs/0925实验第十一阶段规划.md §4.1a）。
+        # 输出 (B,T,1) 的 logit；训练时以 BCE 与三元 CE 相加：L = L_CE + λ·L_BCE。
+        # ⚠ 开启后 forward 的**返回签名变为二元组** (logits, boundary_logits)；
+        #   关闭时保持原样只返回 logits —— 调用方须按自己构建时的开关来解包。
+        self.use_boundary_head = use_boundary_head
+        if use_boundary_head:
+            self.boundary_head = nn.Linear(hidden_dim, 1)
+
+        # --- Phase 11 Exp-2a：多尺度局部分支（可选）---
+        # 与 Transformer（全局 T=64）并联的短程算子：深度可分离 1D 卷积 k=8/16。
+        # 复用同一批逐帧特征 → 不增加主干前向，几乎零成本（规划 §4.2 的成本论据）。
+        self.multiscale = multiscale
+        if multiscale:
+            self.ms_branches = nn.ModuleList(
+                [_DepthwiseSeparableConv1d(hidden_dim, k) for k in (8, 16)]
+            )
+            self.ms_fuse = nn.Linear(hidden_dim * (1 + len(self.ms_branches)), hidden_dim)
+
         self._init_weights()
+
+        if multiscale:
+            # 必须放在 _init_weights() **之后** —— 上面会 xavier 所有 nn.Linear，
+            # 会把这里的零初始化覆盖掉。零初始化的意义：训练起点等价于不含该分支的
+            # 基线（A0），使 2a 与 A0 的差异只来自该分支学到的东西。
+            nn.init.zeros_(self.ms_fuse.weight)
+            nn.init.zeros_(self.ms_fuse.bias)
 
     def _init_weights(self):
         """Xavier uniform init for linear layers."""
@@ -437,19 +493,29 @@ class Phase6TernaryModel(nn.Module):
                 if m.bias is not None:
                     nn.init.constant_(m.bias, 0)
 
-    def forward(self, features: torch.Tensor) -> torch.Tensor:
+    def forward(self, features: torch.Tensor):
         """
         Args:
             features: (B, T, D) input features.
         Returns:
-            logits: (B, T, num_classes) classification logits.
+            logits: (B, T, num_classes) —— `use_boundary_head=False` 时**仅此一项**
+            (logits, boundary_logits): 开启 boundary head 时返回二元组，
+                boundary_logits 形状 (B, T, 1)
         """
         x = self.input_proj(features)       # (B, T, hidden_dim)
         x = self.input_norm(x)
         x = self.pos_encoder(x)
         x = self.emb_dropout(x)
-        x = self.decoder(x)                  # (B, T, hidden_dim)
-        logits = self.head(x)                # (B, T, num_classes)
+        h = self.decoder(x)                  # (B, T, hidden_dim)
+
+        if self.multiscale:
+            # 局部分支与全局表示 concat 后融合，残差加回（零初始化 → 起点为恒等）
+            locals_ = [br(h) for br in self.ms_branches]
+            h = h + self.ms_fuse(torch.cat([h] + locals_, dim=-1))
+
+        logits = self.head(h)                # (B, T, num_classes)
+        if self.use_boundary_head:
+            return logits, self.boundary_head(h)   # (B,T,C), (B,T,1)
         return logits
 
 

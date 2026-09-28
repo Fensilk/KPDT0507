@@ -328,6 +328,43 @@ def test_dataset():
 # Long Sequence Dataset (Phase 2: sliding window over frames)
 # ============================================================
 
+def build_boundary_labels(ternary_full, k: int = 3):
+    """切换邻域标签（Phase 11 Exp-1a，定义见规划 §4.1a）。
+
+        S = { t* : y[t*] != y[t*-1] }               切换点集合（整段视频上算）
+        b[t] = 1  ⟺  ∃ t* ∈ S, |t - t*| <= k
+
+    Args:
+        ternary_full: 整段视频的逐帧三元标签（0=fall, 1=fallen, 2=normal），长度 = 视频帧数
+        k: 邻域半宽（帧），默认 3
+    Returns:
+        np.ndarray, dtype=uint8, 与输入等长，取值 0/1
+
+    ⚠ 必须传入**全片**序列再对窗口切片——若只在窗口内算，窗口边界外侧的切换点
+      会被漏掉，导致边界处标签错误。
+    """
+    y = np.asarray(ternary_full)
+    T = len(y)
+    b = np.zeros(T, dtype=np.uint8)
+    if T < 2:
+        return b
+    trans = np.flatnonzero(y[1:] != y[:-1]) + 1     # t*, t* ∈ [1, T-1]
+    for t in trans:
+        lo = max(0, t - k)
+        hi = min(T, t + k + 1)
+        b[lo:hi] = 1
+    return b
+
+
+def ternary_from_labels16(labels_16):
+    """16 类 → 三元（与 __getitem__ 内联逻辑一致：1→fall(0), 2→fallen(1), 其余→normal(2)）。"""
+    lab = np.asarray(labels_16)
+    out = np.full(lab.shape, 2, dtype=np.int64)
+    out[lab == 1] = 0
+    out[lab == 2] = 1
+    return out
+
+
 class LongSequenceDataset(Dataset):
     """
     Frame-level dataset with configurable sliding window.
@@ -349,6 +386,8 @@ class LongSequenceDataset(Dataset):
         use_accel: bool = False,
         pose_npz_path: str = None,
         return_aux_separately: bool = False,
+        return_boundary: bool = False,
+        boundary_k: int = 3,
     ):
         """
         Args:
@@ -361,12 +400,19 @@ class LongSequenceDataset(Dataset):
             pose_npz_path: Optional frame-level pose NPZ path.
             return_aux_separately: If True, return aux (pose) features as a
                 separate "aux_features" key instead of concatenating (for gated fusion).
+            return_boundary: If True, additionally return "boundary_labels" (T,) float —
+                Phase 11 Exp-1a 的切换邻域标签（定义见规划 §4.1a）。
+                **必须在整段视频上算再切窗**（窗口边界处的切换点不能丢），故本类
+                同时保存了各视频的帧数以便回取全片标签。
+            boundary_k: 切换邻域的半宽 k（帧）。b[t]=1 ⟺ 存在切换点 t* 使 |t-t*| <= k。
         """
         self.window_size = window_size
         self.stride = stride
         self.use_diff = use_diff
         self.use_accel = use_accel
         self.return_aux_separately = return_aux_separately
+        self.return_boundary = return_boundary
+        self.boundary_k = boundary_k
 
         # --- Load NPZ ---
         print(f"[INFO] Loading frame-level NPZ from {npz_path}...")
@@ -432,6 +478,11 @@ class LongSequenceDataset(Dataset):
                 self.window_index.append((npz_start, offset))
 
             self.video_windows.append((path, n_windows))
+
+        # npz_start → 该视频帧数：__getitem__ 需要回取**全片**标签来算边界标签
+        # （只在窗口内算会把窗口边界处的切换点丢掉）。
+        self._video_nframes = {int(video_start_indices[vi]): int(video_clip_counts[vi])
+                               for vi in range(n_videos)}
 
         if skipped > 0:
             print(f"[WARN] Skipped {skipped} videos with < {window_size} frames")
@@ -521,6 +572,22 @@ class LongSequenceDataset(Dataset):
         }
         if aux_feat is not None:
             out["aux_features"] = aux_feat
+
+        # Phase 11 Exp-1a：切换邻域标签（在**全片**上算再切窗）
+        if self.return_boundary:
+            n_full = self._video_nframes.get(int(npz_start))
+            if n_full is None:      # 兜底：退化为窗口内计算（不应发生）
+                b_win = build_boundary_labels(ternary_labels.numpy(), self.boundary_k)
+            else:
+                full16 = self.labels_16_all[npz_start: npz_start + n_full]
+                b_full = build_boundary_labels(
+                    ternary_from_labels16(full16), self.boundary_k
+                )
+                b_win = b_full[offset: offset + self.window_size]
+            out["boundary_labels"] = torch.from_numpy(
+                np.asarray(b_win).astype(np.float32).copy()
+            )
+
         return out
 
 
@@ -553,39 +620,99 @@ def _get_longseq_sample_weights(dataset: LongSequenceDataset) -> torch.Tensor:
     return weights
 
 
-def _get_longseq_sample_weights_ternary(dataset: LongSequenceDataset) -> torch.Tensor:
+# 16 类名 → id（DATASET-omnifall/LABELS.md）
+CLASS_NAMES = {
+    "walk": 0, "fall": 1, "fallen": 2, "sit_down": 3, "sitting": 4,
+    "lie_down": 5, "lying": 6, "stand_up": 7, "standing": 8, "other": 9,
+    "kneel_down": 10, "kneeling": 11, "squat_down": 12, "squatting": 13,
+    "crawl": 14, "jump": 15,
+}
+
+
+def _center_class16(dataset: LongSequenceDataset):
+    """每个窗口的中心帧 16 类标签（与既有采样器口径一致）。"""
+    half = dataset.window_size // 2
+    return np.array([int(dataset.labels_16_all[s + off + half])
+                     for s, off in dataset.window_index], dtype=np.int64)
+
+
+def _get_longseq_sample_weights_ternary(
+    dataset: LongSequenceDataset,
+    hard_neg_classes=None,
+    hard_neg_alpha: float = 0.0,
+) -> torch.Tensor:
     """
     Calculate sample weights for WeightedRandomSampler using ternary labels.
 
     Uses center-frame ternary label as proxy for window majority label.
     Ternary classes: 0=fall, 1=fallen, 2=normal.
 
+    Phase 11 Exp-1b 扩展（难例负样本加权）：
+        难例清单由**基线模型的实际误报分布**确定，而非先验直觉——章程与实测见
+        docs/0925实验第十一阶段规划.md §4.1b（两步筛选：难度 ≥2x 基准 且 影响力 ≥5%）。
+        最终选定 `{lie_down}` 与 `{lie_down, other}` 两组对照。
+
     Args:
         dataset: LongSequenceDataset instance.
+        hard_neg_classes: 16 类 id 的可迭代（如 [5] 或 [5, 9]）；None/空 = 不加权（基线行为）
+        hard_neg_alpha: 难例权重放大系数，权重 ×(1+alpha)。0 = 不加权
     Returns:
         weights: (N,) float32 weights array.
     """
-    n_total = len(dataset)
-    half = dataset.window_size // 2
+    cls16 = _center_class16(dataset)
+    # 16 类 → 三元
+    ternary = np.full(cls16.shape, 2, dtype=np.int64)
+    ternary[cls16 == 1] = 0
+    ternary[cls16 == 2] = 1
+    labels_t = torch.tensor(ternary, dtype=torch.long)
 
-    labels = []
-    for npz_start, offset in dataset.window_index:
-        center_idx = npz_start + offset + half
-        lbl_16 = int(dataset.labels_16_all[center_idx])
-        # Map to ternary
-        if lbl_16 == 1:
-            ternary_lbl = 0
-        elif lbl_16 == 2:
-            ternary_lbl = 1
-        else:
-            ternary_lbl = 2
-        labels.append(ternary_lbl)
-
-    labels_t = torch.tensor(labels, dtype=torch.long)
     class_counts = torch.bincount(labels_t, minlength=3).float()
     class_weights = 1.0 / (class_counts + 1e-6)
-    weights = class_weights[labels_t]
+    weights = class_weights[labels_t].clone()
+
+    if hard_neg_classes and hard_neg_alpha > 0:
+        mask = torch.tensor(np.isin(cls16, list(hard_neg_classes)), dtype=torch.bool)
+        weights[mask] *= (1.0 + hard_neg_alpha)
+
     return weights
+
+
+def report_sampling_distribution(dataset: LongSequenceDataset, weights: torch.Tensor,
+                                 hard_neg_classes=None, alpha: float = 0.0,
+                                 top: int = 8) -> None:
+    """打印采样器实际会抽到的 16 类分布 —— Exp-1b 的**防退化检查**。
+
+    为什么必须有：加权会改变各类被抽中的比例，可能把 normal 的多样性挤掉
+    （Phase 9 的 P9 实验正是"移除保守先验 → fallen_prec 崩"的反面教材）。
+    本函数把"按权重采样后各类的期望占比"与"原始帧占比"并排列出，供人工核对。
+    """
+    cls16 = _center_class16(dataset)
+    w = np.asarray(weights, dtype=np.float64)
+    tot = w.sum()
+    hard = set(hard_neg_classes or [])
+
+    rows = []
+    for c in range(16):
+        m = cls16 == c
+        n = int(m.sum())
+        if n == 0:
+            continue
+        rows.append((c, n / len(cls16), float(w[m].sum() / tot)))
+    rows.sort(key=lambda r: -r[2])
+
+    if hard:
+        names = ", ".join(CLASS_NAMES_INV[c] for c in sorted(hard))
+        print(f"  [采样分布核对] 窗口总数 {len(cls16)}，难例类 {{{names}}} ×(1+{alpha:.2f})")
+    else:
+        print(f"  [采样分布核对] 窗口总数 {len(cls16)}（无难例加权）")
+    print(f"    {'类别':<12}{'窗口占比':>10}{'采样后占比':>12}{'倍数':>8}  难例")
+    for c, base, after in rows[:top]:
+        mult = after / base if base > 0 else float("nan")
+        print(f"    {CLASS_NAMES_INV[c]:<12}{base*100:>9.2f}%{after*100:>11.2f}%"
+              f"{mult:>8.2f}x  {'✔' if c in hard else ''}")
+
+
+CLASS_NAMES_INV = {v: k for k, v in CLASS_NAMES.items()}
 
 
 def create_longseq_dataloaders(
@@ -602,6 +729,10 @@ def create_longseq_dataloaders(
     pose_npz_path: str = None,
     return_aux_separately: bool = False,
     use_ternary_sampler: bool = False,
+    hard_neg_classes=None,
+    hard_neg_alpha: float = 0.0,
+    return_boundary: bool = False,
+    boundary_k: int = 3,
 ) -> tuple[DataLoader, DataLoader, DataLoader]:
     """
     Create train/val/test DataLoaders with sliding window.
@@ -623,47 +754,49 @@ def create_longseq_dataloaders(
         return_aux_separately: If True, return aux (pose) features as a separate key.
         use_ternary_sampler: If True, use ternary (3-class) weights
             instead of 16-class weights (Phase 6).
+        hard_neg_classes: Phase 11 Exp-1b —— 16 类 id 的可迭代，命中的窗口权重
+            ×(1+hard_neg_alpha)。清单由基线误报分布确定（规划 §4.1b），非先验直觉。
+        hard_neg_alpha: 难例放大系数，0 = 关闭（= 基线行为）。
+        return_boundary: Phase 11 Exp-1a —— 额外返回 "boundary_labels"。
+        boundary_k: 边界邻域半宽 k（帧）。
 
     Returns:
         (train_loader, val_loader, test_loader)
     """
     import os as _os
 
-    train_dataset = LongSequenceDataset(
-        npz_path=npz_path,
-        split_csv_path=_os.path.join(splits_dir, "train.csv"),
-        window_size=window_size,
-        stride=stride,
-        use_diff=use_diff,
-        use_accel=use_accel,
-        pose_npz_path=pose_npz_path,
-        return_aux_separately=return_aux_separately,
-    )
-    val_dataset = LongSequenceDataset(
-        npz_path=npz_path,
-        split_csv_path=_os.path.join(splits_dir, "val.csv"),
-        window_size=window_size,
-        stride=stride,
-        use_diff=use_diff,
-        use_accel=use_accel,
-        pose_npz_path=pose_npz_path,
-        return_aux_separately=return_aux_separately,
-    )
-    test_dataset = LongSequenceDataset(
-        npz_path=npz_path,
-        split_csv_path=_os.path.join(splits_dir, "test.csv"),
-        window_size=window_size,
-        stride=test_stride if test_stride is not None else stride,
-        use_diff=use_diff,
-        use_accel=use_accel,
-        pose_npz_path=pose_npz_path,
-        return_aux_separately=return_aux_separately,
-    )
+    def _mk(split, _stride):
+        return LongSequenceDataset(
+            npz_path=npz_path,
+            split_csv_path=_os.path.join(splits_dir, f"{split}.csv"),
+            window_size=window_size,
+            stride=_stride,
+            use_diff=use_diff,
+            use_accel=use_accel,
+            pose_npz_path=pose_npz_path,
+            return_aux_separately=return_aux_separately,
+            return_boundary=return_boundary,
+            boundary_k=boundary_k,
+        )
+
+    train_dataset = _mk("train", stride)
+    val_dataset = _mk("val", stride)
+    test_dataset = _mk("test", test_stride if test_stride is not None else stride)
 
     # Training set with weighted sampling
     if use_weighted_sampler:
         if use_ternary_sampler:
-            weights = _get_longseq_sample_weights_ternary(train_dataset)
+            weights = _get_longseq_sample_weights_ternary(
+                train_dataset, hard_neg_classes=hard_neg_classes,
+                hard_neg_alpha=hard_neg_alpha,
+            )
+            if hard_neg_classes:
+                # 防退化检查（规划 §4.1b 第 3 步）：确认采样分布确实偏移，
+                # 且没有把 normal 的多样性挤掉
+                report_sampling_distribution(
+                    train_dataset, weights,
+                    hard_neg_classes=hard_neg_classes, alpha=hard_neg_alpha,
+                )
         else:
             weights = _get_longseq_sample_weights(train_dataset)
         sampler = WeightedRandomSampler(
