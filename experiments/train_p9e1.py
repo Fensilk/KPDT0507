@@ -62,18 +62,34 @@ TEMPORAL_ARGS = dict(
 )
 
 
+def pose_dim_of(pose_npz):
+    """读 pose NPZ 的特征维数（用于把 input_dim 加上去）。"""
+    if not pose_npz:
+        return 0
+    d = np.load(pose_npz, allow_pickle=True, mmap_mode="r")
+    return int(d["pose_features"].shape[1])
+
+
 def build_temporal_args(args):
     """TEMPORAL_ARGS + Phase 11 开关。
 
     ⚠ 必须把新开关写进 temporal_args 并随 checkpoint 保存：from_checkpoint 用它重建
       时序头，`load_state_dict(temporal_state)` 是 **strict** 的——开关不一致会导致
       boundary_head 的键缺失而直接抛错（这是好事：静默不匹配会更难查）。
+    ⚠ Exp-4 的 pose 会把 input_dim 从 3072 加到 3072+D_pose，也必须写进 temporal_args，
+      否则 from_checkpoint 重建出的 input_proj 形状不符、strict load 直接报错。
     """
     ta = dict(TEMPORAL_ARGS)
     if getattr(args, "use_boundary_head", False):
         ta["use_boundary_head"] = True
     if getattr(args, "multiscale", False):
         ta["multiscale"] = True
+    d_pose = pose_dim_of(getattr(args, "pose_npz", None))
+    if d_pose:
+        # aux_dim 必须显式存进 temporal_args：E1Model.from_pretrained 会按当前骨干
+        # 覆写 input_dim（= hidden*2），只靠 input_dim 无法区分"骨干变了"与"多了外部特征"。
+        ta["aux_dim"] = d_pose
+        ta["input_dim"] = ta["input_dim"] + d_pose
     return ta
 
 
@@ -103,9 +119,17 @@ class WindowCache(Dataset):
     """
 
     def __init__(self, cache_dir, npz, window=64, stride=16, limit_videos=None,
-                 use_boundary=False, boundary_k=3):
+                 use_boundary=False, boundary_k=3, pose_npz=None):
+        # ⚠ 第三返回值槽位是**边界标签或 pose 特征二选一**（本阶段两者从不同时使用；
+        #   同时开会被显式拒绝，避免静默取错）。collate_windows 对二者一视同仁。
+        if use_boundary and pose_npz:
+            raise ValueError("use_boundary 与 pose_npz 不可同时启用（第三返回值槽位互斥）")
         self.use_boundary = use_boundary
         self.boundary_k = boundary_k
+        self.pose_all = None
+        if pose_npz:
+            pd = np.load(pose_npz, allow_pickle=True, mmap_mode="r")
+            self.pose_all = pd["pose_features"]
         self.files = sorted(glob.glob(os.path.join(cache_dir, "*.pt")))
         if limit_videos is not None:
             self.files = self.files[: limit_videos]
@@ -140,6 +164,9 @@ class WindowCache(Dataset):
         if self.use_boundary:
             b = boundary_slice(self.labels16, st, ws, self.window, self.boundary_k)
             return frames, y, torch.from_numpy(b)
+        if self.pose_all is not None:
+            pz = self.pose_all[st + ws: st + ws + self.window]
+            return frames, y, torch.from_numpy(np.ascontiguousarray(pz)).float()
         return frames, y
 
 
@@ -160,10 +187,16 @@ class Mp4WindowCache(Dataset):
     DataLoader 多 worker 并行下 decode 成本可忽略。labels 按 video path 对齐 NPZ。"""
 
     def __init__(self, csv_path, npz, window=64, stride=16, limit_videos=None,
-                 video_root=None, use_boundary=False, boundary_k=3):
+                 video_root=None, use_boundary=False, boundary_k=3, pose_npz=None):
         import pandas as pd
+        if use_boundary and pose_npz:
+            raise ValueError("use_boundary 与 pose_npz 不可同时启用（第三返回值槽位互斥）")
         self.use_boundary = use_boundary
         self.boundary_k = boundary_k
+        self.pose_all = None
+        if pose_npz:
+            pd_ = np.load(pose_npz, allow_pickle=True, mmap_mode="r")
+            self.pose_all = pd_["pose_features"]
         rels = list(pd.read_csv(csv_path)["path"].str.strip())
         if limit_videos is not None:
             rels = rels[: limit_videos]
@@ -204,6 +237,9 @@ class Mp4WindowCache(Dataset):
         if self.use_boundary:
             b = boundary_slice(self.labels16, st, ws, self.window, self.boundary_k)
             return fr, y, torch.from_numpy(b)
+        if self.pose_all is not None:
+            pz = self.pose_all[st + ws: st + ws + self.window]
+            return fr, y, torch.from_numpy(np.ascontiguousarray(pz)).float()
         return fr, y
 
 
@@ -274,20 +310,23 @@ def preprocess_windows(frames, device):
 # 监控：val 定时检查
 # ═══════════════════════════════════════════════════════════
 def val_check(model, val_cache_dir, npz, window, device, n_videos=150,
-              use_boundary=False):
+              use_boundary=False, pose_npz=None):
     """在 val 视频子集跑端到端，返回 {val_avg_f1, val_fallen_prec, val_fallen_rec}。
 
     use_boundary=True 时模型 forward 返回 (logits, boundary_logits)，此处只取 logits。
     val 本身不算 boundary 指标（监控信号只作趋势；边界指标在 test 上算，见规划 §6）。
     """
     model.eval()
-    ds = WindowCache(val_cache_dir, npz, window, stride=80)  # 每视频 1 窗口
+    ds = WindowCache(val_cache_dir, npz, window, stride=80,   # 每视频 1 窗口
+                     pose_npz=pose_npz)
     all_y, all_p = [], []
     for i in range(min(len(ds), n_videos)):
-        fr, y = ds[i]
+        item = ds[i]
+        fr, y = item[0], item[1]
+        aux = item[2].unsqueeze(0).to(device) if (pose_npz and len(item) > 2) else None
         x = preprocess_windows(fr.unsqueeze(0), device)      # (1,T,3,H,W)
         with torch.no_grad():
-            logits = model(x)
+            logits = model(x, aux)
         if use_boundary:
             logits = logits[0]                               # 丢弃 boundary logits
         all_p.append(logits.argmax(-1).cpu().numpy().ravel())
@@ -363,6 +402,9 @@ def main():
     ap.add_argument("--hard_neg_classes", type=str, default=None,
                     help="Exp-1b：逗号分隔 16 类名，如 'lie_down' 或 'lie_down,other'")
     ap.add_argument("--hard_neg_alpha", type=float, default=2.0)
+    ap.add_argument("--pose_npz", type=str, default=None,
+                    help="Exp-4：外部运动特征 NPZ（如 data/omnifall_pose_semantic_accel.npz "
+                         "的 12d）。concat 到时序特征尾部，input_dim 自动 +D_pose。")
     ap.add_argument("--compile", action="store_true", help="torch.compile（默认关，冒烟不开）")
     ap.add_argument("--early_stop_patience", type=int, default=2,
                     help="连续多少次 val_avg_f1 未创新高即早停；0=关闭早停（跑满 epochs）")
@@ -418,13 +460,15 @@ def main():
             ds = Mp4WindowCache(args.data_mp4, args.npz, args.window, args.stride,
                                 limit_videos=args.limit_videos,
                                 use_boundary=args.use_boundary_head,
-                                boundary_k=args.boundary_k)
+                                boundary_k=args.boundary_k,
+                                pose_npz=args.pose_npz)
         else:
             emit(f"[2] 窗口数据集: {args.data} (window={args.window}, stride={args.stride})")
             ds = WindowCache(args.data, args.npz, args.window, args.stride,
                              limit_videos=args.limit_videos,
                              use_boundary=args.use_boundary_head,
-                             boundary_k=args.boundary_k)
+                             boundary_k=args.boundary_k,
+                             pose_npz=args.pose_npz)
         w = compute_class_weights(ds, device)
         emit(f"  训练视频: {len(ds.videos)} | 窗口: {len(ds)} | "
              f"类权重 fall/fallen/normal: {[round(float(x), 3) for x in w.cpu().numpy()]}")
@@ -477,16 +521,22 @@ def main():
             # val 区间累计（monitor 的 train_loss_avg）
             mon_loss, mon_cnt = 0.0, 0
             for batch in loader:
-                if bnd_crit is not None:
+                # 第三槽位按开关解释：pose 优先（二者互斥，构造数据集时已拒绝同开）
+                if args.pose_npz:
+                    frames, labels, aux = batch
+                    aux = aux.to(device)
+                    bnd_gt = None
+                elif bnd_crit is not None:
                     frames, labels, bnd_gt = batch
                     bnd_gt = bnd_gt.to(device)
+                    aux = None
                 else:
                     frames, labels = batch
-                    bnd_gt = None
+                    bnd_gt = aux = None
                 x = preprocess_windows(frames, device)
                 y = labels.to(device)
                 optimizer.zero_grad()
-                out = model(x)
+                out = model(x, aux)
                 if bnd_crit is not None:
                     logits, bnd_logits = out
                 else:

@@ -72,6 +72,9 @@ def main():
                          "显存不足时调小；结果与逐窗口前向等价。")
     ap.add_argument("--limit_videos", type=int, default=None,
                     help="只评测 N 个视频（**确定性随机子集**，非前 N 个——见下）")
+    ap.add_argument("--pose_npz", type=str, default=None,
+                    help="Exp-4：与训练同款的外部运动特征 NPZ（必须与训练的 --pose_npz 一致，"
+                         "否则 input_dim 不符、strict load 报错）")
     ap.add_argument("--subset_seed", type=int, default=42,
                     help="--limit_videos 的抽样种子。⚠ 不可用「前 N 个」：test.csv 按路径"
                          "排序、fall/ 打头，前缀样本会严重偏向跌倒视频（本项目已两次踩坑）。")
@@ -88,6 +91,9 @@ def main():
     vp = [str(p) for p in d["video_paths"]]
     idx = {p: i for i, p in enumerate(vp)}
     labels16 = d["labels_16"]; vsi = d["video_start_indices"]
+    pose_all = None
+    if args.pose_npz:                     # Exp-4：与训练同源的 pose 特征
+        pose_all = np.load(args.pose_npz, allow_pickle=True, mmap_mode="r")["pose_features"]
     paths = list(pd.read_csv(args.test_csv)["path"].str.strip())
     if args.limit_videos and args.limit_videos < len(paths):
         # 确定性**随机**子集（不用前缀：test.csv 按路径排序、fall/ 打头，前缀有偏）
@@ -122,8 +128,17 @@ def main():
                 [torch.from_numpy(frames[ws:ws + args.window]) for ws in chunk], dim=0
             )                                                             # (B,T,H,W,3) uint8
             x = preprocess_windows(batch, args.device)                    # (B,T,3,H,W)
+            aux = None
+            if pose_all is not None:
+                # ⚠ 必须**逐窗口**切片再 stack 成 (B,T,D)。
+                #   按 chunk 的跨度切会得到 (80,12) 而 batch 需要 (3,64,12) —— 形状对不上。
+                aux = torch.stack([
+                    torch.from_numpy(np.ascontiguousarray(
+                        pose_all[st + ws: st + ws + args.window])).float()
+                    for ws in chunk
+                ], dim=0).to(args.device)
             with torch.no_grad():
-                logits = model(x)                                        # (B,T,3)
+                logits = model(x, aux)                                   # (B,T,3)
             # Phase 11 Exp-1a：开了 boundary head 时 forward 返回 (logits, boundary_logits)
             if isinstance(logits, (tuple, list)):
                 logits = logits[0]
