@@ -101,6 +101,9 @@ def main():
             x = preprocess_windows(fr.unsqueeze(0), args.device)          # (1,T,3,H,W)
             with torch.no_grad():
                 logits = model(x)                                        # (1,T,3)
+            # Phase 11 Exp-1a：开了 boundary head 时 forward 返回 (logits, boundary_logits)
+            if isinstance(logits, (tuple, list)):
+                logits = logits[0]
             p = logits.argmax(-1).cpu().numpy().ravel()                  # (T,)
             y = gt80[ws:ws + args.window]
             iy.append(y); ip.append(p)

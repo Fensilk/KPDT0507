@@ -42,6 +42,11 @@ sys.path.insert(0, os.path.join(BASE, "preprocessing"))
 
 from step7_extract_dinov2 import DINOV2_MEAN, DINOV2_STD  # noqa: E402
 from models.phase9_e1_model import E1Model             # noqa: E402
+from models.dataset import (                            # noqa: E402
+    build_boundary_labels,
+    CLASS_NAMES,
+    CLASS_NAMES_INV,
+)
 
 # 时序头 kwargs（与 phase9_e1_model.py._DEFAULT_HEAD_ARGS / p7d_delta 基线严格一致）。
 # from_checkpoint 会用这些 kwargs 重建 Phase6TernaryModel，input_dim 必须 = 3072。
@@ -55,6 +60,31 @@ TEMPORAL_ARGS = dict(
     max_len=100,
     num_classes=3,
 )
+
+
+def build_temporal_args(args):
+    """TEMPORAL_ARGS + Phase 11 开关。
+
+    ⚠ 必须把新开关写进 temporal_args 并随 checkpoint 保存：from_checkpoint 用它重建
+      时序头，`load_state_dict(temporal_state)` 是 **strict** 的——开关不一致会导致
+      boundary_head 的键缺失而直接抛错（这是好事：静默不匹配会更难查）。
+    """
+    ta = dict(TEMPORAL_ARGS)
+    if getattr(args, "use_boundary_head", False):
+        ta["use_boundary_head"] = True
+    if getattr(args, "multiscale", False):
+        ta["multiscale"] = True
+    return ta
+
+
+def boundary_slice(labels16, st, ws, window, k):
+    """窗口的边界标签：**在整片 80 帧上算再切窗**。
+
+    只在窗口内算会漏掉窗口边界外侧 k 帧内的切换点（那种情况下窗口首/尾帧本就
+    该标 1）。E1 的每个视频固定 80 帧（已验证），故此处直接按 80 取全片。
+    """
+    full = ternary(labels16[st: st + 80])
+    return build_boundary_labels(full, k)[ws: ws + window].astype(np.float32)
 
 
 def ternary(l16):
@@ -72,7 +102,10 @@ class WindowCache(Dataset):
     autodl NVMe + page cache）。__getitem__ 每次仅 load 一个 .pt 取连续帧切片。
     """
 
-    def __init__(self, cache_dir, npz, window=64, stride=16, limit_videos=None):
+    def __init__(self, cache_dir, npz, window=64, stride=16, limit_videos=None,
+                 use_boundary=False, boundary_k=3):
+        self.use_boundary = use_boundary
+        self.boundary_k = boundary_k
         self.files = sorted(glob.glob(os.path.join(cache_dir, "*.pt")))
         if limit_videos is not None:
             self.files = self.files[: limit_videos]
@@ -104,6 +137,9 @@ class WindowCache(Dataset):
         frames = torch.load(f, weights_only=False)["frames"][ws:ws + self.window]
         frames = torch.from_numpy(np.ascontiguousarray(frames))  # (T,H,W,3) uint8
         y = torch.from_numpy(ternary(self.labels16[st + ws: st + ws + self.window])).long()
+        if self.use_boundary:
+            b = boundary_slice(self.labels16, st, ws, self.window, self.boundary_k)
+            return frames, y, torch.from_numpy(b)
         return frames, y
 
 
@@ -124,8 +160,10 @@ class Mp4WindowCache(Dataset):
     DataLoader 多 worker 并行下 decode 成本可忽略。labels 按 video path 对齐 NPZ。"""
 
     def __init__(self, csv_path, npz, window=64, stride=16, limit_videos=None,
-                 video_root=None):
+                 video_root=None, use_boundary=False, boundary_k=3):
         import pandas as pd
+        self.use_boundary = use_boundary
+        self.boundary_k = boundary_k
         rels = list(pd.read_csv(csv_path)["path"].str.strip())
         if limit_videos is not None:
             rels = rels[: limit_videos]
@@ -163,6 +201,9 @@ class Mp4WindowCache(Dataset):
             raise RuntimeError(f"[Mp4WindowCache] 解码失败: {rel}")
         fr = torch.from_numpy(np.ascontiguousarray(frames[ws:ws + self.window]))  # (T,H,W,3)
         y = torch.from_numpy(ternary(self.labels16[st + ws: st + ws + self.window])).long()
+        if self.use_boundary:
+            b = boundary_slice(self.labels16, st, ws, self.window, self.boundary_k)
+            return fr, y, torch.from_numpy(b)
         return fr, y
 
 
@@ -178,10 +219,43 @@ def compute_class_weights(cache, device):
 
 
 def collate_windows(batch):
-    """(T,H,W,3) uint8 × B → (B,T,H,W,3) uint8；(T,) → (B,T)。"""
+    """(T,H,W,3) uint8 × B → (B,T,H,W,3) uint8；(T,) → (B,T)。
+
+    开了 boundary 时 batch 元素是三元组，额外拼出 (B,T) float 的边界标签。
+    """
     frames = torch.stack([b[0] for b in batch], dim=0)
     labels = torch.stack([b[1] for b in batch], dim=0)
+    if len(batch[0]) > 2:
+        bnd = torch.stack([b[2] for b in batch], dim=0)
+        return frames, labels, bnd
     return frames, labels
+
+
+def build_hard_neg_sampler(ds, hard_neg_classes, hard_neg_alpha):
+    """Exp-1b 难例采样（E1 路径）。
+
+    ⚠ 与 train_phase6.py 不同：E1 原本用 `shuffle=True`、不做加权采样
+      （类不平衡靠 CE 的逆频 class weight 处理）。此处只在显式给出难例池时才
+      挂 WeightedRandomSampler，否则返回 None、行为与基线完全一致。
+    窗口的"类别"取**中心帧**的 16 类标签（与 train_phase6 的采样器同口径）。
+    """
+    if not hard_neg_classes or hard_neg_alpha <= 0:
+        return None
+    from torch.utils.data import WeightedRandomSampler
+    half = ds.window // 2
+    cls16 = np.array([int(ds.labels16[st + ws + half]) for _r, st, ws in ds.meta])
+    ter = np.where(cls16 == 1, 0, np.where(cls16 == 2, 1, 2))
+    counts = np.bincount(ter, minlength=3).astype(np.float64)
+    w = (1.0 / (counts + 1e-6))[ter]
+    mask = np.isin(cls16, list(hard_neg_classes))
+    w = w * np.where(mask, 1.0 + hard_neg_alpha, 1.0)
+    names = ", ".join(CLASS_NAMES_INV[c] for c in sorted(hard_neg_classes))
+    print(f"[hard-neg] 难例池 {{{names}}} ×(1+{hard_neg_alpha}) | "
+          f"命中窗口 {int(mask.sum())}/{len(cls16)} "
+          f"({100*mask.mean():.1f}%) | 采样后占比 "
+          f"{100*w[mask].sum()/w.sum():.2f}%（原 {100*mask.mean():.2f}%）", flush=True)
+    return WeightedRandomSampler(torch.as_tensor(w, dtype=torch.double),
+                                 num_samples=len(w), replacement=True)
 
 
 # ═══════════════════════════════════════════════════════════
@@ -199,8 +273,13 @@ def preprocess_windows(frames, device):
 # ═══════════════════════════════════════════════════════════
 # 监控：val 定时检查
 # ═══════════════════════════════════════════════════════════
-def val_check(model, val_cache_dir, npz, window, device, n_videos=150):
-    """在 val 视频子集跑端到端，返回 {val_avg_f1, val_fallen_prec, val_fallen_rec}。"""
+def val_check(model, val_cache_dir, npz, window, device, n_videos=150,
+              use_boundary=False):
+    """在 val 视频子集跑端到端，返回 {val_avg_f1, val_fallen_prec, val_fallen_rec}。
+
+    use_boundary=True 时模型 forward 返回 (logits, boundary_logits)，此处只取 logits。
+    val 本身不算 boundary 指标（监控信号只作趋势；边界指标在 test 上算，见规划 §6）。
+    """
     model.eval()
     ds = WindowCache(val_cache_dir, npz, window, stride=80)  # 每视频 1 窗口
     all_y, all_p = [], []
@@ -209,6 +288,8 @@ def val_check(model, val_cache_dir, npz, window, device, n_videos=150):
         x = preprocess_windows(fr.unsqueeze(0), device)      # (1,T,3,H,W)
         with torch.no_grad():
             logits = model(x)
+        if use_boundary:
+            logits = logits[0]                               # 丢弃 boundary logits
         all_p.append(logits.argmax(-1).cpu().numpy().ravel())
         all_y.append(y.numpy().ravel())
     y = np.concatenate(all_y)
@@ -225,13 +306,17 @@ def val_check(model, val_cache_dir, npz, window, device, n_videos=150):
     }
 
 
-def save_checkpoint(model, out_dir, name, args):
-    """紧凑 checkpoint（R6 格式），可经 E1Model.from_checkpoint 重建。"""
+def save_checkpoint(model, out_dir, name, args, temporal_args=None):
+    """紧凑 checkpoint（R6 格式），可经 E1Model.from_checkpoint 重建。
+
+    temporal_args 必须与**实际构建时**一致（含 Phase 11 开关），否则 from_checkpoint
+    重建出的时序头与 temporal_state 不匹配，strict load 会直接抛错。
+    """
     ckpt = {
         "lora_state": {k: v for k, v in model.state_dict().items()
                        if "lora_" in k},
         "temporal_state": model.temporal.state_dict(),
-        "temporal_args": TEMPORAL_ARGS,
+        "temporal_args": temporal_args if temporal_args is not None else TEMPORAL_ARGS,
         "lora_rank": model.lora_rank,
         "args": vars(args),
     }
@@ -268,6 +353,16 @@ def main():
     ap.add_argument("--limit_videos", type=int, default=None)
     ap.add_argument("--max_steps", type=int, default=None)
     ap.add_argument("--seed", type=int, default=42)
+    # ── Phase 11 开关（默认关 → 行为与 E1 基线完全一致）──
+    ap.add_argument("--use_boundary_head", action="store_true",
+                    help="Exp-1a：加 boundary head，损失 = CE + λ·BCE（切换邻域）")
+    ap.add_argument("--boundary_lambda", type=float, default=0.3)
+    ap.add_argument("--boundary_k", type=int, default=3)
+    ap.add_argument("--multiscale", action="store_true",
+                    help="Exp-2a：并行短程分支（深度可分离 1D 卷积 k=8/16，零初始化）")
+    ap.add_argument("--hard_neg_classes", type=str, default=None,
+                    help="Exp-1b：逗号分隔 16 类名，如 'lie_down' 或 'lie_down,other'")
+    ap.add_argument("--hard_neg_alpha", type=float, default=2.0)
     ap.add_argument("--compile", action="store_true", help="torch.compile（默认关，冒烟不开）")
     ap.add_argument("--early_stop_patience", type=int, default=2,
                     help="连续多少次 val_avg_f1 未创新高即早停；0=关闭早停（跑满 epochs）")
@@ -291,6 +386,7 @@ def main():
             logf.flush()
 
         # ---- 模型 ----
+        t_args = build_temporal_args(args)
         if args.init_ckpt:
             emit(f"[1] resume: 从 {args.init_ckpt} 续训（跳过前 {args.init_epoch} 个 epoch）")
             model = E1Model.from_checkpoint(args.init_ckpt, device=device,
@@ -298,7 +394,8 @@ def main():
         else:
             emit(f"[1] 加载 {args.model_name}(fp16) + LoRA(r=16) + Phase6 bridge 头")
             model = E1Model.from_pretrained(model_name=args.model_name,
-                                            lora_rank=16, device=device)
+                                            lora_rank=16, device=device,
+                                            temporal_args=t_args)
         model.vit.gradient_checkpointing_enable()   # 必须：128 帧/step 显存
         emit(f"  梯度 checkpointing: {model.vit.is_gradient_checkpointing}")
         if args.compile:
@@ -308,21 +405,53 @@ def main():
         n_train = sum(p.numel() for p in trainable)
         emit(f"  可训练参数: {n_train / 1e6:.2f}M "
              f"(LoRA + 时序头；主干冻结 fp16)")
+        if args.multiscale:
+            emit("  Phase11 Exp-2a 多尺度分支: ON（k=8/16，零初始化 → 起点=基线）")
+        if args.use_boundary_head:
+            emit(f"  Phase11 Exp-1a boundary head: ON (λ={args.boundary_lambda}, "
+                 f"k={args.boundary_k})")
 
         # ---- 数据集 + 类权重 ----
         if args.data_mp4:
             emit(f"[2] mp4 现解码数据集: {args.data_mp4} (window={args.window}, "
                  f"stride={args.stride}, workers={args.workers})")
             ds = Mp4WindowCache(args.data_mp4, args.npz, args.window, args.stride,
-                                limit_videos=args.limit_videos)
+                                limit_videos=args.limit_videos,
+                                use_boundary=args.use_boundary_head,
+                                boundary_k=args.boundary_k)
         else:
             emit(f"[2] 窗口数据集: {args.data} (window={args.window}, stride={args.stride})")
             ds = WindowCache(args.data, args.npz, args.window, args.stride,
-                             limit_videos=args.limit_videos)
+                             limit_videos=args.limit_videos,
+                             use_boundary=args.use_boundary_head,
+                             boundary_k=args.boundary_k)
         w = compute_class_weights(ds, device)
         emit(f"  训练视频: {len(ds.videos)} | 窗口: {len(ds)} | "
              f"类权重 fall/fallen/normal: {[round(float(x), 3) for x in w.cpu().numpy()]}")
         criterion = nn.CrossEntropyLoss(weight=w)
+
+        # ---- Phase 11 Exp-1a：boundary loss ----
+        bnd_crit = None
+        if args.use_boundary_head:
+            n_pos = n_neg = 0
+            for _r, st, ws in ds.meta:
+                b = boundary_slice(ds.labels16, st, ws, args.window, args.boundary_k)
+                n_pos += int(b.sum()); n_neg += int(len(b) - b.sum())
+            pos_weight = torch.tensor([n_neg / max(n_pos, 1)], device=device)
+            bnd_crit = nn.BCEWithLogitsLoss(pos_weight=pos_weight)
+            emit(f"  boundary loss: λ={args.boundary_lambda} | 正/负帧 {n_pos:,}/{n_neg:,} "
+                 f"(正类率 {100*n_pos/max(n_pos+n_neg,1):.2f}%) | "
+                 f"pos_weight={float(pos_weight):.2f}")
+
+        # ---- Phase 11 Exp-1b：难例采样 ----
+        hard_neg = None
+        if args.hard_neg_classes:
+            names = [s.strip() for s in args.hard_neg_classes.split(",") if s.strip()]
+            bad = [n for n in names if n not in CLASS_NAMES]
+            if bad:
+                raise SystemExit(f"[ERROR] 未知类别名 {bad}；可用 {sorted(CLASS_NAMES)}")
+            hard_neg = [CLASS_NAMES[n] for n in names]
+        train_sampler = build_hard_neg_sampler(ds, hard_neg, args.hard_neg_alpha)
 
         optimizer = torch.optim.AdamW(trainable, lr=args.lr, weight_decay=0.01)
 
@@ -338,26 +467,41 @@ def main():
         model.train()
         start_ep = min(max(args.init_epoch, 0), args.epochs)
         for ep in range(start_ep, args.epochs):
-            loader = DataLoader(ds, batch_size=args.batch, shuffle=True,
-                                num_workers=args.workers, collate_fn=collate_windows,
-                                persistent_workers=args.workers > 0)
+            loader = DataLoader(
+                ds, batch_size=args.batch,
+                shuffle=(train_sampler is None), sampler=train_sampler,
+                num_workers=args.workers, collate_fn=collate_windows,
+                persistent_workers=args.workers > 0)
             # 滚动日志区间累计
             log_loss, log_cnt, log_correct, log_total = 0.0, 0, np.zeros(3, np.int64), np.zeros(3, np.int64)
             # val 区间累计（monitor 的 train_loss_avg）
             mon_loss, mon_cnt = 0.0, 0
-            for frames, labels in loader:
+            for batch in loader:
+                if bnd_crit is not None:
+                    frames, labels, bnd_gt = batch
+                    bnd_gt = bnd_gt.to(device)
+                else:
+                    frames, labels = batch
+                    bnd_gt = None
                 x = preprocess_windows(frames, device)
                 y = labels.to(device)
                 optimizer.zero_grad()
-                logits = model(x)
+                out = model(x)
+                if bnd_crit is not None:
+                    logits, bnd_logits = out
+                else:
+                    logits, bnd_logits = out, None
                 if global_step == 0 and not torch.isfinite(logits).all():
                     raise RuntimeError("首个前向输出含 NaN/inf（输入 handoff 或模型异常）")
                 loss = criterion(logits.reshape(-1, 3), y.reshape(-1))
+                if bnd_logits is not None:
+                    loss = loss + args.boundary_lambda * bnd_crit(
+                        bnd_logits.reshape(-1), bnd_gt.reshape(-1))
                 if not torch.isfinite(loss):
                     # 发散：立即中止，保留已存 best/last，写 DIVERGED 标记
                     emit(f"[DIVERGED] step {global_step + 1} loss={loss.item():.4f} "
                          f"NaN/inf → 立即中止")
-                    save_checkpoint(model, args.out, "last_model.pt", args)
+                    save_checkpoint(model, args.out, "last_model.pt", args, t_args)
                     with open(os.path.join(args.out, "DIVERGED"), "w") as fm:
                         fm.write(f"diverged at step {global_step + 1} "
                                  f"loss={loss.item():.4f}\n")
@@ -392,7 +536,8 @@ def main():
                 # val 定时检查
                 if global_step % args.val_every == 0:
                     m = val_check(model, args.val_data, args.npz, args.window,
-                                  device, n_videos=args.val_n)
+                                  device, n_videos=args.val_n,
+                                  use_boundary=args.use_boundary_head)
                     rec = {
                         "step": global_step,
                         "epoch": ep + 1,
@@ -411,7 +556,7 @@ def main():
                          f"rec {m['val_fallen_rec']:.4f} | train_loss {rec['train_loss_avg']:.4f}")
                     if m["val_avg_f1"] > best_f1:
                         best_f1 = m["val_avg_f1"]
-                        save_checkpoint(model, args.out, "best_model.pt", args)
+                        save_checkpoint(model, args.out, "best_model.pt", args, t_args)
                         no_improve = 0
                         emit(f"  [BEST] 新最优 f1={best_f1:.4f} → best_model.pt")
                     else:
@@ -430,14 +575,14 @@ def main():
             # epoch 结束
             if diverged or stop_reason == "diverged":
                 break
-            save_checkpoint(model, args.out, f"epoch_{ep + 1}_model.pt", args)
+            save_checkpoint(model, args.out, f"epoch_{ep + 1}_model.pt", args, t_args)
             emit(f"[EPOCH {ep + 1}] 完成，已存 epoch_{ep + 1}_model.pt")
             if stop_reason:
                 break
 
         # 收尾
         if not diverged:
-            save_checkpoint(model, args.out, "last_model.pt", args)
+            save_checkpoint(model, args.out, "last_model.pt", args, t_args)
             emit("[DONE] 已存 last_model.pt")
         if stop_reason:
             emit(f"[STOP] 原因: {stop_reason}")
