@@ -1,0 +1,69 @@
+== EVAL best_model start @ Tue Sep 29 01:55:21 CST 2026 ==
+/root/miniconda3/lib/python3.10/site-packages/torchvision/io/image.py:13: UserWarning: Failed to load image Python extension: '/root/miniconda3/lib/python3.10/site-packages/torchvision/image.so: undefined symbol: _ZN3c1017RegisterOperatorsD1Ev'If you don't plan on using image functionality from `torchvision.io`, you can ignore this warning. Otherwise, there might be something wrong with your environment. Did you have `libjpeg` or `libpng` installed before building `torchvision` from source?
+  warn(
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights:  62%|██████▏   | 448/727 [00:00<00:00, 4479.33it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 3913.30it/s]
+/root/miniconda3/lib/python3.10/site-packages/torch/nn/modules/transformer.py:379: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 best_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 746 个 = 冻结主干（预期）
+  [200/1200] videos done, skip 0
+  [400/1200] videos done, skip 0
+  [600/1200] videos done, skip 0
+  [800/1200] videos done, skip 0
+  [1000/1200] videos done, skip 0
+  [1200/1200] videos done, skip 0
+Saved: logs/phase11/a0_2000/eval_best_model.json
+[instance] acc=0.9161 fall_rec=0.7278 fallen_prec=0.7024 fallen_rec=0.5927 avg=0.7601
+[merged] raw ev_f1=0.7643 | canonical=0.7322 | best(K2=3,W=64)=0.7609 fallen_prec=0.7067
+== EVAL best_model done rc=0 @ Tue Sep 29 02:48:25 CST 2026 ==
+== EVAL epoch_1_model start @ Tue Sep 29 02:48:25 CST 2026 ==
+/root/miniconda3/lib/python3.10/site-packages/torchvision/io/image.py:13: UserWarning: Failed to load image Python extension: '/root/miniconda3/lib/python3.10/site-packages/torchvision/image.so: undefined symbol: _ZN3c1017RegisterOperatorsD1Ev'If you don't plan on using image functionality from `torchvision.io`, you can ignore this warning. Otherwise, there might be something wrong with your environment. Did you have `libjpeg` or `libpng` installed before building `torchvision` from source?
+  warn(
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 7984.97it/s]
+/root/miniconda3/lib/python3.10/site-packages/torch/nn/modules/transformer.py:379: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 epoch_1_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 746 个 = 冻结主干（预期）
+  [200/1200] videos done, skip 0
+  [400/1200] videos done, skip 0
+  [600/1200] videos done, skip 0
+  [800/1200] videos done, skip 0
+  [1000/1200] videos done, skip 0
+  [1200/1200] videos done, skip 0
+Saved: logs/phase11/a0_2000/eval_epoch_1_model.json
+[instance] acc=0.9104 fall_rec=0.7381 fallen_prec=0.8270 fallen_rec=0.4049 avg=0.7076
+[merged] raw ev_f1=0.7701 | canonical=0.7677 | best(K2=3,W=32)=0.7707 fallen_prec=0.8287
+== EVAL epoch_1_model done rc=0 @ Tue Sep 29 03:41:23 CST 2026 ==
+== EVAL epoch_2_model start @ Tue Sep 29 03:41:23 CST 2026 ==
+/root/miniconda3/lib/python3.10/site-packages/torchvision/io/image.py:13: UserWarning: Failed to load image Python extension: '/root/miniconda3/lib/python3.10/site-packages/torchvision/image.so: undefined symbol: _ZN3c1017RegisterOperatorsD1Ev'If you don't plan on using image functionality from `torchvision.io`, you can ignore this warning. Otherwise, there might be something wrong with your environment. Did you have `libjpeg` or `libpng` installed before building `torchvision` from source?
+  warn(
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights:  68%|██████▊   | 494/727 [00:00<00:00, 4901.97it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 4562.09it/s]
+/root/miniconda3/lib/python3.10/site-packages/torch/nn/modules/transformer.py:379: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 epoch_2_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 746 个 = 冻结主干（预期）
+  [200/1200] videos done, skip 0
+  [400/1200] videos done, skip 0
+  [600/1200] videos done, skip 0
+  [800/1200] videos done, skip 0
+  [1000/1200] videos done, skip 0
+  [1200/1200] videos done, skip 0
+Saved: logs/phase11/a0_2000/eval_epoch_2_model.json
+[instance] acc=0.9032 fall_rec=0.8885 fallen_prec=0.6549 fallen_rec=0.6357 avg=0.7499
+[merged] raw ev_f1=0.7742 | canonical=0.7654 | best(K2=3,W=32)=0.7721 fallen_prec=0.6444
+== EVAL epoch_2_model done rc=0 @ Tue Sep 29 04:34:12 CST 2026 ==
+== EVAL epoch_3_model start @ Tue Sep 29 04:34:12 CST 2026 ==
+/root/miniconda3/lib/python3.10/site-packages/torchvision/io/image.py:13: UserWarning: Failed to load image Python extension: '/root/miniconda3/lib/python3.10/site-packages/torchvision/image.so: undefined symbol: _ZN3c1017RegisterOperatorsD1Ev'If you don't plan on using image functionality from `torchvision.io`, you can ignore this warning. Otherwise, there might be something wrong with your environment. Did you have `libjpeg` or `libpng` installed before building `torchvision` from source?
+  warn(
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights:  65%|██████▌   | 475/727 [00:00<00:00, 4702.25it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 4252.67it/s]
+/root/miniconda3/lib/python3.10/site-packages/torch/nn/modules/transformer.py:379: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 epoch_3_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 746 个 = 冻结主干（预期）
+  [200/1200] videos done, skip 0
+  [400/1200] videos done, skip 0
+  [600/1200] videos done, skip 0
+  [800/1200] videos done, skip 0
+  [1000/1200] videos done, skip 0
+  [1200/1200] videos done, skip 0
+Saved: logs/phase11/a0_2000/eval_epoch_3_model.json
+[instance] acc=0.9109 fall_rec=0.7140 fallen_prec=0.6990 fallen_rec=0.5348 avg=0.7343
+[merged] raw ev_f1=0.7607 | canonical=0.7639 | best(K2=7,W=64)=0.7639 fallen_prec=0.7049
+== EVAL epoch_3_model done rc=0 @ Tue Sep 29 05:27:01 CST 2026 ==
+ALL_EVAL_DONE @ Tue Sep 29 05:27:01 CST 2026

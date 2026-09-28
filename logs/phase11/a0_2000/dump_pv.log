@@ -1,0 +1,21 @@
+== 等待器启动 Tue Sep 29 03:04:20 CST 2026，等 ALL_EVAL_DONE ==
+== 检测到 ALL_EVAL_DONE（第 49 次轮询）@ Tue Sep 29 05:28:21 CST 2026 ==
+== 补跑 best + dump_pv 开始 @ Tue Sep 29 05:28:21 CST 2026 ==
+/root/miniconda3/lib/python3.10/site-packages/torchvision/io/image.py:13: UserWarning: Failed to load image Python extension: '/root/miniconda3/lib/python3.10/site-packages/torchvision/image.so: undefined symbol: _ZN3c1017RegisterOperatorsD1Ev'If you don't plan on using image functionality from `torchvision.io`, you can ignore this warning. Otherwise, there might be something wrong with your environment. Did you have `libjpeg` or `libpng` installed before building `torchvision` from source?
+  warn(
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights:  52%|█████▏    | 381/727 [00:00<00:00, 3793.07it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 4590.15it/s]
+/root/miniconda3/lib/python3.10/site-packages/torch/nn/modules/transformer.py:379: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 best_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 746 个 = 冻结主干（预期）
+  [200/1200] videos done, skip 0
+  [400/1200] videos done, skip 0
+  [600/1200] videos done, skip 0
+  [800/1200] videos done, skip 0
+  [1000/1200] videos done, skip 0
+  [1200/1200] videos done, skip 0
+Saved: logs/phase11/a0_2000/eval_best_model.json
+Dumped pv: logs/phase11/a0_2000/pv_best.pt (1200 videos)
+[instance] acc=0.9161 fall_rec=0.7278 fallen_prec=0.7024 fallen_rec=0.5927 avg=0.7601
+[merged] raw ev_f1=0.7643 | canonical=0.7322 | best(K2=3,W=64)=0.7609 fallen_prec=0.7067
+== 补跑结束 rc=0 @ Tue Sep 29 06:21:06 CST 2026 ==
+ALL_DONE_DUMP_PV @ Tue Sep 29 06:21:06 CST 2026

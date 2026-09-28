@@ -28,13 +28,13 @@ from utils.boundary_metrics import (  # noqa: E402
     match_boundaries,
 )
 
-PV = os.path.join(BASE, "logs", "phase9", "e1_full", "pv_best.pt")
+DEFAULT_PV = os.path.join(BASE, "logs", "phase9", "e1_full", "pv_best.pt")
 TAUS = (1, 3, 5)
 NORMAL = 2
 
 
-def load_pv():
-    pv = torch.load(PV, weights_only=False, map_location="cpu")
+def load_pv(pv_path=None):
+    pv = torch.load(pv_path or DEFAULT_PV, weights_only=False, map_location="cpu")
     if "pv" in pv:
         pv = pv["pv"]
     out = {}
@@ -90,8 +90,16 @@ def matched_offsets(gt_seq, pred_seq, tau):
 
 
 def main():
-    pairs = load_pv()
-    print(f"载入 {len(pairs)} 个视频的逐视频预测（E1-full best，已过投票后处理）")
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--pv", default=None, help="逐视频预测 .pt（默认 E1-full best）")
+    ap.add_argument("--out", default=os.path.join(BASE, "logs", "phase9", "boundary_metrics_e1full.json"))
+    ap.add_argument("--tag", default="E1-full best")
+    args = ap.parse_args()
+    pv_path = args.pv or DEFAULT_PV
+    pairs = load_pv(pv_path)
+    print(f"载入 {len(pairs)} 个视频的逐视频预测（{args.tag}，已过投票后处理）")
+    print(f"  来源: {pv_path}")
 
     # ---------------------------------------------------------------- ① GT 自检
     print("\n" + "=" * 84)
@@ -171,7 +179,7 @@ def main():
 
     # ---------------------------------------------------------------- 锚点数字
     print("\n" + "=" * 84)
-    print("E1-full best 的边界指标（W1 对照基准）")
+    print(f"{args.tag} 的边界指标")
     print("=" * 84)
     per = {k: {tau: compute_video_boundary_metrics(g, p, tau) for tau in TAUS}
            for k, (g, p) in pairs.items()}
@@ -202,7 +210,7 @@ def main():
         F = 2 * P * R / (P + R) if P + R else 0.0
         print(f"  {tn:<18}{len(ms):>8}{tp+fn:>8}{tp+fp:>8}{P:>10.4f}{R:>10.4f}{F:>10.4f}")
 
-    out = os.path.join(BASE, "logs", "phase9", "boundary_metrics_e1full.json")
+    out = args.out
     with open(out, "w", encoding="utf-8") as fh:
         json.dump({"aggregate": agg,
                    "shift_control": [{"d": d, "micro_f1": f, "mean_offset": o}
