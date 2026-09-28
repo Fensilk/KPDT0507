@@ -40,7 +40,11 @@ from torch.utils.tensorboard import SummaryWriter
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from models.phase6_model import Phase6TernaryModel
-from models.dataset import create_longseq_dataloaders
+from models.dataset import (
+    create_longseq_dataloaders,
+    boundary_class_balance,
+    CLASS_NAMES,
+)
 from utils.metrics import compute_ternary_metrics
 from utils.losses import build_focal_loss, build_ce_loss
 from utils.visualization import (
@@ -130,7 +134,40 @@ def parse_args():
     parser.add_argument("--fast", action="store_true",
                         help="Enable cuDNN benchmark")
 
+    # ── Phase 11 Exp-1a：Boundary Head ──────────────────
+    g11 = parser.add_argument_group("Phase 11 Exp-1a: Boundary Head")
+    g11.add_argument("--use_boundary_head", action="store_true",
+                     help="加 boundary head，损失 = L_CE + λ·L_BCE（切换邻域，规划 §4.1a）")
+    g11.add_argument("--boundary_lambda", type=float, default=0.3,
+                     help="boundary loss 权重 λ（序贯试：先 0.3，再按结果调）")
+    g11.add_argument("--boundary_k", type=int, default=3,
+                     help="边界邻域半宽 k（帧）：b[t]=1 ⟺ ∃t*, |t-t*|<=k")
+
+    # ── Phase 11 Exp-2a：多尺度 ─────────────────────────
+    g11b = parser.add_argument_group("Phase 11 Exp-2a: multi-scale")
+    g11b.add_argument("--multiscale", action="store_true",
+                      help="并行短程分支（深度可分离 1D 卷积 k=8/16，零初始化，规划 §4.2）")
+
+    # ── Phase 11 Exp-1b：难例采样 ───────────────────────
+    g11c = parser.add_argument_group("Phase 11 Exp-1b: hard-negative sampling")
+    g11c.add_argument("--hard_neg_classes", type=str, default=None,
+                      help="逗号分隔的 16 类名，如 'lie_down' 或 'lie_down,other'；"
+                           "清单由基线误报分布确定（规划 §4.1b）")
+    g11c.add_argument("--hard_neg_alpha", type=float, default=2.0,
+                      help="难例窗口权重放大系数（权重 ×(1+α)）；0 = 关闭")
+
     return parser.parse_args()
+
+
+def parse_hard_neg_classes(spec):
+    """'lie_down,other' → [5, 9]。非法类名直接报错，避免静默按空清单跑。"""
+    if not spec:
+        return None
+    names = [s.strip() for s in spec.split(",") if s.strip()]
+    bad = [n for n in names if n not in CLASS_NAMES]
+    if bad:
+        raise SystemExit(f"[ERROR] 未知类别名 {bad}；可用：{sorted(CLASS_NAMES)}")
+    return [CLASS_NAMES[n] for n in names]
 
 
 def set_seed(seed: int, fast: bool = False):
@@ -157,70 +194,129 @@ def get_device(device_arg: str) -> torch.device:
 # Training / Validation
 # ============================================================
 
+def build_boundary_info(train_dataset, args, device):
+    """构造 Phase 11 Exp-1a 的 boundary loss。返回 None 表示未启用。
+
+    L_总 = L_三元CE + λ · L_边界BCE
+    pos_weight = 负帧数/正帧数。实测（2026-09-28，k=3，window64/stride16）：
+
+        split   窗口数   含边界窗口   micro 正类率   pos_weight
+        train   19,200      13.9%        1.77%        55.5
+        val      2,400      14.0%        1.81%        54.2
+        test     2,400      14.5%        1.85%        53.1
+
+    ⚠ 不平衡比规划预估的严重得多（规划 §4.1a 曾估 11–22%，实测仅 ~1.8%）：
+    85% 以上的窗口完全不含切换点。必须给 pos_weight，否则 BCE 会被压倒性的
+    负类主导、学出"全报 0"的平凡解。
+    """
+    if not getattr(args, "use_boundary_head", False):
+        return None
+    n_pos, n_neg = boundary_class_balance(train_dataset, k=args.boundary_k)
+    pos_weight = torch.tensor([n_neg / max(n_pos, 1)], device=device)
+    crit = nn.BCEWithLogitsLoss(pos_weight=pos_weight)
+    print(f"[INFO] Boundary loss ON: λ={args.boundary_lambda}, k={args.boundary_k} | "
+          f"正/负帧 = {n_pos:,}/{n_neg:,} (正类率 {100*n_pos/max(n_pos+n_neg,1):.2f}%) | "
+          f"pos_weight={float(pos_weight):.2f}")
+    return {"criterion": crit, "lambda": args.boundary_lambda}
+
+
+def forward_loss(model, features, ternary_gt, boundary_gt, criterion, bnd_info):
+    """统一的 forward + loss。返回 (logits, loss, boundary_loss|None)。
+
+    ⚠ 模型是否返回二元组由**构建时的 use_boundary_head 开关**决定，此处据 bnd_info
+      是否为空来判断，二者必须保持一致。
+    """
+    out = model(features)
+    bnd_logits = None
+    if bnd_info is not None:
+        logits, bnd_logits = out            # (B,T,3), (B,T,1)
+    else:
+        logits = out
+    B, T = ternary_gt.shape
+    loss = criterion(logits.reshape(B * T, -1), ternary_gt.reshape(B * T))
+
+    bnd_loss = None
+    if bnd_logits is not None and boundary_gt is not None:
+        bnd_loss = bnd_info["criterion"](bnd_logits.reshape(B * T),
+                                         boundary_gt.reshape(B * T))
+        loss = loss + bnd_info["lambda"] * bnd_loss
+    return logits, loss, bnd_loss
+
+
 def train_epoch(model, loader, criterion, optimizer, device,
-                use_fp16=True, scaler=None) -> float:
+                use_fp16=True, scaler=None, bnd_info=None) -> float:
     model.train()
     total_loss = 0.0
     n_batches = len(loader)
     log_every = max(1, n_batches // 10)
+    bnd_acc = []          # 记录边界损失均值，便于观察 λ 是否失衡
 
     t_start = _time.time()
     for i, batch in enumerate(loader):
         features = batch["features"].to(device)
         ternary_gt = batch["ternary_labels"].to(device)
+        boundary_gt = batch.get("boundary_labels")
+        if boundary_gt is not None:
+            boundary_gt = boundary_gt.to(device)
         B, T = ternary_gt.shape
 
         optimizer.zero_grad()
 
         if use_fp16 and scaler is not None:
             with torch.cuda.amp.autocast():
-                logits = model(features)  # (B, T, 3)
-                loss = criterion(logits.reshape(B * T, -1),
-                                 ternary_gt.reshape(B * T))
+                _lg, loss, bnd_loss = forward_loss(
+                    model, features, ternary_gt, boundary_gt, criterion, bnd_info)
             scaler.scale(loss).backward()
             scaler.unscale_(optimizer)
             nn.utils.clip_grad_norm_(model.parameters(), 1.0)
             scaler.step(optimizer)
             scaler.update()
         else:
-            logits = model(features)
-            loss = criterion(logits.reshape(B * T, -1),
-                             ternary_gt.reshape(B * T))
+            _lg, loss, bnd_loss = forward_loss(
+                model, features, ternary_gt, boundary_gt, criterion, bnd_info)
             loss.backward()
             nn.utils.clip_grad_norm_(model.parameters(), 1.0)
             optimizer.step()
 
         total_loss += loss.item()
+        if bnd_loss is not None:
+            bnd_acc.append(float(bnd_loss.item()))
 
         if (i + 1) % log_every == 0 or i == 0:
             elapsed = _time.time() - t_start
             eta = elapsed / (i + 1) * (n_batches - i - 1)
+            bnd_str = (f" | bnd={sum(bnd_acc)/len(bnd_acc):.4f}"
+                       if bnd_acc else "")
             print(f"  [{i+1:>6d}/{n_batches}] "
                   f"{(i+1)/n_batches*100:4.0f}% | "
-                  f"loss={total_loss/(i+1):.4f} | "
+                  f"loss={total_loss/(i+1):.4f}{bnd_str} | "
                   f"elapsed={elapsed:.0f}s | eta={eta:.0f}s", flush=True)
 
     return total_loss / n_batches
 
 
 @torch.no_grad()
-def validate_epoch(model, loader, criterion, device) -> dict:
+def validate_epoch(model, loader, criterion, device, bnd_info=None) -> dict:
     model.eval()
 
     total_loss = 0.0
     n_batches = len(loader)
     all_pred, all_gt = [], []
+    bnd_acc = []
 
     for batch in loader:
         features = batch["features"].to(device)
         ternary_gt = batch["ternary_labels"].to(device)
+        boundary_gt = batch.get("boundary_labels")
+        if boundary_gt is not None:
+            boundary_gt = boundary_gt.to(device)
         B, T = ternary_gt.shape
 
-        logits = model(features)  # (B, T, 3)
-
-        loss = criterion(logits.reshape(B * T, -1),
-                         ternary_gt.reshape(B * T))
+        logits, loss, bnd_loss = forward_loss(
+            model, features, ternary_gt, boundary_gt, criterion, bnd_info)
         total_loss += loss.item()
+        if bnd_loss is not None:
+            bnd_acc.append(float(bnd_loss.item()))
 
         pred = logits.argmax(dim=-1)  # (B, T)
         all_pred.append(pred.cpu().numpy().ravel())
@@ -231,6 +327,8 @@ def validate_epoch(model, loader, criterion, device) -> dict:
 
     metrics = compute_ternary_metrics(pred_all, gt_all)
     metrics["loss"] = total_loss / n_batches
+    if bnd_acc:
+        metrics["boundary_loss"] = sum(bnd_acc) / len(bnd_acc)
 
     return metrics
 
@@ -282,6 +380,12 @@ def main():
         use_accel=args.use_accel if hasattr(args, 'use_accel') else False,
         pose_npz_path=args.pose_npz if hasattr(args, 'pose_npz') else None,
         use_ternary_sampler=True,  # Phase 6: 3-class balanced sampling
+        # Phase 11 Exp-1b：难例池加权（hard_neg_classes=None 时行为与基线完全一致）
+        hard_neg_classes=parse_hard_neg_classes(args.hard_neg_classes),
+        hard_neg_alpha=args.hard_neg_alpha,
+        # Phase 11 Exp-1a：需要 boundary 标签（在整片算再切窗）
+        return_boundary=args.use_boundary_head,
+        boundary_k=args.boundary_k,
     )
 
     # ── Model ──────────────────────────────────────────
@@ -308,7 +412,13 @@ def main():
         mlp_ratio=4.0,
         max_len=args.window_size + 10,
         bidirectional=args.bidirectional,
+        use_boundary_head=args.use_boundary_head,   # Phase 11 Exp-1a
+        multiscale=args.multiscale,                 # Phase 11 Exp-2a
     ).to(device)
+    if args.multiscale:
+        print("[INFO] Multi-scale branch ON: 深度可分离 1D 卷积 k=8/16（零初始化 → 起点=基线）")
+    if args.use_boundary_head:
+        print("[INFO] Boundary head ON：forward 返回 (logits, boundary_logits)")
 
     n_params = sum(p.numel() for p in model.parameters())
     if args.decoder_type == "lstm" and args.bidirectional:
@@ -342,6 +452,9 @@ def main():
         w[1] = w[1] * args.fallen_w
         criterion.weight = w
         print(f"[INFO] fallen(类1) 权重 ×{args.fallen_w}: {w.cpu().numpy().round(3)}")
+
+    # Phase 11 Exp-1a：boundary loss（None = 未启用，其余路径行为不变）
+    bnd_info = build_boundary_info(train_loader.dataset, args, device)
 
     # ── Optimizer ──────────────────────────────────────
     optimizer = optim.AdamW(
@@ -379,10 +492,11 @@ def main():
     for epoch in range(1, args.epochs + 1):
         train_loss = train_epoch(
             model, train_loader, criterion, optimizer, device,
-            use_fp16=use_fp16, scaler=scaler,
+            use_fp16=use_fp16, scaler=scaler, bnd_info=bnd_info,
         )
 
-        val_metrics = validate_epoch(model, val_loader, criterion, device)
+        val_metrics = validate_epoch(model, val_loader, criterion, device,
+                                     bnd_info=bnd_info)
 
         current_lr = optimizer.param_groups[0]["lr"]
         scheduler.step(val_metrics["fall_f1"])
@@ -479,7 +593,8 @@ def main():
     model.load_state_dict(checkpoint["model_state_dict"])
     model.eval()
 
-    test_metrics = validate_epoch(model, test_loader, criterion, device)
+    test_metrics = validate_epoch(model, test_loader, criterion, device,
+                                  bnd_info=bnd_info)
 
     print(f"\n{'='*60}")
     print("TEST RESULTS")
@@ -543,6 +658,13 @@ def main():
         "use_diff": args.use_diff if hasattr(args, 'use_diff') else False,
         "use_accel": args.use_accel if hasattr(args, 'use_accel') else False,
         "pose_npz": args.pose_npz if hasattr(args, 'pose_npz') else None,
+        # Phase 11 开关（写进结果 JSON，便于事后核对配方）
+        "use_boundary_head": args.use_boundary_head,
+        "boundary_lambda": args.boundary_lambda,
+        "boundary_k": args.boundary_k,
+        "multiscale": args.multiscale,
+        "hard_neg_classes": args.hard_neg_classes,
+        "hard_neg_alpha": args.hard_neg_alpha,
         "n_params": n_params,
         "epochs_run": len(history["train_loss"]),
         "best_epoch": best_epoch,

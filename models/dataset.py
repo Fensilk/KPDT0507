@@ -715,6 +715,29 @@ def report_sampling_distribution(dataset: LongSequenceDataset, weights: torch.Te
 CLASS_NAMES_INV = {v: k for k, v in CLASS_NAMES.items()}
 
 
+def boundary_class_balance(dataset: LongSequenceDataset, k: int = 3):
+    """统计全部窗口的边界标签正/负帧数，用于 BCE 的 pos_weight。
+
+    按视频缓存全片边界标签，只做小数组运算、不触碰 features（比逐窗口 __getitem__ 快得多）。
+    Returns: (n_pos, n_neg)
+    """
+    cache = {}
+    pos = neg = 0
+    for s, off in dataset.window_index:
+        s = int(s)
+        if s not in cache:
+            n_full = dataset._video_nframes.get(s)
+            if n_full is None:
+                continue
+            cache[s] = build_boundary_labels(
+                ternary_from_labels16(dataset.labels_16_all[s:s + n_full]), k
+            )
+        b = cache[s][off: off + dataset.window_size]
+        pos += int(b.sum())
+        neg += int(len(b) - b.sum())
+    return pos, neg
+
+
 def create_longseq_dataloaders(
     npz_path: str,
     splits_dir: str,
