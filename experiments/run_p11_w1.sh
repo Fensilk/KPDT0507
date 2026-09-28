@@ -37,7 +37,7 @@
 #   1b1   Exp-1b 难例池 {lie_down}
 #   1b2   Exp-1b 难例池 {lie_down, other}
 #   2a    Exp-2a 多尺度（深度可分离卷积 k=8/16）
-#   （Exp-4 运动特征需先给 train_p9e1.py 加 pose 通路，尚未实现，勿用）
+#   4     Exp-4 运动特征（姿态 12d 含加速度 + concat，忠实复现 Phase 8 E2c）
 set -u
 cd /root/autodl-tmp || exit 1
 export PYTHONIOENCODING=utf-8 HF_HUB_OFFLINE=1
@@ -53,6 +53,8 @@ case "$ARM" in
   1b1)   EXTRA="--hard_neg_classes lie_down --hard_neg_alpha 2.0";            DESC="Exp-1b 难例 {lie_down}";;
   1b2)   EXTRA="--hard_neg_classes lie_down,other --hard_neg_alpha 2.0";      DESC="Exp-1b 难例 {lie_down,other}";;
   2a)    EXTRA="--multiscale";                                 DESC="Exp-2a 多尺度 k=8/16";;
+  4)     EXTRA="--pose_npz data/omnifall_pose_semantic_accel.npz"
+                                                               DESC="Exp-4 姿态12d+concat";;
   *) echo "[ERROR] 未知 arm: $ARM"; exit 2;;
 esac
 
