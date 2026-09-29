@@ -402,6 +402,13 @@ def main():
     ap.add_argument("--hard_neg_classes", type=str, default=None,
                     help="Exp-1b：逗号分隔 16 类名，如 'lie_down' 或 'lie_down,other'")
     ap.add_argument("--hard_neg_alpha", type=float, default=2.0)
+    ap.add_argument("--lr_schedule", type=str, default="constant",
+                    choices=["constant", "cosine"],
+                    help="学习率调度。constant=恒定（E1 原配方，默认，行为不变）；"
+                         "cosine=余弦退火到 ≈0。选 cosine 的理由见进度文档："
+                         "E1 原配方全程恒定 1e-4，train loss 在约 1 个 epoch 即停止下降，"
+                         "之后 val 在一条带里震荡 3600 步——这是'从未退火→模型持续大幅更新'"
+                         "的典型征状（Phase 10 §A.6 已在 X3D-S 上受控验证过该机制）。")
     ap.add_argument("--pose_npz", type=str, default=None,
                     help="Exp-4：外部运动特征 NPZ（如 data/omnifall_pose_semantic_accel.npz "
                          "的 12d）。concat 到时序特征尾部，input_dim 自动 +D_pose。")
@@ -510,6 +517,21 @@ def main():
 
         model.train()
         start_ep = min(max(args.init_epoch, 0), args.epochs)
+
+        # Phase 11 诊断：余弦退火（默认 constant → 不建 scheduler，行为与原配方完全一致）。
+        # ⚠ 必须放在 start_ep 之后——上面那行才定义它（曾把这段插在 optimizer 之后，
+        #   导致 UnboundLocalError: start_ep referenced before assignment）。
+        sched = None
+        if args.lr_schedule == "cosine":
+            import math as _math
+            _total_steps = (len(ds) // args.batch) * max(args.epochs - start_ep, 1)
+            sched = torch.optim.lr_scheduler.LambdaLR(
+                optimizer,
+                lr_lambda=lambda st: 0.5 * (1.0 + _math.cos(
+                    _math.pi * min(st, _total_steps) / max(_total_steps, 1))),
+            )
+            emit(f"  LR 调度: cosine 退火，总步数 {_total_steps}（{args.lr:g} → ~0）")
+
         for ep in range(start_ep, args.epochs):
             loader = DataLoader(
                 ds, batch_size=args.batch,
@@ -563,6 +585,8 @@ def main():
                 optimizer.step()
 
                 global_step += 1
+                if sched is not None:
+                    sched.step()
                 b = loss.item() * y.numel()
                 log_loss += b
                 log_cnt += y.numel()

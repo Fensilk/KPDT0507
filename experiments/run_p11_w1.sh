@@ -31,6 +31,7 @@
 #
 # arm 一览（对应规划 §3 的 W1 表）：
 #   a0    配方锚点 A0（无改动）                    —— W1 全部判据的对照基准
+#   a0cos 诊断：A0 + 余弦退火                    —— 查"val 游走"是否由恒定 lr 引起
 #   1a    Exp-1a boundary head, λ=0.3（序贯首档）
 #   1a01  Exp-1a λ=0.1（仅当 1a 完全无反应时）
 #   1a10  Exp-1a λ=1.0（仅当 1a 有效但偏弱时）
@@ -38,6 +39,8 @@
 #   1b2   Exp-1b 难例池 {lie_down, other}
 #   2a    Exp-2a 多尺度（深度可分离卷积 k=8/16）
 #   4     Exp-4 运动特征（姿态 12d 含加速度 + concat，忠实复现 Phase 8 E2c）
+#
+# ⚠ a0cos 不是 W1 竞争臂，是**配方诊断**：判据不是 §7.2，而是"val 带宽度是否显著收窄"。
 set -u
 cd /root/autodl-tmp || exit 1
 export PYTHONIOENCODING=utf-8 HF_HUB_OFFLINE=1
@@ -47,6 +50,7 @@ shift
 
 case "$ARM" in
   a0)    EXTRA="";                                             DESC="A0 配方锚点（无改动）";;
+  a0cos) EXTRA="--lr_schedule cosine";                         DESC="诊断：A0 + 余弦退火";;
   1a)    EXTRA="--use_boundary_head --boundary_lambda 0.3";    DESC="Exp-1a boundary λ=0.3";;
   1a01)  EXTRA="--use_boundary_head --boundary_lambda 0.1";    DESC="Exp-1a boundary λ=0.1";;
   1a10)  EXTRA="--use_boundary_head --boundary_lambda 1.0";    DESC="Exp-1a boundary λ=1.0";;
