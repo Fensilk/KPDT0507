@@ -117,6 +117,11 @@ def main():
         st = int(vsi[idx[rel]])
         gt80 = ternary(labels16[st:st + 80])
         votes = np.zeros((80, 3), dtype=int)
+        # Phase 11：额外累计**逐帧概率**（各窗口 softmax 的均值）与覆盖计数。
+        # 用途：prec-rec 前沿曲线比较 —— 需要连续分数才能扫阈值；
+        # argmax 标签只能给单点，而单点位置在前沿上是随机的（实测 r≈-0.97）。
+        prob_sum = np.zeros((80, 3), dtype=np.float64)
+        prob_cnt = np.zeros(80, dtype=np.float64)
         # 把同一视频的多个窗口**合并成一次批量前向**（原实现是每窗口一次 batch=1，
         # GPU 只用到 ~4GB/24GB，严重欠载）。B=窗口数，默认全并；显存紧张时用
         # --win_batch 切块。
@@ -142,14 +147,20 @@ def main():
             # Phase 11 Exp-1a：开了 boundary head 时 forward 返回 (logits, boundary_logits)
             if isinstance(logits, (tuple, list)):
                 logits = logits[0]
+            probs = torch.softmax(logits.float(), dim=-1).cpu().numpy()   # (B,T,3)
             preds = logits.argmax(-1).cpu().numpy()                       # (B,T)
             for i, ws in enumerate(chunk):
                 p = preds[i]
                 y = gt80[ws:ws + args.window]
                 iy.append(y); ip.append(p)
+                prob_sum[ws:ws + args.window] += probs[i]
+                prob_cnt[ws:ws + args.window] += 1
                 for t in range(args.window):
                     votes[ws + t, p[t]] += 1
-        pv[rel] = {"ternary_gt": gt80, "bridge_pred": votes.argmax(1), "labels_16": labels16[st:st + 80]}
+        pv[rel] = {"ternary_gt": gt80, "bridge_pred": votes.argmax(1),
+                   "labels_16": labels16[st:st + 80],
+                   # 逐帧概率（多窗口均值）—— prec-rec 曲线用
+                   "probs": (prob_sum / np.maximum(prob_cnt[:, None], 1)).astype(np.float32)}
         if (k + 1) % 200 == 0:
             print(f"  [{k+1}/{len(paths)}] videos done, skip {n_skip}", flush=True)
 

@@ -30,6 +30,8 @@ experiments/run_p11_w1.sh
 experiments/run_p11_chain_0929.sh
 analysis/verify_boundary_metrics.py
 experiments/judge_w1_arm.py
+analysis/prec_rec_curves.py
+experiments/run_p11_probs.sh
 "
 
 if [ "${1:-}" = "--sync" ]; then
