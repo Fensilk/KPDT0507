@@ -37,12 +37,17 @@ experiments/run_p11_probs.sh
 if [ "${1:-}" = "--sync" ]; then
   echo "== 同步 =="
   scp -q models/phase6_model.py models/dataset.py models/phase9_e1_model.py "autodl:$REMOTE/models/" || exit 1
+  ssh autodl "mkdir -p $REMOTE/analysis" || exit 1
   scp -q experiments/train_p9e1.py experiments/eval_p9e1_dual.py \
          experiments/run_p11_w1.sh experiments/run_p11_chain_0929.sh \
+         experiments/run_p11_probs.sh \
          experiments/judge_w1_arm.py "autodl:$REMOTE/experiments/" || exit 1
-  scp -q analysis/verify_boundary_metrics.py "autodl:$REMOTE/analysis/" || exit 1
-  # .sh 必须去 CR，否则远端 bash 会因为 \r 报错
-  ssh autodl "cd $REMOTE && for f in experiments/run_p11_w1.sh experiments/run_p11_chain_0929.sh experiments/p11_preflight.sh; do [ -f \$f ] && sed -i 's/\r\$//' \$f; done; echo synced"
+  scp -q analysis/verify_boundary_metrics.py analysis/prec_rec_curves.py \
+         "autodl:$REMOTE/analysis/" || exit 1
+  # ⚠ .sh 必须去 CR，否则远端 bash 会因行尾的 \r 报错。
+  #   同步块与上面的检查清单**必须保持一致**——只加检查不加同步，
+  #   会让预检永远报"远端缺失"（本次就发生了一次）。
+  ssh autodl "cd $REMOTE && for f in experiments/run_p11_w1.sh experiments/run_p11_chain_0929.sh experiments/run_p11_probs.sh experiments/p11_preflight.sh; do [ -f \$f ] && sed -i 's/\r\$//' \$f; done; echo synced"
 fi
 
 echo "== 预检：逐文件哈希（忽略行尾符）=="
