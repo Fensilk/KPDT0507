@@ -95,7 +95,8 @@ def main():
     ap.add_argument("specs", nargs="+", help="name=path 或 path")
     ap.add_argument("--axes", default="fall,fallen",
                     help="逗号分隔：fall,fallen,normal（默认前两个）")
-    ap.add_argument("--out", default=None, help="曲线图输出前缀（默认 logs/phase11/prec_rec）")
+    ap.add_argument("--out", default=os.path.join(BASE, "logs", "phase11", "prec_rec_reeval", "curves"),
+                    help="曲线图输出前缀（默认 logs/phase11/prec_rec_reeval/curves）")
     ap.add_argument("--json", default=None, help="把数值写成 JSON")
     args = ap.parse_args()
 
@@ -134,22 +135,31 @@ def main():
             for i in range(len(names)):
                 for j in range(i + 1, len(names)):
                     a, b = curs[names[i]], curs[names[j]]
-                    lo = max(a["recall"][0], b["recall"][0])
-                    hi = min(a["recall"][-1], b["recall"][-1])
+                    # ⚠ 只用**共同支撑且操作相关**的区间：曲线在 R≈0 只由 1 个最自信的
+                    #   预测点支撑、在 R≈1 由全部预测支撑，两端的比较没有意义
+                    #   （np.interp 在区间外是**端点钳制**，会拿钳制值去比，结论失真）。
+                    lo = max(a["recall"][0], b["recall"][0], 0.50)
+                    hi = min(a["recall"][-1], b["recall"][-1], 0.95)
                     if hi <= lo:
-                        print(f"    {names[i]} vs {names[j]}: 召回区间不重叠，无法比"); continue
+                        print(f"    {names[i]} vs {names[j]}: 共同支撑区间过窄，无法比"); continue
                     grid = np.linspace(lo, hi, 40)
                     pa = np.interp(grid, a["recall"], a["precision"])
                     pb = np.interp(grid, b["recall"], b["precision"])
-                    d = pa - pb
+                    d = pa - pb                       # >0 表示 a 更好
                     if (d >= -1e-9).all():
                         print(f"    {names[i]} 支配 {names[j]}（同召回下精度处处不低，"
                               f"均值高 {d.mean():+.4f}）")
                     elif (d <= 1e-9).all():
                         print(f"    {names[j]} 支配 {names[i]}（均值高 {-d.mean():+.4f}）")
                     else:
-                        print(f"    交叉：{names[i]} 在低召回端更好，{names[j]} 在高召回端更好"
-                              f"（均值差 {d.mean():+.4f}）")
+                        # ⚠ 交叉方向**必须由数据判定**，不能写死。
+                        #   本块曾硬编码"a 在低召回端更好、b 在高召回端更好"，
+                        #   结果与 mean(d) 的符号自相矛盾（提示说 a 好，均值说 b 好）。
+                        lo_who = names[i] if d[0] > 0 else names[j]
+                        hi_who = names[i] if d[-1] > 0 else names[j]
+                        print(f"    交叉：低召回端（R≈{grid[0]:.2f}）{lo_who} 更好；"
+                              f"高召回端（R≈{grid[-1]:.2f}）{hi_who} 更好；"
+                              f"全区间均值 {d.mean():+.4f}（正 = {names[i]} 更好）")
             print("\n  ⚠ 若两条曲线交叉或均值差很小，则两臂**不可分辨**——"
                   "不要用某个单一落点判胜负。")
         print()

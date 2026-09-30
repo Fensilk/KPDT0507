@@ -1,0 +1,58 @@
+== EVAL best (full 1200, dump_pv) start @ Wed Sep 30 04:26:27 CST 2026 ==
+/root/miniconda3/lib/python3.10/site-packages/torchvision/io/image.py:13: UserWarning: Failed to load image Python extension: '/root/miniconda3/lib/python3.10/site-packages/torchvision/image.so: undefined symbol: _ZN3c1017RegisterOperatorsD1Ev'If you don't plan on using image functionality from `torchvision.io`, you can ignore this warning. Otherwise, there might be something wrong with your environment. Did you have `libjpeg` or `libpng` installed before building `torchvision` from source?
+  warn(
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights:  67%|██████▋   | 484/727 [00:00<00:00, 4835.85it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 4375.49it/s]
+/root/miniconda3/lib/python3.10/site-packages/torch/nn/modules/transformer.py:379: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 best_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 746 个 = 冻结主干（预期）
+  [200/1200] videos done, skip 0
+  [400/1200] videos done, skip 0
+  [600/1200] videos done, skip 0
+  [800/1200] videos done, skip 0
+  [1000/1200] videos done, skip 0
+  [1200/1200] videos done, skip 0
+Saved: logs/phase11/w1_a0cos/eval_best_model.json
+Dumped pv: logs/phase11/w1_a0cos/pv_best.pt (1200 videos)
+[instance] acc=0.8908 fall_rec=0.6982 fallen_prec=0.4996 fallen_rec=0.8729 avg=0.7485
+[merged] raw ev_f1=0.7400 | canonical=0.6996 | best(K2=3,W=32)=0.7425 fallen_prec=0.4923
+== EVAL best done rc=0 @ Wed Sep 30 05:17:46 CST 2026 ==
+== EVAL epoch_1_model (subset 300) start @ Wed Sep 30 05:17:46 CST 2026 ==
+/root/miniconda3/lib/python3.10/site-packages/torchvision/io/image.py:13: UserWarning: Failed to load image Python extension: '/root/miniconda3/lib/python3.10/site-packages/torchvision/image.so: undefined symbol: _ZN3c1017RegisterOperatorsD1Ev'If you don't plan on using image functionality from `torchvision.io`, you can ignore this warning. Otherwise, there might be something wrong with your environment. Did you have `libjpeg` or `libpng` installed before building `torchvision` from source?
+  warn(
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights:  66%|██████▌   | 478/727 [00:00<00:00, 4712.87it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 4269.36it/s]
+/root/miniconda3/lib/python3.10/site-packages/torch/nn/modules/transformer.py:379: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 epoch_1_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 746 个 = 冻结主干（预期）
+[subset] 从全集随机抽取 300 个视频评测（seed=42，确定性可复现）
+  [200/300] videos done, skip 0
+Saved: logs/phase11/w1_a0cos/eval_epoch_1_model.subset.json
+[instance] acc=0.9193 fall_rec=0.7003 fallen_prec=0.8453 fallen_rec=0.5306 avg=0.7526
+[merged] raw ev_f1=0.8140 | canonical=0.8112 | best(K2=3,W=32)=0.8145 fallen_prec=0.8415
+== EVAL epoch_1_model done rc=0 @ Wed Sep 30 05:30:40 CST 2026 ==
+== EVAL epoch_2_model (subset 300) start @ Wed Sep 30 05:30:40 CST 2026 ==
+/root/miniconda3/lib/python3.10/site-packages/torchvision/io/image.py:13: UserWarning: Failed to load image Python extension: '/root/miniconda3/lib/python3.10/site-packages/torchvision/image.so: undefined symbol: _ZN3c1017RegisterOperatorsD1Ev'If you don't plan on using image functionality from `torchvision.io`, you can ignore this warning. Otherwise, there might be something wrong with your environment. Did you have `libjpeg` or `libpng` installed before building `torchvision` from source?
+  warn(
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights:  60%|██████    | 439/727 [00:00<00:00, 4386.90it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 3794.99it/s]
+/root/miniconda3/lib/python3.10/site-packages/torch/nn/modules/transformer.py:379: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 epoch_2_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 746 个 = 冻结主干（预期）
+[subset] 从全集随机抽取 300 个视频评测（seed=42，确定性可复现）
+  [200/300] videos done, skip 0
+Saved: logs/phase11/w1_a0cos/eval_epoch_2_model.subset.json
+[instance] acc=0.9077 fall_rec=0.8623 fallen_prec=0.6494 fallen_rec=0.8025 avg=0.7862
+[merged] raw ev_f1=0.7944 | canonical=0.7945 | best(K2=3,W=32)=0.7945 fallen_prec=0.6359
+== EVAL epoch_2_model done rc=0 @ Wed Sep 30 05:43:34 CST 2026 ==
+== EVAL epoch_3_model (subset 300) start @ Wed Sep 30 05:43:34 CST 2026 ==
+/root/miniconda3/lib/python3.10/site-packages/torchvision/io/image.py:13: UserWarning: Failed to load image Python extension: '/root/miniconda3/lib/python3.10/site-packages/torchvision/image.so: undefined symbol: _ZN3c1017RegisterOperatorsD1Ev'If you don't plan on using image functionality from `torchvision.io`, you can ignore this warning. Otherwise, there might be something wrong with your environment. Did you have `libjpeg` or `libpng` installed before building `torchvision` from source?
+  warn(
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights:  69%|██████▉   | 503/727 [00:00<00:00, 4990.44it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 4505.65it/s]
+/root/miniconda3/lib/python3.10/site-packages/torch/nn/modules/transformer.py:379: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 epoch_3_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 746 个 = 冻结主干（预期）
+[subset] 从全集随机抽取 300 个视频评测（seed=42，确定性可复现）
+  [200/300] videos done, skip 0
+Saved: logs/phase11/w1_a0cos/eval_epoch_3_model.subset.json
+[instance] acc=0.9260 fall_rec=0.8195 fallen_prec=0.7301 fallen_rec=0.7414 avg=0.8086
+[merged] raw ev_f1=0.8239 | canonical=0.8239 | best(K2=10,W=64)=0.8304 fallen_prec=0.7344
+== EVAL epoch_3_model done rc=0 @ Wed Sep 30 05:56:27 CST 2026 ==
+ALL_EVAL_DONE @ Wed Sep 30 05:56:27 CST 2026
