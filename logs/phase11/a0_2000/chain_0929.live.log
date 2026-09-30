@@ -1,49 +1,0 @@
-===== 链启动 Tue Sep 29 07:29:03 CST 2026 =====
---- ① A0 epoch 子集评测开始 Tue Sep 29 07:29:03 CST 2026 ---
-== A0 epoch_1 subset-300 start Tue Sep 29 07:29:03 CST 2026 ==
-/root/miniconda3/lib/python3.10/site-packages/torchvision/io/image.py:13: UserWarning: Failed to load image Python extension: '/root/miniconda3/lib/python3.10/site-packages/torchvision/image.so: undefined symbol: _ZN3c1017RegisterOperatorsD1Ev'If you don't plan on using image functionality from `torchvision.io`, you can ignore this warning. Otherwise, there might be something wrong with your environment. Did you have `libjpeg` or `libpng` installed before building `torchvision` from source?
-  warn(
-Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights:  71%|███████   | 517/727 [00:00<00:00, 5160.08it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 6573.02it/s]
-/root/miniconda3/lib/python3.10/site-packages/torch/nn/modules/transformer.py:379: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
-  warnings.warn(
-[E1Model.from_checkpoint] 已从 epoch_1_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 746 个 = 冻结主干（预期）
-[subset] 从全集随机抽取 300 个视频评测（seed=42，确定性可复现）
-  [200/300] videos done, skip 0
-Saved: logs/phase11/a0_2000/eval_epoch_1_model.subset.json
-[instance] acc=0.9148 fall_rec=0.6981 fallen_prec=0.9301 fallen_rec=0.4468 avg=0.7256
-[merged] raw ev_f1=0.8074 | canonical=0.8074 | best(K2=3,W=32)=0.8074 fallen_prec=0.9246
-== A0 epoch_1 subset-300 done rc=0 Tue Sep 29 07:42:00 CST 2026 ==
-== A0 epoch_2 subset-300 start Tue Sep 29 07:42:00 CST 2026 ==
-/root/miniconda3/lib/python3.10/site-packages/torchvision/io/image.py:13: UserWarning: Failed to load image Python extension: '/root/miniconda3/lib/python3.10/site-packages/torchvision/image.so: undefined symbol: _ZN3c1017RegisterOperatorsD1Ev'If you don't plan on using image functionality from `torchvision.io`, you can ignore this warning. Otherwise, there might be something wrong with your environment. Did you have `libjpeg` or `libpng` installed before building `torchvision` from source?
-  warn(
-Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 7547.09it/s]
-/root/miniconda3/lib/python3.10/site-packages/torch/nn/modules/transformer.py:379: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
-  warnings.warn(
-[E1Model.from_checkpoint] 已从 epoch_2_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 746 个 = 冻结主干（预期）
-[subset] 从全集随机抽取 300 个视频评测（seed=42，确定性可复现）
-  [200/300] videos done, skip 0
-Saved: logs/phase11/a0_2000/eval_epoch_2_model.subset.json
-[instance] acc=0.9104 fall_rec=0.8832 fallen_prec=0.7248 fallen_rec=0.6665 avg=0.7721
-[merged] raw ev_f1=0.8084 | canonical=0.8084 | best(K2=7,W=32)=0.8095 fallen_prec=0.7191
-== A0 epoch_2 subset-300 done rc=0 Tue Sep 29 07:54:54 CST 2026 ==
-== A0 epoch_3 subset-300 start Tue Sep 29 07:54:54 CST 2026 ==
-/root/miniconda3/lib/python3.10/site-packages/torchvision/io/image.py:13: UserWarning: Failed to load image Python extension: '/root/miniconda3/lib/python3.10/site-packages/torchvision/image.so: undefined symbol: _ZN3c1017RegisterOperatorsD1Ev'If you don't plan on using image functionality from `torchvision.io`, you can ignore this warning. Otherwise, there might be something wrong with your environment. Did you have `libjpeg` or `libpng` installed before building `torchvision` from source?
-  warn(
-Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights:  69%|██████▉   | 503/727 [00:00<00:00, 5010.68it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 4416.11it/s]
-/root/miniconda3/lib/python3.10/site-packages/torch/nn/modules/transformer.py:379: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
-  warnings.warn(
-[E1Model.from_checkpoint] 已从 epoch_3_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 746 个 = 冻结主干（预期）
-[subset] 从全集随机抽取 300 个视频评测（seed=42，确定性可复现）
-  [200/300] videos done, skip 0
-Saved: logs/phase11/a0_2000/eval_epoch_3_model.subset.json
-[instance] acc=0.9173 fall_rec=0.7594 fallen_prec=0.7724 fallen_rec=0.5747 avg=0.7661
-[merged] raw ev_f1=0.7896 | canonical=0.7918 | best(K2=7,W=32)=0.7923 fallen_prec=0.7735
-== A0 epoch_3 subset-300 done rc=0 Tue Sep 29 08:07:49 CST 2026 ==
---- ① 完成 Tue Sep 29 08:07:49 CST 2026 ---
-A0_SUBSET_DONE Tue Sep 29 08:07:49 CST 2026
---- ② 启动 W1 臂 1a Tue Sep 29 08:07:49 CST 2026 ---
-launched arm=1a watch pid=909423 -> OUT=logs/phase11/w1_1a
-  Exp-1a boundary λ=0.3
-  run log:  logs/phase11/w1_1a/run.log
-  progress: logs/phase11/w1_1a/e1_train.log
-CHAIN_LAUNCHED_1a Tue Sep 29 08:07:49 CST 2026

@@ -153,7 +153,10 @@ def main():
             thr = f"否决 < {y - VETO_EVENT:.4f}" if y is not None else ""
         elif name == "边界 F1 (τ=3)":
             thr = f"强通过 ≥ {y + PASS_MARGIN:.4f}" if y is not None else ""
-        print(f"{name:<26}{fmt(x):>10}{fmt(y):>10}{fmt(d, '+.4f') if d is not None else '  n/a  ':>10}   {thr}")
+        # ⚠ 列序：表头是「A0 / 本臂」，而 x=本臂、y=A0 —— 必须印 y 再印 x。
+        #   曾经印反过：数值与 Δ 都对，但列名对调，读表的人会以为 A0 是另一个数。
+        #   这类"不致命但会骗人"的错必须修，不能因为判定正确就放过。
+        print(f"{name:<26}{fmt(y):>10}{fmt(x):>10}{fmt(d, '+.4f') if d is not None else '  n/a  ':>10}   {thr}")
 
     # ---- 判定 ----
     print("\n" + "-" * 78)
