@@ -46,20 +46,26 @@ def load_pv(spec):
     return name, d
 
 
-def curves_for_axis(pv, cls):
+def curves_for_axis(pv, cls, protocol="voted"):
     """扫阈值 → (recall[], precision[], f1[]) 曲线。
 
     分数 = 逐帧 softmax 概率中该类的值；真值正类 = 该帧三元标签等于 cls。
     逐帧计算，覆盖全部视频的全部 80 帧（去重口径，与 merged_raw 一致）。
     """
+    # 协议：
+    #   voted —— 多窗口在重叠处取均值后的 80 帧/视频（E1 侧 pv 的口径，跨阶段可比的默认）
+    #   flat  —— 所有窗口**原样拼接**（Phase 7/8 侧报告 test_results 用的口径）
+    #   ⚠ 复核某阶段的结论时**必须用该阶段自己的协议**，否则是跨口径比较。
+    key_s = "probs" if protocol == "voted" else "flat_probs"
+    key_g = "ternary_gt" if protocol == "voted" else "flat_gt"
     scores, gts = [], []
     for v in pv.values():
-        if "probs" not in v:
+        if key_s not in v:
             raise KeyError(
-                "pv 缺少 'probs'（逐帧概率）——需用新版 eval_p9e1_dual.py 重跑评测。"
-                "旧 pv 只存 argmax 标签，无法事后扫阈值。")
-        scores.append(np.asarray(v["probs"])[:, cls])
-        gts.append((np.asarray(v["ternary_gt"]) == cls).astype(np.int8))
+                f"pv 缺少 '{key_s}' —— voted 口径需新版 eval 重跑；"
+                f"flat 口径需 eval_p8_probs.py 的产物。旧 pv 只存 argmax 标签，无法事后扫阈值。")
+        scores.append(np.asarray(v[key_s])[:, cls])
+        gts.append((np.asarray(v[key_g]) == cls).astype(np.int8))
     s = np.concatenate(scores)
     g = np.concatenate(gts)
     n_pos = int(g.sum())
@@ -95,6 +101,9 @@ def main():
     ap.add_argument("specs", nargs="+", help="name=path 或 path")
     ap.add_argument("--axes", default="fall,fallen",
                     help="逗号分隔：fall,fallen,normal（默认前两个）")
+    ap.add_argument("--protocol", default="voted", choices=["voted", "flat"],
+                    help="voted=多窗口均值（默认，E1 侧口径）；flat=窗口拼接（Phase 7/8 侧口径）。"
+                         "复核某阶段结论时必须用该阶段自己的协议。")
     ap.add_argument("--out", default=os.path.join(BASE, "logs", "phase11", "prec_rec_reeval", "curves"),
                     help="曲线图输出前缀（默认 logs/phase11/prec_rec_reeval/curves）")
     ap.add_argument("--json", default=None, help="把数值写成 JSON")
@@ -112,7 +121,7 @@ def main():
         print("=" * 92)
         curs = {}
         for name, pv in arms:
-            c = curves_for_axis(pv, cls)
+            c = curves_for_axis(pv, cls, args.protocol)
             if c is None:
                 print(f"  {name}: 无正样本，跳过"); continue
             curs[name] = c
@@ -175,7 +184,7 @@ def main():
                 a = axs[0][k]
                 cls = cls_of[ax_name]
                 for name, pv in arms:
-                    c = curves_for_axis(pv, cls)
+                    c = curves_for_axis(pv, cls, args.protocol)
                     if c is None:
                         continue
                     a.plot(c["recall"], c["precision"], lw=2, label=name)
