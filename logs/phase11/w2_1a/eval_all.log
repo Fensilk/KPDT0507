@@ -1,0 +1,50 @@
+== EVAL best (full 1200, dump_pv) start @ Mon Oct  5 15:32:25 CST 2026 ==
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights:  11%|█▏        | 82/727 [00:00<00:00, 818.93it/s]Loading weights:  23%|██▎       | 164/727 [00:00<00:00, 622.10it/s]Loading weights:  39%|███▊      | 280/727 [00:00<00:00, 831.47it/s]Loading weights:  51%|█████     | 369/727 [00:00<00:00, 830.10it/s]Loading weights:  63%|██████▎   | 456/727 [00:00<00:00, 758.10it/s]Loading weights:  75%|███████▍  | 543/727 [00:00<00:00, 765.56it/s]Loading weights:  86%|████████▌ | 623/727 [00:00<00:00, 770.96it/s]Loading weights:  97%|█████████▋| 704/727 [00:00<00:00, 760.08it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 788.68it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 best_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 748 个 = 冻结主干（预期）
+  [200/1200] videos done, skip 0
+  [400/1200] videos done, skip 0
+  [600/1200] videos done, skip 0
+  [800/1200] videos done, skip 0
+  [1000/1200] videos done, skip 0
+  [1200/1200] videos done, skip 0
+Saved: logs/phase11/w2_1a/eval_best_model.json
+Dumped pv: logs/phase11/w2_1a/pv_best.pt (1200 videos)
+[instance] acc=0.9298 fall_rec=0.8473 fallen_prec=0.7301 fallen_rec=0.7150 avg=0.8111
+[merged] raw ev_f1=0.8118 | canonical=0.8094 | best(K2=3,W=64)=0.8120 fallen_prec=0.7239
+== EVAL best done rc=0 @ Mon Oct  5 15:56:23 CST 2026 ==
+== EVAL epoch_1_model (subset 300) start @ Mon Oct  5 15:56:23 CST 2026 ==
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 9181.17it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 epoch_1_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 748 个 = 冻结主干（预期）
+[subset] 从全集随机抽取 300 个视频评测（seed=42，确定性可复现）
+  [200/300] videos done, skip 0
+Saved: logs/phase11/w2_1a/eval_epoch_1_model.subset.json
+[instance] acc=0.9408 fall_rec=0.8166 fallen_prec=0.8169 fallen_rec=0.7774 avg=0.8426
+[merged] raw ev_f1=0.8486 | canonical=0.8377 | best(K2=3,W=32)=0.8493 fallen_prec=0.8104
+== EVAL epoch_1_model done rc=0 @ Mon Oct  5 16:02:21 CST 2026 ==
+== EVAL epoch_2_model (subset 300) start @ Mon Oct  5 16:02:21 CST 2026 ==
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights:  90%|████████▉ | 654/727 [00:00<00:00, 6512.97it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 6503.75it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 epoch_2_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 748 个 = 冻结主干（预期）
+[subset] 从全集随机抽取 300 个视频评测（seed=42，确定性可复现）
+  [200/300] videos done, skip 0
+Saved: logs/phase11/w2_1a/eval_epoch_2_model.subset.json
+[instance] acc=0.9257 fall_rec=0.8500 fallen_prec=0.6614 fallen_rec=0.8029 avg=0.8255
+[merged] raw ev_f1=0.8061 | canonical=0.8062 | best(K2=5,W=32)=0.8063 fallen_prec=0.6323
+== EVAL epoch_2_model done rc=0 @ Mon Oct  5 16:08:25 CST 2026 ==
+== EVAL epoch_3_model (subset 300) start @ Mon Oct  5 16:08:25 CST 2026 ==
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 7818.87it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 epoch_3_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 748 个 = 冻结主干（预期）
+[subset] 从全集随机抽取 300 个视频评测（seed=42，确定性可复现）
+  [200/300] videos done, skip 0
+Saved: logs/phase11/w2_1a/eval_epoch_3_model.subset.json
+[instance] acc=0.9243 fall_rec=0.6559 fallen_prec=0.8743 fallen_rec=0.5560 avg=0.7700
+[merged] raw ev_f1=0.7913 | canonical=0.7908 | best(K2=3,W=32)=0.7908 fallen_prec=0.8721
+== EVAL epoch_3_model done rc=0 @ Mon Oct  5 16:14:28 CST 2026 ==
+ALL_EVAL_DONE @ Mon Oct  5 16:14:28 CST 2026

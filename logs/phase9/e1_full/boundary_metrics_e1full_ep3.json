@@ -1,0 +1,109 @@
+{
+  "aggregate": {
+    "tau1": {
+      "n_videos": 189,
+      "n_gt": 249,
+      "n_pred": 325,
+      "micro_tp": 18,
+      "micro_fp": 307,
+      "micro_fn": 231,
+      "micro_precision": 0.055384615384615386,
+      "micro_recall": 0.07228915662650602,
+      "micro_f1": 0.0627177700348432,
+      "macro_precision": 0.0658289241622575,
+      "macro_recall": 0.07583774250440917,
+      "macro_f1": 0.0661039724531788
+    },
+    "tau3": {
+      "n_videos": 189,
+      "n_gt": 249,
+      "n_pred": 325,
+      "micro_tp": 35,
+      "micro_fp": 290,
+      "micro_fn": 214,
+      "micro_precision": 0.1076923076923077,
+      "micro_recall": 0.14056224899598393,
+      "micro_f1": 0.12195121951219513,
+      "macro_precision": 0.1327307466196355,
+      "macro_recall": 0.1525573192239859,
+      "macro_f1": 0.13287142017300743
+    },
+    "tau5": {
+      "n_videos": 189,
+      "n_gt": 249,
+      "n_pred": 325,
+      "micro_tp": 54,
+      "micro_fp": 271,
+      "micro_fn": 195,
+      "micro_precision": 0.16615384615384615,
+      "micro_recall": 0.21686746987951808,
+      "micro_f1": 0.18815331010452963,
+      "macro_precision": 0.20786302175191065,
+      "macro_recall": 0.23985890652557318,
+      "macro_f1": 0.20898631057361217
+    }
+  },
+  "shift_control": [
+    {
+      "d": 0,
+      "micro_f1": 1.0,
+      "mean_offset": 0.0
+    },
+    {
+      "d": 1,
+      "micro_f1": 0.995967741935484,
+      "mean_offset": 1.0
+    },
+    {
+      "d": 2,
+      "micro_f1": 0.995967741935484,
+      "mean_offset": 2.0
+    },
+    {
+      "d": 3,
+      "micro_f1": 0.995967741935484,
+      "mean_offset": 3.0
+    },
+    {
+      "d": 4,
+      "micro_f1": 0.016129032258064516,
+      "mean_offset": -0.25
+    },
+    {
+      "d": 6,
+      "micro_f1": 0.024193548387096774,
+      "mean_offset": 0.3333333333333333
+    },
+    {
+      "d": 10,
+      "micro_f1": 0.03252032520325203,
+      "mean_offset": -0.375
+    }
+  ],
+  "jitter_control": [
+    {
+      "k": 0,
+      "micro_precision": 1.0
+    },
+    {
+      "k": 1,
+      "micro_precision": 0.40096618357487923
+    },
+    {
+      "k": 2,
+      "micro_precision": 0.2517694641051567
+    },
+    {
+      "k": 5,
+      "micro_precision": 0.12193927522037218
+    },
+    {
+      "k": 10,
+      "micro_precision": 0.06601272534464475
+    },
+    {
+      "k": 20,
+      "micro_precision": 0.03663380903339709
+    }
+  ]
+}

@@ -1,0 +1,205 @@
+===== 2026-10-04 23:12:40 =====
+  boundary loss: λ=0.3 | 正/负帧 21,748/1,207,052 (正类率 1.77%) | pos_weight=55.50
+  aux_static loss: 关（λ=0，训练行为与基线一致）
+-- 训练进程: 2859 /root/miniconda3/bin/python -u experiments/train_p9e1.py --data_mp4 DATASET
+-- run.log 尾:   aux_static loss: 关（λ=0，训练行为与基线一致）
+-- 磁盘可用: 23G
+===== 2026-10-04 23:42:40 =====
+step 850 | loss 1.2649 | fall/fallen/normal acc 0.430/0.519/0.948 | lr 1.00e-04
+step 900 | loss 1.5573 | fall/fallen/normal acc 0.388/0.648/0.945 | lr 1.00e-04
+-- 训练进程: 2859 /root/miniconda3/bin/python -u experiments/train_p9e1.py --data_mp4 DATASET
+-- run.log 尾: step 900 | loss 1.5573 | fall/fallen/normal acc 0.388/0.648/0.945 | lr 1.00e-04
+-- 磁盘可用: 23G
+===== 2026-10-05 00:12:40 =====
+step 1750 | loss 1.0282 | fall/fallen/normal acc 0.646/0.475/0.980 | lr 1.00e-04
+step 1800 | loss 1.4182 | fall/fallen/normal acc 0.405/0.428/0.957 | lr 1.00e-04
+-- 训练进程: 2859 /root/miniconda3/bin/python -u experiments/train_p9e1.py --data_mp4 DATASET
+-- run.log 尾: step 1800 | loss 1.4182 | fall/fallen/normal acc 0.405/0.428/0.957 | lr 1.00e-04
+-- 磁盘可用: 23G
+===== 2026-10-05 00:42:40 =====
+step 2600 | loss 1.0843 | fall/fallen/normal acc 0.572/0.463/0.969 | lr 1.00e-04
+step 2650 | loss 1.0896 | fall/fallen/normal acc 0.637/0.465/0.939 | lr 1.00e-04
+-- 训练进程: 2859 /root/miniconda3/bin/python -u experiments/train_p9e1.py --data_mp4 DATASET
+-- run.log 尾: step 2650 | loss 1.0896 | fall/fallen/normal acc 0.637/0.465/0.939 | lr 1.00e-04
+-- 磁盘可用: 23G
+===== 2026-10-05 01:12:40 =====
+step 3500 | loss 1.5199 | fall/fallen/normal acc 0.668/0.608/0.972 | lr 1.00e-04
+step 3550 | loss 0.5748 | fall/fallen/normal acc 0.620/0.756/0.955 | lr 1.00e-04
+-- 训练进程: 2859 /root/miniconda3/bin/python -u experiments/train_p9e1.py --data_mp4 DATASET
+-- run.log 尾: step 3550 | loss 0.5748 | fall/fallen/normal acc 0.620/0.756/0.955 | lr 1.00e-04
+-- 磁盘可用: 23G
+===== 2026-10-05 01:42:40 =====
+step 4400 | loss 0.5321 | fall/fallen/normal acc 0.760/0.865/0.967 | lr 1.00e-04
+step 4450 | loss 0.6838 | fall/fallen/normal acc 0.849/0.510/0.947 | lr 1.00e-04
+-- 训练进程: 2859 /root/miniconda3/bin/python -u experiments/train_p9e1.py --data_mp4 DATASET
+-- run.log 尾: step 4450 | loss 0.6838 | fall/fallen/normal acc 0.849/0.510/0.947 | lr 1.00e-04
+-- 磁盘可用: 23G
+===== 2026-10-05 02:12:40 =====
+step 5300 | loss 0.6427 | fall/fallen/normal acc 0.749/0.893/0.960 | lr 1.00e-04
+step 5350 | loss 0.8907 | fall/fallen/normal acc 0.469/0.480/0.945 | lr 1.00e-04
+-- 训练进程: 2859 /root/miniconda3/bin/python -u experiments/train_p9e1.py --data_mp4 DATASET
+-- run.log 尾: step 5350 | loss 0.8907 | fall/fallen/normal acc 0.469/0.480/0.945 | lr 1.00e-04
+-- 磁盘可用: 23G
+===== 2026-10-05 02:42:40 =====
+step 6150 | loss 0.3679 | fall/fallen/normal acc 0.870/0.460/0.973 | lr 1.00e-04
+step 6200 | loss 0.6883 | fall/fallen/normal acc 0.786/0.684/0.980 | lr 1.00e-04
+-- 训练进程: 2859 /root/miniconda3/bin/python -u experiments/train_p9e1.py --data_mp4 DATASET
+-- run.log 尾: step 6200 | loss 0.6883 | fall/fallen/normal acc 0.786/0.684/0.980 | lr 1.00e-04
+-- 磁盘可用: 23G
+===== 2026-10-05 03:12:40 =====
+step 7050 | loss 0.5538 | fall/fallen/normal acc 0.681/0.658/0.955 | lr 1.00e-04
+step 7100 | loss 0.3263 | fall/fallen/normal acc 0.753/0.815/0.965 | lr 1.00e-04
+-- 训练进程: 2859 /root/miniconda3/bin/python -u experiments/train_p9e1.py --data_mp4 DATASET
+-- run.log 尾: step 7100 | loss 0.3263 | fall/fallen/normal acc 0.753/0.815/0.965 | lr 1.00e-04
+-- 磁盘可用: 23G
+===== 2026-10-05 03:42:40 =====
+step 7950 | loss 0.2787 | fall/fallen/normal acc 0.811/0.853/0.972 | lr 1.00e-04
+step 8000 | loss 0.7271 | fall/fallen/normal acc 0.795/0.592/0.941 | lr 1.00e-04
+-- 训练进程: 2859 /root/miniconda3/bin/python -u experiments/train_p9e1.py --data_mp4 DATASET
+-- run.log 尾: step 8000 | loss 0.7271 | fall/fallen/normal acc 0.795/0.592/0.941 | lr 1.00e-04
+-- 磁盘可用: 23G
+===== 2026-10-05 04:12:40 =====
+step 8850 | loss 0.6653 | fall/fallen/normal acc 0.665/0.517/0.932 | lr 1.00e-04
+step 8900 | loss 0.6361 | fall/fallen/normal acc 0.670/0.849/0.939 | lr 1.00e-04
+-- 训练进程: 2859 /root/miniconda3/bin/python -u experiments/train_p9e1.py --data_mp4 DATASET
+-- run.log 尾: step 8900 | loss 0.6361 | fall/fallen/normal acc 0.670/0.849/0.939 | lr 1.00e-04
+-- 磁盘可用: 23G
+===== 2026-10-05 04:42:40 =====
+step 9700 | loss 0.5250 | fall/fallen/normal acc 0.757/0.758/0.918 | lr 1.00e-04
+step 9750 | loss 0.5752 | fall/fallen/normal acc 0.652/0.640/0.947 | lr 1.00e-04
+-- 训练进程: 2859 /root/miniconda3/bin/python -u experiments/train_p9e1.py --data_mp4 DATASET
+-- run.log 尾: step 9750 | loss 0.5752 | fall/fallen/normal acc 0.652/0.640/0.947 | lr 1.00e-04
+-- 磁盘可用: 22G
+===== 2026-10-05 05:12:40 =====
+step 10600 | loss 0.5002 | fall/fallen/normal acc 0.860/0.754/0.971 | lr 1.00e-04
+step 10650 | loss 0.6790 | fall/fallen/normal acc 0.739/0.732/0.942 | lr 1.00e-04
+-- 训练进程: 2859 /root/miniconda3/bin/python -u experiments/train_p9e1.py --data_mp4 DATASET
+-- run.log 尾: step 10650 | loss 0.6790 | fall/fallen/normal acc 0.739/0.732/0.942 | lr 1.00e-04
+-- 磁盘可用: 22G
+===== 2026-10-05 05:42:40 =====
+step 11500 | loss 1.0653 | fall/fallen/normal acc 0.839/0.879/0.967 | lr 1.00e-04
+step 11550 | loss 0.6137 | fall/fallen/normal acc 0.772/0.707/0.954 | lr 1.00e-04
+-- 训练进程: 2859 /root/miniconda3/bin/python -u experiments/train_p9e1.py --data_mp4 DATASET
+-- run.log 尾: step 11550 | loss 0.6137 | fall/fallen/normal acc 0.772/0.707/0.954 | lr 1.00e-04
+-- 磁盘可用: 22G
+===== 2026-10-05 06:12:40 =====
+step 12400 | loss 0.5074 | fall/fallen/normal acc 0.741/0.851/0.954 | lr 1.00e-04
+step 12450 | loss 0.6921 | fall/fallen/normal acc 0.714/0.693/0.957 | lr 1.00e-04
+-- 训练进程: 2859 /root/miniconda3/bin/python -u experiments/train_p9e1.py --data_mp4 DATASET
+-- run.log 尾: step 12450 | loss 0.6921 | fall/fallen/normal acc 0.714/0.693/0.957 | lr 1.00e-04
+-- 磁盘可用: 22G
+===== 2026-10-05 06:42:40 =====
+step 13250 | loss 0.7053 | fall/fallen/normal acc 0.695/0.924/0.978 | lr 1.00e-04
+step 13300 | loss 0.2758 | fall/fallen/normal acc 0.798/0.762/0.973 | lr 1.00e-04
+-- 训练进程: 2859 /root/miniconda3/bin/python -u experiments/train_p9e1.py --data_mp4 DATASET
+-- run.log 尾: step 13300 | loss 0.2758 | fall/fallen/normal acc 0.798/0.762/0.973 | lr 1.00e-04
+-- 磁盘可用: 22G
+===== 2026-10-05 07:12:40 =====
+step 14150 | loss 0.5148 | fall/fallen/normal acc 0.767/0.773/0.983 | lr 1.00e-04
+step 14200 | loss 0.8920 | fall/fallen/normal acc 0.669/0.769/0.940 | lr 1.00e-04
+-- 训练进程: 2859 /root/miniconda3/bin/python -u experiments/train_p9e1.py --data_mp4 DATASET
+-- run.log 尾: step 14200 | loss 0.8920 | fall/fallen/normal acc 0.669/0.769/0.940 | lr 1.00e-04
+-- 磁盘可用: 22G
+===== 2026-10-05 07:42:40 =====
+step 15050 | loss 1.1237 | fall/fallen/normal acc 0.713/0.747/0.921 | lr 1.00e-04
+step 15100 | loss 0.8065 | fall/fallen/normal acc 0.701/0.637/0.965 | lr 1.00e-04
+-- 训练进程: 2859 /root/miniconda3/bin/python -u experiments/train_p9e1.py --data_mp4 DATASET
+-- run.log 尾: step 15100 | loss 0.8065 | fall/fallen/normal acc 0.701/0.637/0.965 | lr 1.00e-04
+-- 磁盘可用: 22G
+===== 2026-10-05 08:12:40 =====
+step 15950 | loss 0.9585 | fall/fallen/normal acc 0.823/0.495/0.967 | lr 1.00e-04
+step 16000 | loss 0.2562 | fall/fallen/normal acc 0.857/0.833/0.971 | lr 1.00e-04
+-- 训练进程: 2859 /root/miniconda3/bin/python -u experiments/train_p9e1.py --data_mp4 DATASET
+-- run.log 尾: step 16000 | loss 0.2562 | fall/fallen/normal acc 0.857/0.833/0.971 | lr 1.00e-04
+-- 磁盘可用: 22G
+===== 2026-10-05 08:42:40 =====
+[VAL] step 16800 | f1 0.8653 | fallen prec 0.9036 rec 0.8272 | train_loss 0.5844
+step 16850 | loss 0.4524 | fall/fallen/normal acc 0.800/0.687/0.993 | lr 1.00e-04
+-- 训练进程: 2859 /root/miniconda3/bin/python -u experiments/train_p9e1.py --data_mp4 DATASET
+-- run.log 尾: step 16850 | loss 0.4524 | fall/fallen/normal acc 0.800/0.687/0.993 | lr 1.00e-04
+-- 磁盘可用: 22G
+===== 2026-10-05 09:12:40 =====
+step 17700 | loss 0.7895 | fall/fallen/normal acc 0.892/0.564/0.956 | lr 1.00e-04
+step 17750 | loss 0.3991 | fall/fallen/normal acc 0.844/0.650/0.969 | lr 1.00e-04
+-- 训练进程: 2859 /root/miniconda3/bin/python -u experiments/train_p9e1.py --data_mp4 DATASET
+-- run.log 尾: step 17750 | loss 0.3991 | fall/fallen/normal acc 0.844/0.650/0.969 | lr 1.00e-04
+-- 磁盘可用: 22G
+===== 2026-10-05 09:42:40 =====
+[VAL] step 18600 | f1 0.8653 | fallen prec 0.8880 rec 0.8704 | train_loss 0.6191
+step 18650 | loss 0.5600 | fall/fallen/normal acc 0.808/0.723/0.943 | lr 1.00e-04
+-- 训练进程: 2859 /root/miniconda3/bin/python -u experiments/train_p9e1.py --data_mp4 DATASET
+-- run.log 尾: step 18650 | loss 0.5600 | fall/fallen/normal acc 0.808/0.723/0.943 | lr 1.00e-04
+-- 磁盘可用: 22G
+===== 2026-10-05 10:12:40 =====
+step 19500 | loss 0.4163 | fall/fallen/normal acc 0.833/0.739/0.951 | lr 1.00e-04
+step 19550 | loss 0.4459 | fall/fallen/normal acc 0.912/0.563/0.969 | lr 1.00e-04
+-- 训练进程: 2859 /root/miniconda3/bin/python -u experiments/train_p9e1.py --data_mp4 DATASET
+-- run.log 尾: step 19550 | loss 0.4459 | fall/fallen/normal acc 0.912/0.563/0.969 | lr 1.00e-04
+-- 磁盘可用: 22G
+===== 2026-10-05 10:42:40 =====
+[VAL] step 20400 | f1 0.8368 | fallen prec 0.9844 rec 0.6832 | train_loss 0.4067
+step 20450 | loss 0.2475 | fall/fallen/normal acc 0.875/0.812/0.981 | lr 1.00e-04
+-- 训练进程: 2859 /root/miniconda3/bin/python -u experiments/train_p9e1.py --data_mp4 DATASET
+-- run.log 尾: step 20450 | loss 0.2475 | fall/fallen/normal acc 0.875/0.812/0.981 | lr 1.00e-04
+-- 磁盘可用: 22G
+===== 2026-10-05 11:12:40 =====
+step 21300 | loss 0.3410 | fall/fallen/normal acc 0.851/0.866/0.960 | lr 1.00e-04
+step 21350 | loss 0.3454 | fall/fallen/normal acc 0.898/0.653/0.985 | lr 1.00e-04
+-- 训练进程: 2859 /root/miniconda3/bin/python -u experiments/train_p9e1.py --data_mp4 DATASET
+-- run.log 尾: step 21350 | loss 0.3454 | fall/fallen/normal acc 0.898/0.653/0.985 | lr 1.00e-04
+-- 磁盘可用: 22G
+===== 2026-10-05 11:42:40 =====
+step 22200 | loss 0.7102 | fall/fallen/normal acc 0.914/0.690/0.959 | lr 1.00e-04
+[VAL] step 22200 | f1 0.8441 | fallen prec 0.8821 rec 0.8821 | train_loss 0.4836
+-- 训练进程: 2859 /root/miniconda3/bin/python -u experiments/train_p9e1.py --data_mp4 DATASET
+-- run.log 尾: [VAL] step 22200 | f1 0.8441 | fallen prec 0.8821 rec 0.8821 | train_loss 0.4836
+-- 磁盘可用: 22G
+===== 2026-10-05 12:12:40 =====
+step 23050 | loss 0.6236 | fall/fallen/normal acc 0.945/0.872/0.954 | lr 1.00e-04
+step 23100 | loss 0.5130 | fall/fallen/normal acc 0.684/0.722/0.981 | lr 1.00e-04
+-- 训练进程: 2859 /root/miniconda3/bin/python -u experiments/train_p9e1.py --data_mp4 DATASET
+-- run.log 尾: step 23100 | loss 0.5130 | fall/fallen/normal acc 0.684/0.722/0.981 | lr 1.00e-04
+-- 磁盘可用: 22G
+===== 2026-10-05 12:42:40 =====
+step 24000 | loss 0.2483 | fall/fallen/normal acc 0.913/0.902/0.958 | lr 1.00e-04
+[VAL] step 24000 | f1 0.8420 | fallen prec 0.8337 rec 0.7804 | train_loss 0.4511
+-- 训练进程: 2859 /root/miniconda3/bin/python -u experiments/train_p9e1.py --data_mp4 DATASET
+-- run.log 尾: [VAL] step 24000 | f1 0.8420 | fallen prec 0.8337 rec 0.7804 | train_loss 0.4511
+-- 磁盘可用: 22G
+===== 2026-10-05 13:12:40 =====
+step 24850 | loss 0.2184 | fall/fallen/normal acc 0.879/0.848/0.977 | lr 1.00e-04
+step 24900 | loss 0.4534 | fall/fallen/normal acc 0.768/0.792/0.986 | lr 1.00e-04
+-- 训练进程: 2859 /root/miniconda3/bin/python -u experiments/train_p9e1.py --data_mp4 DATASET
+-- run.log 尾: step 24900 | loss 0.4534 | fall/fallen/normal acc 0.768/0.792/0.986 | lr 1.00e-04
+-- 磁盘可用: 22G
+===== 2026-10-05 13:42:40 =====
+step 25800 | loss 0.6035 | fall/fallen/normal acc 0.871/0.863/0.963 | lr 1.00e-04
+[VAL] step 25800 | f1 0.8943 | fallen prec 0.8545 rec 0.9307 | train_loss 0.4578
+-- 训练进程: 2859 /root/miniconda3/bin/python -u experiments/train_p9e1.py --data_mp4 DATASET
+-- run.log 尾: [VAL] step 25800 | f1 0.8943 | fallen prec 0.8545 rec 0.9307 | train_loss 0.4578
+-- 磁盘可用: 22G
+===== 2026-10-05 14:12:40 =====
+step 26650 | loss 0.8070 | fall/fallen/normal acc 0.868/0.856/0.950 | lr 1.00e-04
+step 26700 | loss 0.3760 | fall/fallen/normal acc 0.746/0.912/0.988 | lr 1.00e-04
+-- 训练进程: 2859 /root/miniconda3/bin/python -u experiments/train_p9e1.py --data_mp4 DATASET
+-- run.log 尾: step 26700 | loss 0.3760 | fall/fallen/normal acc 0.746/0.912/0.988 | lr 1.00e-04
+-- 磁盘可用: 22G
+===== 2026-10-05 14:42:40 =====
+step 27550 | loss 0.3661 | fall/fallen/normal acc 0.692/0.883/0.967 | lr 1.00e-04
+step 27600 | loss 0.3118 | fall/fallen/normal acc 0.913/0.891/0.958 | lr 1.00e-04
+-- 训练进程: 2859 /root/miniconda3/bin/python -u experiments/train_p9e1.py --data_mp4 DATASET
+-- run.log 尾: step 27600 | loss 0.3118 | fall/fallen/normal acc 0.913/0.891/0.958 | lr 1.00e-04
+-- 磁盘可用: 22G
+===== 2026-10-05 15:12:40 =====
+step 28400 | loss 0.3450 | fall/fallen/normal acc 0.925/0.659/0.979 | lr 1.00e-04
+step 28450 | loss 0.3465 | fall/fallen/normal acc 0.950/0.875/0.920 | lr 1.00e-04
+-- 训练进程: 2859 /root/miniconda3/bin/python -u experiments/train_p9e1.py --data_mp4 DATASET
+-- run.log 尾: step 28450 | loss 0.3465 | fall/fallen/normal acc 0.950/0.875/0.920 | lr 1.00e-04
+-- 磁盘可用: 22G
+===== 2026-10-05 15:42:40 =====
+[DONE] 已存 last_model.pt
+[TOTAL] 28800 步, 58257.3s
+-- 训练进程: 
+-- run.log 尾: ALL_DONE arm=1a verdict=done rc=0 @ Mon Oct  5 15:32:25 CST 2026
+-- 磁盘可用: 22G
+ALL_DONE 已出现，快照退出 Mon Oct  5 15:42:40 CST 2026

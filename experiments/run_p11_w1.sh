@@ -37,6 +37,9 @@
 #   1a10  Exp-1a λ=1.0（仅当 1a 有效但偏弱时）
 #   1b1   Exp-1b 难例池 {lie_down}
 #   1b2   Exp-1b 难例池 {lie_down, other}
+#   1c    Exp-1c 显式静态轴辅助损失，λ=0.3（**替代 1b 路线**；1b 已证杠杆偏弱，见进度文档 §2）
+#   1c01  Exp-1c λ=0.1（仅当 1c 把 fallen 召回打崩时）
+#   1c10  Exp-1c λ=1.0（仅当 1c 有效但偏弱时）
 #   2a    Exp-2a 多尺度（深度可分离卷积 k=8/16）
 #   4     Exp-4 运动特征（姿态 12d 含加速度 + concat，忠实复现 Phase 8 E2c）
 #
@@ -56,11 +59,28 @@ case "$ARM" in
   1a10)  EXTRA="--use_boundary_head --boundary_lambda 1.0";    DESC="Exp-1a boundary λ=1.0";;
   1b1)   EXTRA="--hard_neg_classes lie_down --hard_neg_alpha 2.0";            DESC="Exp-1b 难例 {lie_down}";;
   1b2)   EXTRA="--hard_neg_classes lie_down,other --hard_neg_alpha 2.0";      DESC="Exp-1b 难例 {lie_down,other}";;
+  # Exp-1c：显式静态轴辅助损失（替代 1b 的难例采样路线）。
+  # 只罚真值 normal 帧的 P(fallen)，不罚 P(fall)（跌倒前那几帧的 fall 概率本该升）。
+  # λ=0.3 起步，与 1a 同档；序贯试（有效但偏弱→1.0；把 fallen 召回打崩→0.1），不铺网格。
+  1c)    EXTRA="--aux_static_lambda 0.3";                      DESC="Exp-1c 静态轴辅助损失 λ=0.3";;
+  1c10)  EXTRA="--aux_static_lambda 1.0";                      DESC="Exp-1c 静态轴辅助损失 λ=1.0";;
+  1c01)  EXTRA="--aux_static_lambda 0.1";                      DESC="Exp-1c 静态轴辅助损失 λ=0.1";;
   2a)    EXTRA="--multiscale";                                 DESC="Exp-2a 多尺度 k=8/16";;
   4)     EXTRA="--pose_npz data/omnifall_pose_semantic_accel.npz"
+         EVAL_EXTRA="$EXTRA"
                                                                DESC="Exp-4 姿态12d+concat";;
   *) echo "[ERROR] 未知 arm: $ARM"; exit 2;;
 esac
+# ⚠⚠ 评测专用参数，**不能**直接用 $EXTRA 代替。
+#   2026-10-02 Exp-4 就栽在这：训练侧传了 --pose_npz、**评测侧没传**，
+#   于是评测按 ckpt 里的 input_dim=3084 建模型却喂 3072 维特征 →
+#   `RuntimeError: mat1 and mat2 shapes cannot be multiplied (192x3072 and 3084x384)`。
+#   训练 8.8h 全部跑完（rc=0），**四次评测各 10 秒全挂**，白等一轮。
+#   为什么不能透传 $EXTRA：eval_p9e1_dual.py 只认 --pose_npz，
+#   不认 --use_boundary_head / --multiscale / --hard_neg_* / --aux_static_lambda，
+#   整个透传会在别的 arm 上直接报未知参数。
+#   **凡"新开一路输入/输出"的功能，都要同时检查：训练侧、val 侧、评测侧——三处都接上了才算接上。**
+EVAL_EXTRA="${EVAL_EXTRA:-}"
 
 OUT=logs/phase11/w1_$ARM
 RUNLOG=$OUT/run.log
@@ -91,19 +111,25 @@ PID=\$!
 echo "TRAIN_PID=\$PID" >> "$RUNLOG"
 echo \$PID > "$OUT/train.pid"
 
-alive() { [ -d "/proc/\$PID" ] && [ "\$(cut -d' ' -f3 /proc/\$PID/stat 2>/dev/null)" != "Z" ]; }
-last=0; stall=0
-while alive; do
-  sleep 600
-  n=\$(wc -l < "$OUT/e1_train.log" 2>/dev/null || echo 0)
-  if [ "\$n" -le "\$last" ]; then stall=\$((stall+1)); else stall=0; fi
-  last=\$n
-  if [ "\$stall" -ge 8 ]; then
-    echo "WATCHDOG: 疑似挂起 pid=\$PID @ \$(date) 尾部: \$(tail -n 3 "$OUT/e1_train.log" 2>/dev/null | tr '\n' '|')" >> "$RUNLOG"
-    stall=0
-  fi
-done
+# ⚠⚠ 2026-10-05：与 run_p11_w2.sh 同一处修正（那里有完整说明）。
+#   原实现用**一个 sleep 600 轮询循环**同时扛「等训练结束」与「查是否停滞」，
+#   于是 wait 最快也要等下一次醒来才返回 → 训练结束后最多 10 分钟 GPU 空转才接评测，
+#   而那段时间容器里没有任何进程在跑（外部监控看到 CPU/GPU/显存全 0，像挂起）。
+#   修法：解耦 —— `wait` 负责零延迟切换，后台子 shell 只管周期性查停滞。
+( last=0; stall=0
+  while [ -d "/proc/\$PID" ]; do
+    sleep 600
+    n=\$(wc -l < "$OUT/e1_train.log" 2>/dev/null || echo 0)
+    if [ "\$n" -le "\$last" ]; then stall=\$((stall+1)); else stall=0; fi
+    last=\$n
+    if [ "\$stall" -ge 8 ]; then
+      echo "WATCHDOG: 疑似挂起 pid=\$PID @ \$(date) 尾部: \$(tail -n 3 "$OUT/e1_train.log" 2>/dev/null | tr '\n' '|')" >> "$RUNLOG"
+      stall=0
+    fi
+  done ) &
+STALLER=\$!
 wait \$PID; rc=\$?
+kill \$STALLER 2>/dev/null; wait \$STALLER 2>/dev/null
 
 if grep -q "DIVERGED" "$OUT/e1_train.log" 2>/dev/null; then      V=diverged
 elif grep -q "\[DONE\]" "$OUT/e1_train.log" 2>/dev/null; then    V=done
@@ -123,7 +149,7 @@ if [ "\$V" = done ]; then
   # 与边界指标（规划 §5）的必要输入，不存就只能重跑 53 min。
   echo "== EVAL best (full 1200, dump_pv) start @ \$(date) ==" >> "$OUT/eval_all.log"
   $PY -u experiments/eval_p9e1_dual.py --ckpt "$OUT/best_model.pt" \
-      --out "$OUT/eval_best_model.json" --dump_pv "$OUT/pv_best.pt" \
+      --out "$OUT/eval_best_model.json" --dump_pv "$OUT/pv_best.pt" $EVAL_EXTRA \
       >> "$OUT/eval_all.log" 2>&1 < /dev/null
   echo "== EVAL best done rc=\$? @ \$(date) ==" >> "$OUT/eval_all.log"
 
@@ -132,7 +158,7 @@ if [ "\$V" = done ]; then
     b=\$(basename "\$ck" .pt)
     echo "== EVAL \$b (subset 300) start @ \$(date) ==" >> "$OUT/eval_all.log"
     $PY -u experiments/eval_p9e1_dual.py --ckpt "\$ck" --out "$OUT/eval_\$b.subset.json" \
-        --limit_videos 300 --subset_seed 42 >> "$OUT/eval_all.log" 2>&1 < /dev/null
+        --limit_videos 300 --subset_seed 42 $EVAL_EXTRA >> "$OUT/eval_all.log" 2>&1 < /dev/null
     echo "== EVAL \$b done rc=\$? @ \$(date) ==" >> "$OUT/eval_all.log"
   done
   echo "ALL_EVAL_DONE @ \$(date)" >> "$OUT/eval_all.log"

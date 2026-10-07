@@ -96,6 +96,69 @@ def prec_at_recall(cur, target):
     return float(np.interp(target, r, p))
 
 
+# 支配关系比较的网格：只用**共同支撑且操作相关**的召回区间。
+# 曲线在 R≈0 只由 1 个最自信的预测点支撑、在 R≈1 由全部预测支撑，两端的比较没有意义
+# （np.interp 在区间外是**端点钳制**，会拿钳制值去比，结论失真）。
+DOM_LO, DOM_HI, DOM_N = 0.50, 0.95, 40
+
+
+def dominance(a, b):
+    """在共同召回区间上逐点比 a 与 b；d = a 的精度 − b 的精度（>0 表示 a 更好）。
+
+    ⚠ 返回值**必须落盘**（`_dominance`）：本函数算的是 40 点插值均值，
+    与 `REC_LEVELS` 那 7 个采样点的均值**不是同一个数**（实测差约 0.003）。
+    2026-09-30 曾因此出现"文档写了 +0.0608、但归档 JSON 只能算出 +0.0640"的
+    不可复现缺口——文档数字来自这里，所以这里必须被持久化。
+
+    None 表示共同支撑区间过窄、无法比。
+    """
+    lo = max(a["recall"][0], b["recall"][0], DOM_LO)
+    hi = min(a["recall"][-1], b["recall"][-1], DOM_HI)
+    if hi <= lo:
+        return None
+    grid = np.linspace(lo, hi, DOM_N)
+    d = (np.interp(grid, a["recall"], a["precision"])
+         - np.interp(grid, b["recall"], b["precision"]))
+    return {
+        "lo": float(grid[0]), "hi": float(grid[-1]), "n_grid": int(DOM_N),
+        "mean": float(d.mean()), "median": float(np.median(d)),
+        "min": float(d.min()), "max": float(d.max()),
+        "delta": [float(x) for x in d],
+        # ⚠ 支配 = 处处 **≥** 且**至少一处 >**（标准 Pareto 支配）。
+        #   只写"处处 ≥"是错的：d 全为 0 时（同一模型自己比自己）两个方向会**同时**成立，
+        #   于是"支配"与"被支配"都返回 True —— judge_w1_arm.py 的"臂=基准"自测
+        #   当场把 A0 判成了【硬否决】。加 `any(>)` 后，全等曲线两个方向都为 False（不可分辨）。
+        "a_dominates_b": bool((d >= -1e-9).all() and (d > 1e-9).any()),
+        "b_dominates_a": bool((d <= 1e-9).all() and (d < -1e-9).any()),
+        "identical": bool(np.abs(d).max() <= 1e-9),
+    }
+
+
+def dominance_line(na, nb, dm):
+    """把 dominance() 的结果写成人读的一行。"""
+    if dm["a_dominates_b"]:
+        return f"{na} 支配 {nb}（同召回下精度处处不低，均值高 {dm['mean']:+.4f}）"
+    if dm["b_dominates_a"]:
+        return f"{nb} 支配 {na}（同召回下精度处处不低，均值高 {-dm['mean']:+.4f}）"
+    # ⚠ 交叉方向**必须由数据判定**，不能写死。
+    #   本块曾硬编码"a 在低召回端更好、b 在高召回端更好"，
+    #   结果与 mean(d) 的符号自相矛盾（提示说 a 好，均值说 b 好）。
+    d = dm["delta"]
+    mean_txt = f"全区间均值 {dm['mean']:+.4f}（正 = {na} 更好）"
+    span = f"逐点差区间 [{dm['min']:+.4f}, {dm['max']:+.4f}]"
+    # ⚠ 两端同向 ≠ 交叉。未构成支配但两端都偏向同一臂，只可能是**中段回落**。
+    #   2026-10-01 曾把 1b1 的 fallen 轴印成"交叉（两端都是本臂更好）"——
+    #   两端都说同一臂好却叫"交叉"，会让人以为曲线交叉，实为中间下沉。
+    if d[0] > 0 and d[-1] > 0:
+        return f"{na} 两端更好但**中段回落**（{span}）；{mean_txt}"
+    if d[0] < 0 and d[-1] < 0:
+        return f"{nb} 两端更好但**中段回落**（{span}）；{mean_txt}"
+    lo_who = na if d[0] > 0 else nb
+    hi_who = na if d[-1] > 0 else nb
+    return (f"交叉：低召回端（R≈{dm['lo']:.2f}）{lo_who} 更好；"
+            f"高召回端（R≈{dm['hi']:.2f}）{hi_who} 更好；{mean_txt}")
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("specs", nargs="+", help="name=path 或 path")
@@ -141,34 +204,18 @@ def main():
         names = list(curs)
         if len(names) > 1:
             print(f"\n  ── 支配关系（在共同召回区间上，谁在每一点都不低）")
+            doms = {}
             for i in range(len(names)):
                 for j in range(i + 1, len(names)):
-                    a, b = curs[names[i]], curs[names[j]]
-                    # ⚠ 只用**共同支撑且操作相关**的区间：曲线在 R≈0 只由 1 个最自信的
-                    #   预测点支撑、在 R≈1 由全部预测支撑，两端的比较没有意义
-                    #   （np.interp 在区间外是**端点钳制**，会拿钳制值去比，结论失真）。
-                    lo = max(a["recall"][0], b["recall"][0], 0.50)
-                    hi = min(a["recall"][-1], b["recall"][-1], 0.95)
-                    if hi <= lo:
-                        print(f"    {names[i]} vs {names[j]}: 共同支撑区间过窄，无法比"); continue
-                    grid = np.linspace(lo, hi, 40)
-                    pa = np.interp(grid, a["recall"], a["precision"])
-                    pb = np.interp(grid, b["recall"], b["precision"])
-                    d = pa - pb                       # >0 表示 a 更好
-                    if (d >= -1e-9).all():
-                        print(f"    {names[i]} 支配 {names[j]}（同召回下精度处处不低，"
-                              f"均值高 {d.mean():+.4f}）")
-                    elif (d <= 1e-9).all():
-                        print(f"    {names[j]} 支配 {names[i]}（均值高 {-d.mean():+.4f}）")
-                    else:
-                        # ⚠ 交叉方向**必须由数据判定**，不能写死。
-                        #   本块曾硬编码"a 在低召回端更好、b 在高召回端更好"，
-                        #   结果与 mean(d) 的符号自相矛盾（提示说 a 好，均值说 b 好）。
-                        lo_who = names[i] if d[0] > 0 else names[j]
-                        hi_who = names[i] if d[-1] > 0 else names[j]
-                        print(f"    交叉：低召回端（R≈{grid[0]:.2f}）{lo_who} 更好；"
-                              f"高召回端（R≈{grid[-1]:.2f}）{hi_who} 更好；"
-                              f"全区间均值 {d.mean():+.4f}（正 = {names[i]} 更好）")
+                    na, nb = names[i], names[j]
+                    dm = dominance(curs[na], curs[nb])
+                    if dm is None:
+                        print(f"    {na} vs {nb}: 共同支撑区间过窄，无法比")
+                        continue
+                    doms[f"{na}|{nb}"] = dm
+                    print("    " + dominance_line(na, nb, dm))
+            # ⚠ 必须落盘：文档里的支配均值来自 dominance()，不写下来就不可复现。
+            out[ax]["_dominance"] = doms
             print("\n  ⚠ 若两条曲线交叉或均值差很小，则两臂**不可分辨**——"
                   "不要用某个单一落点判胜负。")
         print()

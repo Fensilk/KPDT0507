@@ -1,0 +1,158 @@
+== W1/1b1 launch Wed Sep 30 23:28:36 CST 2026 | Exp-1b 难例 {lie_down} ==
+== W1/1b1 cmd: /root/miniconda3/bin/python -u experiments/train_p9e1.py --data_mp4 data/e1_2000_manifest.csv --val_data data/p9e1_frames_val --npz data/omnifall_dinov2_giant_frame.npz --model_name facebook/dinov2-giant --epochs 3 --early_stop_patience 0 --val_every 600 --val_n 150 --window 64 --stride 16 --batch 2 --lr 1e-4 --seed 42 --workers 16 --out logs/phase11/w1_1b1 --hard_neg_classes lie_down --hard_neg_alpha 2.0
+TRAIN_PID=1797
+[1] 加载 facebook/dinov2-giant(fp16) + LoRA(r=16) + Phase6 bridge 头
+/root/miniconda3/lib/python3.10/site-packages/torchvision/io/image.py:13: UserWarning: Failed to load image Python extension: '/root/miniconda3/lib/python3.10/site-packages/torchvision/image.so: undefined symbol: _ZN3c1017RegisterOperatorsD1Ev'If you don't plan on using image functionality from `torchvision.io`, you can ignore this warning. Otherwise, there might be something wrong with your environment. Did you have `libjpeg` or `libpng` installed before building `torchvision` from source?
+  warn(
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights:  92%|█████████▏| 672/727 [00:00<00:00, 6674.98it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 6334.60it/s]
+/root/miniconda3/lib/python3.10/site-packages/torch/nn/modules/transformer.py:379: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+  梯度 checkpointing: True
+  可训练参数: 10.82M (LoRA + 时序头；主干冻结 fp16)
+[2] mp4 现解码数据集: data/e1_2000_manifest.csv (window=64, stride=16, workers=16)
+  训练视频: 2000 | 窗口: 4000 | 类权重 fall/fallen/normal: [1.336, 1.532, 0.132]
+[hard-neg] 难例池 {lie_down} ×(1+2.0) | 命中窗口 266/4000 (6.7%) | 采样后占比 7.48%（原 6.65%）
+step 50 | loss 2.5178 | fall/fallen/normal acc 0.524/0.524/0.158 | lr 1.00e-04
+step 100 | loss 1.8694 | fall/fallen/normal acc 0.582/0.698/0.448 | lr 1.00e-04
+step 150 | loss 1.1946 | fall/fallen/normal acc 0.727/0.637/0.484 | lr 1.00e-04
+step 200 | loss 1.0243 | fall/fallen/normal acc 0.758/0.705/0.637 | lr 1.00e-04
+step 250 | loss 1.1722 | fall/fallen/normal acc 0.758/0.722/0.696 | lr 1.00e-04
+step 300 | loss 1.0517 | fall/fallen/normal acc 0.713/0.790/0.699 | lr 1.00e-04
+step 350 | loss 0.9157 | fall/fallen/normal acc 0.814/0.689/0.678 | lr 1.00e-04
+step 400 | loss 0.6683 | fall/fallen/normal acc 0.827/0.767/0.775 | lr 1.00e-04
+step 450 | loss 0.8591 | fall/fallen/normal acc 0.829/0.792/0.730 | lr 1.00e-04
+step 500 | loss 0.7168 | fall/fallen/normal acc 0.808/0.777/0.817 | lr 1.00e-04
+step 550 | loss 0.5341 | fall/fallen/normal acc 0.886/0.841/0.814 | lr 1.00e-04
+step 600 | loss 0.6488 | fall/fallen/normal acc 0.848/0.797/0.817 | lr 1.00e-04
+[VAL] step 600 | f1 0.6883 | fallen prec 0.8174 rec 0.5320 | train_loss 1.0977
+  [BEST] 新最优 f1=0.6883 → best_model.pt
+step 650 | loss 0.6750 | fall/fallen/normal acc 0.848/0.837/0.829 | lr 1.00e-04
+step 700 | loss 0.4526 | fall/fallen/normal acc 0.924/0.818/0.757 | lr 1.00e-04
+step 750 | loss 0.4630 | fall/fallen/normal acc 0.892/0.849/0.869 | lr 1.00e-04
+step 800 | loss 0.4690 | fall/fallen/normal acc 0.907/0.878/0.792 | lr 1.00e-04
+step 850 | loss 0.5182 | fall/fallen/normal acc 0.893/0.899/0.789 | lr 1.00e-04
+step 900 | loss 0.2743 | fall/fallen/normal acc 0.914/0.913/0.816 | lr 1.00e-04
+step 950 | loss 0.4155 | fall/fallen/normal acc 0.930/0.842/0.919 | lr 1.00e-04
+step 1000 | loss 0.3472 | fall/fallen/normal acc 0.906/0.885/0.858 | lr 1.00e-04
+step 1050 | loss 0.3014 | fall/fallen/normal acc 0.939/0.858/0.837 | lr 1.00e-04
+step 1100 | loss 0.2989 | fall/fallen/normal acc 0.912/0.920/0.888 | lr 1.00e-04
+step 1150 | loss 0.4628 | fall/fallen/normal acc 0.854/0.906/0.828 | lr 1.00e-04
+step 1200 | loss 0.3006 | fall/fallen/normal acc 0.945/0.887/0.876 | lr 1.00e-04
+[VAL] step 1200 | f1 0.7560 | fallen prec 0.6928 rec 0.8830 | train_loss 0.4149
+  [BEST] 新最优 f1=0.7560 → best_model.pt
+step 1250 | loss 0.3223 | fall/fallen/normal acc 0.880/0.912/0.866 | lr 1.00e-04
+step 1300 | loss 0.3316 | fall/fallen/normal acc 0.935/0.899/0.821 | lr 1.00e-04
+step 1350 | loss 0.2126 | fall/fallen/normal acc 0.948/0.917/0.904 | lr 1.00e-04
+step 1400 | loss 0.3488 | fall/fallen/normal acc 0.921/0.940/0.874 | lr 1.00e-04
+step 1450 | loss 0.2079 | fall/fallen/normal acc 0.943/0.932/0.890 | lr 1.00e-04
+step 1500 | loss 0.1805 | fall/fallen/normal acc 0.933/0.949/0.906 | lr 1.00e-04
+step 1550 | loss 0.2860 | fall/fallen/normal acc 0.930/0.947/0.827 | lr 1.00e-04
+step 1600 | loss 0.2593 | fall/fallen/normal acc 0.916/0.869/0.914 | lr 1.00e-04
+step 1650 | loss 0.1776 | fall/fallen/normal acc 0.953/0.930/0.887 | lr 1.00e-04
+step 1700 | loss 0.2977 | fall/fallen/normal acc 0.895/0.960/0.858 | lr 1.00e-04
+step 1750 | loss 0.2609 | fall/fallen/normal acc 0.944/0.948/0.819 | lr 1.00e-04
+step 1800 | loss 0.2343 | fall/fallen/normal acc 0.920/0.942/0.843 | lr 1.00e-04
+[VAL] step 1800 | f1 0.7960 | fallen prec 0.6604 rec 0.9559 | train_loss 0.2600
+  [BEST] 新最优 f1=0.7960 → best_model.pt
+step 1850 | loss 0.2674 | fall/fallen/normal acc 0.970/0.902/0.881 | lr 1.00e-04
+step 1900 | loss 0.1115 | fall/fallen/normal acc 0.972/0.963/0.951 | lr 1.00e-04
+step 1950 | loss 0.1590 | fall/fallen/normal acc 0.954/0.964/0.852 | lr 1.00e-04
+step 2000 | loss 0.0887 | fall/fallen/normal acc 0.953/0.986/0.920 | lr 1.00e-04
+[EPOCH 1] 完成，已存 epoch_1_model.pt
+step 2050 | loss 0.1096 | fall/fallen/normal acc 0.964/0.962/0.943 | lr 1.00e-04
+step 2100 | loss 0.1859 | fall/fallen/normal acc 0.945/0.941/0.903 | lr 1.00e-04
+step 2150 | loss 0.1427 | fall/fallen/normal acc 0.956/0.939/0.943 | lr 1.00e-04
+step 2200 | loss 0.3142 | fall/fallen/normal acc 0.957/0.952/0.876 | lr 1.00e-04
+step 2250 | loss 0.1430 | fall/fallen/normal acc 0.945/0.930/0.936 | lr 1.00e-04
+step 2300 | loss 0.1695 | fall/fallen/normal acc 0.962/0.959/0.882 | lr 1.00e-04
+step 2350 | loss 0.1929 | fall/fallen/normal acc 0.954/0.983/0.913 | lr 1.00e-04
+step 2400 | loss 0.1686 | fall/fallen/normal acc 0.954/0.960/0.953 | lr 1.00e-04
+[VAL] step 2400 | f1 0.8240 | fallen prec 0.8079 rec 0.8443 | train_loss 0.1783
+  [BEST] 新最优 f1=0.8240 → best_model.pt
+step 2450 | loss 0.1775 | fall/fallen/normal acc 0.954/0.937/0.897 | lr 1.00e-04
+step 2500 | loss 0.0817 | fall/fallen/normal acc 0.980/0.976/0.910 | lr 1.00e-04
+step 2550 | loss 0.1597 | fall/fallen/normal acc 0.960/0.958/0.894 | lr 1.00e-04
+step 2600 | loss 0.1214 | fall/fallen/normal acc 0.967/0.953/0.892 | lr 1.00e-04
+step 2650 | loss 0.1454 | fall/fallen/normal acc 0.981/0.963/0.918 | lr 1.00e-04
+step 2700 | loss 0.0705 | fall/fallen/normal acc 0.972/0.970/0.958 | lr 1.00e-04
+step 2750 | loss 0.0710 | fall/fallen/normal acc 0.975/0.979/0.941 | lr 1.00e-04
+step 2800 | loss 0.1532 | fall/fallen/normal acc 0.963/0.966/0.930 | lr 1.00e-04
+step 2850 | loss 0.2066 | fall/fallen/normal acc 0.962/0.973/0.893 | lr 1.00e-04
+step 2900 | loss 0.1964 | fall/fallen/normal acc 0.950/0.989/0.941 | lr 1.00e-04
+step 2950 | loss 0.1762 | fall/fallen/normal acc 0.969/0.968/0.921 | lr 1.00e-04
+step 3000 | loss 0.1715 | fall/fallen/normal acc 0.986/0.948/0.895 | lr 1.00e-04
+[VAL] step 3000 | f1 0.8654 | fallen prec 0.8035 rec 0.8758 | train_loss 0.1442
+  [BEST] 新最优 f1=0.8654 → best_model.pt
+step 3050 | loss 0.1083 | fall/fallen/normal acc 0.974/0.987/0.931 | lr 1.00e-04
+step 3100 | loss 0.3033 | fall/fallen/normal acc 0.948/0.972/0.901 | lr 1.00e-04
+step 3150 | loss 0.1250 | fall/fallen/normal acc 0.959/0.964/0.930 | lr 1.00e-04
+step 3200 | loss 0.0882 | fall/fallen/normal acc 0.967/0.975/0.953 | lr 1.00e-04
+step 3250 | loss 0.0484 | fall/fallen/normal acc 0.986/0.986/0.949 | lr 1.00e-04
+step 3300 | loss 0.1015 | fall/fallen/normal acc 0.983/0.973/0.915 | lr 1.00e-04
+step 3350 | loss 0.1142 | fall/fallen/normal acc 0.977/0.978/0.929 | lr 1.00e-04
+step 3400 | loss 0.0515 | fall/fallen/normal acc 0.984/0.984/0.934 | lr 1.00e-04
+step 3450 | loss 0.0976 | fall/fallen/normal acc 0.988/0.988/0.927 | lr 1.00e-04
+step 3500 | loss 0.0531 | fall/fallen/normal acc 0.991/0.978/0.973 | lr 1.00e-04
+step 3550 | loss 0.0933 | fall/fallen/normal acc 0.965/0.980/0.922 | lr 1.00e-04
+step 3600 | loss 0.1318 | fall/fallen/normal acc 0.983/0.983/0.914 | lr 1.00e-04
+[VAL] step 3600 | f1 0.8536 | fallen prec 0.8835 rec 0.8191 | train_loss 0.1097
+step 3650 | loss 0.0385 | fall/fallen/normal acc 0.985/0.987/0.978 | lr 1.00e-04
+step 3700 | loss 0.0734 | fall/fallen/normal acc 0.990/0.991/0.933 | lr 1.00e-04
+step 3750 | loss 0.0568 | fall/fallen/normal acc 0.990/0.996/0.914 | lr 1.00e-04
+step 3800 | loss 0.0516 | fall/fallen/normal acc 0.987/0.980/0.951 | lr 1.00e-04
+step 3850 | loss 0.0541 | fall/fallen/normal acc 0.996/0.984/0.963 | lr 1.00e-04
+step 3900 | loss 0.0271 | fall/fallen/normal acc 0.997/0.996/0.960 | lr 1.00e-04
+step 3950 | loss 0.0387 | fall/fallen/normal acc 0.990/0.995/0.953 | lr 1.00e-04
+step 4000 | loss 0.0450 | fall/fallen/normal acc 0.992/0.989/0.944 | lr 1.00e-04
+[EPOCH 2] 完成，已存 epoch_2_model.pt
+step 4050 | loss 0.0752 | fall/fallen/normal acc 0.988/0.983/0.948 | lr 1.00e-04
+step 4100 | loss 0.1084 | fall/fallen/normal acc 0.965/0.985/0.960 | lr 1.00e-04
+step 4150 | loss 0.0600 | fall/fallen/normal acc 0.988/0.992/0.938 | lr 1.00e-04
+step 4200 | loss 0.0413 | fall/fallen/normal acc 0.989/0.986/0.963 | lr 1.00e-04
+[VAL] step 4200 | f1 0.8305 | fallen prec 0.8793 rec 0.8200 | train_loss 0.0712
+step 4250 | loss 0.1279 | fall/fallen/normal acc 0.980/0.970/0.944 | lr 1.00e-04
+step 4300 | loss 0.0401 | fall/fallen/normal acc 0.991/0.992/0.958 | lr 1.00e-04
+step 4350 | loss 0.0963 | fall/fallen/normal acc 0.987/0.981/0.871 | lr 1.00e-04
+step 4400 | loss 0.0622 | fall/fallen/normal acc 0.990/0.996/0.922 | lr 1.00e-04
+step 4450 | loss 0.0312 | fall/fallen/normal acc 0.995/0.993/0.968 | lr 1.00e-04
+step 4500 | loss 0.0394 | fall/fallen/normal acc 0.996/0.994/0.946 | lr 1.00e-04
+step 4550 | loss 0.1014 | fall/fallen/normal acc 0.976/0.987/0.948 | lr 1.00e-04
+step 4600 | loss 0.0630 | fall/fallen/normal acc 0.989/0.979/0.920 | lr 1.00e-04
+step 4650 | loss 0.0234 | fall/fallen/normal acc 0.995/0.997/0.937 | lr 1.00e-04
+step 4700 | loss 0.0202 | fall/fallen/normal acc 0.995/0.997/0.963 | lr 1.00e-04
+step 4750 | loss 0.0311 | fall/fallen/normal acc 0.989/0.998/0.961 | lr 1.00e-04
+step 4800 | loss 0.0199 | fall/fallen/normal acc 0.995/0.999/0.952 | lr 1.00e-04
+[VAL] step 4800 | f1 0.8457 | fallen prec 0.8277 rec 0.8866 | train_loss 0.0547
+step 4850 | loss 0.0919 | fall/fallen/normal acc 0.974/0.987/0.977 | lr 1.00e-04
+step 4900 | loss 0.0397 | fall/fallen/normal acc 0.987/0.992/0.944 | lr 1.00e-04
+step 4950 | loss 0.0546 | fall/fallen/normal acc 0.988/0.998/0.976 | lr 1.00e-04
+step 5000 | loss 0.0512 | fall/fallen/normal acc 0.996/0.993/0.946 | lr 1.00e-04
+step 5050 | loss 0.0333 | fall/fallen/normal acc 0.992/0.990/0.947 | lr 1.00e-04
+step 5100 | loss 0.0185 | fall/fallen/normal acc 0.998/0.996/0.967 | lr 1.00e-04
+step 5150 | loss 0.0351 | fall/fallen/normal acc 0.988/0.999/0.974 | lr 1.00e-04
+step 5200 | loss 0.0764 | fall/fallen/normal acc 0.992/0.979/0.950 | lr 1.00e-04
+step 5250 | loss 0.0854 | fall/fallen/normal acc 0.977/0.986/0.961 | lr 1.00e-04
+step 5300 | loss 0.0409 | fall/fallen/normal acc 0.980/0.998/0.963 | lr 1.00e-04
+step 5350 | loss 0.0398 | fall/fallen/normal acc 0.998/0.992/0.962 | lr 1.00e-04
+step 5400 | loss 0.0551 | fall/fallen/normal acc 0.978/0.994/0.965 | lr 1.00e-04
+[VAL] step 5400 | f1 0.8658 | fallen prec 0.8370 rec 0.8875 | train_loss 0.0518
+  [BEST] 新最优 f1=0.8658 → best_model.pt
+step 5450 | loss 0.0121 | fall/fallen/normal acc 0.999/0.992/0.984 | lr 1.00e-04
+step 5500 | loss 0.0103 | fall/fallen/normal acc 0.999/0.997/0.985 | lr 1.00e-04
+step 5550 | loss 0.0168 | fall/fallen/normal acc 0.996/0.996/0.997 | lr 1.00e-04
+step 5600 | loss 0.0412 | fall/fallen/normal acc 0.997/0.972/0.954 | lr 1.00e-04
+step 5650 | loss 0.0530 | fall/fallen/normal acc 0.994/0.993/0.962 | lr 1.00e-04
+step 5700 | loss 0.0401 | fall/fallen/normal acc 0.995/0.995/0.953 | lr 1.00e-04
+step 5750 | loss 0.0580 | fall/fallen/normal acc 0.994/0.972/0.977 | lr 1.00e-04
+step 5800 | loss 0.0255 | fall/fallen/normal acc 0.988/0.998/0.987 | lr 1.00e-04
+step 5850 | loss 0.1877 | fall/fallen/normal acc 0.997/0.973/0.954 | lr 1.00e-04
+step 5900 | loss 0.0190 | fall/fallen/normal acc 0.996/0.994/0.964 | lr 1.00e-04
+step 5950 | loss 0.0509 | fall/fallen/normal acc 0.993/0.999/0.945 | lr 1.00e-04
+step 6000 | loss 0.0158 | fall/fallen/normal acc 0.997/0.995/0.985 | lr 1.00e-04
+[VAL] step 6000 | f1 0.8704 | fallen prec 0.8263 rec 0.8821 | train_loss 0.0442
+  [BEST] 新最优 f1=0.8704 → best_model.pt
+[EPOCH 3] 完成，已存 epoch_3_model.pt
+[DONE] 已存 last_model.pt
+[TOTAL] 6000 步, 31770.4s
+WATCHDOG: pid=1797 exited rc=0 verdict=done @ Thu Oct  1 08:18:36 CST 2026
+ALL_DONE arm=1b1 verdict=done rc=0 @ Thu Oct  1 08:18:36 CST 2026
