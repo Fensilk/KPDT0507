@@ -64,7 +64,14 @@ analysis/diagnose_lying_event/
 .DS_Store
 Thumbs.db
 
-# 第三方参考实现（vendored，约 1.1GB：C3D/SlowFast/TimeSformer/kinetics-i3d/scenic/TSM）
+# reference/ = 仓库内的**本地留存区**（整目录不入库）。放两类东西：
+#   ① 第三方参考实现（vendored，约 1.1GB：C3D/SlowFast/TimeSformer/kinetics-i3d/scenic/TSM）
+#   ② 只留本地、不入库的产物与备忘（2026-10-09 归置）：
+#      视觉跌倒检测研究进展汇报（202607|202609）.md   写给导师的汇报
+#      E1-report.html + .e1-report.publish-src.html   E1 发布件与其 publish 源
+#      autodl_gpu_pricing.md                          换卡报价 + 换卡预测式
+#      A100_W2_上机清单.md                            A100 实例上机步骤
+# 文档中引用它们时写 `reference/<名>`（路径真实，只是不入库）。
 reference/
 
 # Agent 技能脚手架（同 .claude/）
@@ -74,9 +81,5 @@ AGENTS.md
 # E1-full 本地日志镜像（内容与 run.log / eval_dump.log 重复）
 logs/phase9/e1_full/*.live.log
 
-# 根目录两份工程备忘 —— 只留本地磁盘，不入库（2026-10-09 定）
-#   autodl_gpu_pricing.md    换卡报价 + 换卡预测式
-#   A100_W2_上机清单.md       A100 实例上机步骤
-/autodl_gpu_pricing.md
-/A100_W2_上机清单.md
+# （两份工程备忘已移入 reference/，由上面的 `reference/` 规则覆盖，无需单列）
 

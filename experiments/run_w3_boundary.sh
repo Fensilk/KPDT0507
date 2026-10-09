@@ -8,7 +8,8 @@
 #   （本会话同一个 GBK 坑已踩三次：judge_w1_arm.py ×2、verify_boundary_metrics.py ×1。）
 set -u
 export PYTHONIOENCODING=utf-8
-cd /c/Users/Lizhe/Documents/KPDT0507
+# 按仓库约定从项目根运行（脚本已从仓库根移入 experiments/，2026-10-09）
+cd "$(dirname "$0")/.."
 PY=/c/Users/Lizhe/anaconda3/envs/py310/python.exe
 SUMMARY=logs/phase11/w2_boundary_all.log
 : > "$SUMMARY"
