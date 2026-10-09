@@ -1,0 +1,8 @@
+{
+  "4": "step_13800",
+  "4_val_avg_f1": 0.8544,
+  "4_runner_up": "step_21600",
+  "4_runner_up_val": 0.8388,
+  "4_n_candidates": 48,
+  "4_val_spread_top1_top2": 0.0156
+}

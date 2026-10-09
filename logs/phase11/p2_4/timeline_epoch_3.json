@@ -1,0 +1,59 @@
+{
+  "epoch_3": {
+    "n_videos": 1200,
+    "n_has_fall": 211,
+    "n_has_fallen": 150,
+    "n_has_both": 139,
+    "order_correct_rate": 1.0,
+    "mean_fall_flips": 0.3358333333333333,
+    "mean_fallen_flips": 0.21916666666666668,
+    "mean_total_flips": 0.555,
+    "flip_distribution": {
+      "0_flips": 1025,
+      "1_flips": 21,
+      "2_flips": 71,
+      "3_flips": 22,
+      "4+_flips": 61
+    },
+    "unstable_rate": 0.050833333333333335,
+    "mean_fall_delay": 1.3548387096774193,
+    "median_fall_delay": 0.0,
+    "mean_fallen_delay": 6.644859813084112,
+    "median_fallen_delay": 3.0,
+    "mean_fall_as_fallen_rate": 0.017629342179663506,
+    "mean_fallen_as_fall_rate": 0.19176574100725938,
+    "per_video_fall_f1": {
+      "n": 211,
+      "mean": 0.7029395937584175,
+      "median": 0.8275862068965517,
+      "std": 0.311891515664327,
+      "0.0": 26,
+      "0.0-0.5": 12,
+      "0.5-0.8": 59,
+      "0.8-1.0": 114,
+      "1.0": 22
+    },
+    "per_video_fallen_f1": {
+      "n": 150,
+      "mean": 0.5443810934664786,
+      "median": 0.746031746031746,
+      "std": 0.42863373778638786,
+      "0.0": 46,
+      "0.0-0.5": 19,
+      "0.5-0.8": 13,
+      "0.8-1.0": 72,
+      "1.0": 12
+    },
+    "per_video_avg_f1": {
+      "n": 222,
+      "mean": 0.6491125514051655,
+      "median": 0.7728767942583732,
+      "std": 0.3359597577352479
+    },
+    "fall_false_alarm_rate": 0.00910010111223458,
+    "fallen_false_alarm_rate": 0.02,
+    "fall_detection_rate": 0.8815165876777251,
+    "fallen_detection_rate": 0.7133333333333334,
+    "pass_rate": 0.5467625899280576
+  }
+}

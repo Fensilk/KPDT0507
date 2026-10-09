@@ -1,0 +1,142 @@
+[2026-10-08 16:50:46] === 阶段①（RERUN 固定网格）：anchor 的 val 评测，候选 3 个 ===
+[2026-10-08 16:50:46] RUN: /root/miniconda3/bin/python -u analysis/reeval_val_ckpts.py --out logs/phase11/p2_rerun_probe/anchor.json logs/phase11/p2_anchor_seed43/epoch_1_model.pt logs/phase11/p2_anchor_seed43/epoch_2_model.pt logs/phase11/p2_anchor_seed43/epoch_3_model.pt
+device=cuda  val=/root/autodl-tmp/DATASET-omnifall/splits/syn/random/val.csv  stride=16  ckpt 数=3
+窗口总数=2400  视频数=1200  pose=无
+    [decode] 50/1200 视频  18s
+    [decode] 100/1200 视频  35s
+    [decode] 150/1200 视频  51s
+    [decode] 200/1200 视频  66s
+    [decode] 250/1200 视频  83s
+    [decode] 300/1200 视频  99s
+    [decode] 350/1200 视频  116s
+    [decode] 400/1200 视频  129s
+    [decode] 450/1200 视频  143s
+    [decode] 500/1200 视频  160s
+    [decode] 550/1200 视频  177s
+    [decode] 600/1200 视频  195s
+    [decode] 650/1200 视频  211s
+    [decode] 700/1200 视频  228s
+    [decode] 750/1200 视频  241s
+    [decode] 800/1200 视频  253s
+    [decode] 850/1200 视频  269s
+    [decode] 900/1200 视频  284s
+    [decode] 950/1200 视频  300s
+    [decode] 1000/1200 视频  314s
+    [decode] 1050/1200 视频  328s
+    [decode] 1100/1200 视频  344s
+    [decode] 1150/1200 视频  362s
+    [decode] 1200/1200 视频  381s
+  val 解码完成：1200 视频 × 2 窗  381s
+
+=== p2_anchor_seed43/epoch_1_model.pt  boundary=False pose=无
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights:  15%|█▍        | 107/727 [00:00<00:00, 1034.95it/s]Loading weights:  29%|██▉       | 211/727 [00:00<00:00, 943.52it/s] Loading weights:  42%|████▏     | 306/727 [00:00<00:00, 900.80it/s]Loading weights:  55%|█████▍    | 397/727 [00:00<00:00, 868.23it/s]Loading weights:  68%|██████▊   | 491/727 [00:00<00:00, 881.25it/s]Loading weights:  80%|███████▉  | 580/727 [00:00<00:00, 874.97it/s]Loading weights:  92%|█████████▏| 668/727 [00:00<00:00, 869.57it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 904.48it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 epoch_1_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 746 个 = 冻结主干（预期）
+    [p2_anchor_seed43] 8/2400 窗  3s
+    [p2_anchor_seed43] 808/2400 窗  252s
+    [p2_anchor_seed43] 1608/2400 窗  502s
+  → val_avg_f1=0.8150  帧数=96000  每视频帧数=[80]  耗时=749.8s
+  [checkpoint] 已落盘 1/3 → logs/phase11/p2_rerun_probe/anchor.json
+
+=== p2_anchor_seed43/epoch_2_model.pt  boundary=False pose=无
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 7786.27it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 epoch_2_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 746 个 = 冻结主干（预期）
+    [p2_anchor_seed43] 8/2400 窗  2s
+    [p2_anchor_seed43] 808/2400 窗  253s
+    [p2_anchor_seed43] 1608/2400 窗  503s
+  → val_avg_f1=0.8096  帧数=96000  每视频帧数=[80]  耗时=750.1s
+  [checkpoint] 已落盘 2/3 → logs/phase11/p2_rerun_probe/anchor.json
+
+=== p2_anchor_seed43/epoch_3_model.pt  boundary=False pose=无
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 7775.47it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 epoch_3_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 746 个 = 冻结主干（预期）
+    [p2_anchor_seed43] 8/2400 窗  2s
+    [p2_anchor_seed43] 808/2400 窗  253s
+    [p2_anchor_seed43] 1608/2400 窗  503s
+  → val_avg_f1=0.7505  帧数=96000  每视频帧数=[80]  耗时=750.2s
+  [checkpoint] 已落盘 3/3 → logs/phase11/p2_rerun_probe/anchor.json
+
+ALL_CKPTS_DONE 已写出 logs/phase11/p2_rerun_probe/anchor.json
+                logs/phase11/p2_rerun_probe/anchor.pv.pt
+[2026-10-08 17:35:01] 阶段① 完成（RERUN：跳过选点，**不写 selection.json**）
+[2026-10-08 17:35:01] 阶段② 候选：epoch_1 epoch_2 epoch_3 
+[2026-10-08 17:35:01] RUN: /root/miniconda3/bin/python -u experiments/eval_p9e1_dual.py --ckpt logs/phase11/p2_anchor_seed43/epoch_1_model.pt --out logs/phase11/p2_anchor_seed43/eval_epoch_1.json --dump_pv logs/phase11/p2_anchor_seed43/pv_epoch_1.pt
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 8284.30it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 epoch_1_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 746 个 = 冻结主干（预期）
+  [200/1200] videos done, skip 0
+  [400/1200] videos done, skip 0
+  [600/1200] videos done, skip 0
+  [800/1200] videos done, skip 0
+  [1000/1200] videos done, skip 0
+  [1200/1200] videos done, skip 0
+Saved: logs/phase11/p2_anchor_seed43/eval_epoch_1.json
+Dumped pv: logs/phase11/p2_anchor_seed43/pv_epoch_1.pt (1200 videos)
+[instance] acc=0.9217 fall_rec=0.9081 fallen_prec=0.7197 fallen_rec=0.7385 avg=0.7986
+[merged] raw ev_f1=0.8083 | canonical=0.8064 | best(K2=5,W=32)=0.8092 fallen_prec=0.7143
+[2026-10-08 17:58:23] RUN: /root/miniconda3/bin/python -u experiments/eval_p9e1_dual.py --ckpt logs/phase11/p2_anchor_seed43/epoch_2_model.pt --out logs/phase11/p2_anchor_seed43/eval_epoch_2.json --dump_pv logs/phase11/p2_anchor_seed43/pv_epoch_2.pt
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 8134.70it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 epoch_2_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 746 个 = 冻结主干（预期）
+  [200/1200] videos done, skip 0
+  [400/1200] videos done, skip 0
+  [600/1200] videos done, skip 0
+  [800/1200] videos done, skip 0
+  [1000/1200] videos done, skip 0
+  [1200/1200] videos done, skip 0
+Saved: logs/phase11/p2_anchor_seed43/eval_epoch_2.json
+Dumped pv: logs/phase11/p2_anchor_seed43/pv_epoch_2.pt (1200 videos)
+[instance] acc=0.9231 fall_rec=0.9268 fallen_prec=0.7384 fallen_rec=0.6471 avg=0.7886
+[merged] raw ev_f1=0.8225 | canonical=0.8229 | best(K2=5,W=32)=0.8232 fallen_prec=0.7331
+[2026-10-08 18:22:19] RUN: /root/miniconda3/bin/python -u experiments/eval_p9e1_dual.py --ckpt logs/phase11/p2_anchor_seed43/epoch_3_model.pt --out logs/phase11/p2_anchor_seed43/eval_epoch_3.json --dump_pv logs/phase11/p2_anchor_seed43/pv_epoch_3.pt
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 10162.40it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 epoch_3_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 746 个 = 冻结主干（预期）
+  [200/1200] videos done, skip 0
+  [400/1200] videos done, skip 0
+  [600/1200] videos done, skip 0
+  [800/1200] videos done, skip 0
+  [1000/1200] videos done, skip 0
+  [1200/1200] videos done, skip 0
+Saved: logs/phase11/p2_anchor_seed43/eval_epoch_3.json
+Dumped pv: logs/phase11/p2_anchor_seed43/pv_epoch_3.pt (1200 videos)
+[instance] acc=0.9188 fall_rec=0.8155 fallen_prec=0.8521 fallen_rec=0.3774 avg=0.7378
+[merged] raw ev_f1=0.7498 | canonical=0.7499 | best(K2=3,W=64)=0.7501 fallen_prec=0.8540
+[2026-10-08 18:46:10] RUN: /root/miniconda3/bin/python -u experiments/eval_timeline_metrics.py epoch_1=logs/phase11/p2_anchor_seed43/pv_epoch_1.pt --out logs/phase11/p2_anchor_seed43/timeline_epoch_1.json
+模型                    n事件  fall_f1 fallen_f1   avg_f1    覆盖率F/N     误报率F/N      延迟中位   翻转(video)    order      满分比
+------------------------------------------------------------------------------------------------------------------
+epoch_1               211   0.7398    0.6734   0.7183 0.967/0.833 0.040/0.042       0.0        0.66    1.000   21/211
+
+== 逐视频 fall_f1 分布（事件视频内）==
+  epoch_1            n=211 | =1.0: 21  0.8-1.0:106  0.5-0.8: 76  0-0.5: 22  =0:  7
+
+Saved: logs/phase11/p2_anchor_seed43/timeline_epoch_1.json
+[2026-10-08 18:46:13] RUN: /root/miniconda3/bin/python -u experiments/eval_timeline_metrics.py epoch_2=logs/phase11/p2_anchor_seed43/pv_epoch_2.pt --out logs/phase11/p2_anchor_seed43/timeline_epoch_2.json
+模型                    n事件  fall_f1 fallen_f1   avg_f1    覆盖率F/N     误报率F/N      延迟中位   翻转(video)    order      满分比
+------------------------------------------------------------------------------------------------------------------
+epoch_2               211   0.7376    0.5990   0.6928 0.972/0.767 0.033/0.031       0.0        0.65    1.000   20/211
+
+== 逐视频 fall_f1 分布（事件视频内）==
+  epoch_2            n=211 | =1.0: 20  0.8-1.0:103  0.5-0.8: 82  0-0.5: 20  =0:  6
+
+Saved: logs/phase11/p2_anchor_seed43/timeline_epoch_2.json
+[2026-10-08 18:46:16] RUN: /root/miniconda3/bin/python -u experiments/eval_timeline_metrics.py epoch_3=logs/phase11/p2_anchor_seed43/pv_epoch_3.pt --out logs/phase11/p2_anchor_seed43/timeline_epoch_3.json
+模型                    n事件  fall_f1 fallen_f1   avg_f1    覆盖率F/N     误报率F/N      延迟中位   翻转(video)    order      满分比
+------------------------------------------------------------------------------------------------------------------
+epoch_3               211   0.6793    0.3864   0.5694 0.882/0.520 0.014/0.010       0.0        0.46    1.000   16/211
+
+== 逐视频 fall_f1 分布（事件视频内）==
+  epoch_3            n=211 | =1.0: 16  0.8-1.0:103  0.5-0.8: 68  0-0.5: 13  =0: 27
+
+Saved: logs/phase11/p2_anchor_seed43/timeline_epoch_3.json
+[2026-10-08 18:46:19] === 阶段② 完成 rc=0 ===
+[2026-10-08 18:46:19] 产物：logs/phase11/p2_anchor_seed43/eval_*.json, pv_best.pt, timeline_*.json；选点：logs/phase11/p2_rerun_probe/selection.json
+[2026-10-08 18:46:19] 下一步（本地）：python -u analysis/p2_judge.py

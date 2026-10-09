@@ -1,0 +1,9 @@
+== P2/anchor launch Thu Oct  8 00:42:19 CST 2026 ==
+   cmd extra: （无，逐字复刻 E1-full）
+   CUDA_VISIBLE_DEVICES=<未设=全部可见>  workers=16
+PID=90393
+ARM_DONE arm=anchor rc=0 @ Thu Oct  8 16:50:30 CST 2026
+EXT_WATCHDOG_EXIT pid=90393 @ Thu Oct  8 16:50:44 CST 2026
+CHAIN_TRIGGER 训练完成，起离线阶段 @ Thu Oct  8 16:50:46 CST 2026
+STALLWATCH_RETIRED 训练进程 90393 已消失，正常退出（非停滞）@ Thu Oct  8 16:52:42 CST 2026
+CHAIN_OFFLINE_DONE rc=0 @ Thu Oct  8 18:46:19 CST 2026

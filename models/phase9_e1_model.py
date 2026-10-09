@@ -77,13 +77,16 @@ class E1Model(nn.Module):
         self.temporal.input_proj.to(torch.float32)
 
     # ------------------------------------------------------------------ forward
-    def forward(self, frames: torch.Tensor) -> torch.Tensor:
+    def forward(self, frames: torch.Tensor, aux: torch.Tensor = None):
         """预处理后的帧窗口 → 帧级三分 logits。
 
         Args:
             frames: (B, T, 3, 224, 224) fp32，DINOv2 mean/std 归一化后的像素。
+            aux: (B, T, D_aux) fp32，可选的外部运动特征（Phase 11 Exp-4 的 pose 12d）。
+                 给定时 concat 到时序特征尾部；时序头的 input_dim 必须已含 D_aux
+                 （由 build_temporal_args 按 --pose_npz 自动加）。
         Returns:
-            logits: (B, T, 3)。
+            logits: (B, T, 3)；开了 boundary head 时为 (logits, boundary_logits)
         """
         B, T = frames.shape[0], frames.shape[1]
         x = frames.reshape(B * T, *frames.shape[2:])                 # (B*T, 3, 224, 224)
@@ -92,8 +95,11 @@ class E1Model(nn.Module):
         cls = cls.reshape(B, T, self.cls_dim).float()                # (B, T, cls_dim) fp32
         diff = torch.zeros_like(cls)
         diff[:, 1:] = cls[:, 1:] - cls[:, :-1]                       # Δdiff，diff[:, 0] = 0
-        feats = torch.cat([cls, diff], dim=-1)                       # (B, T, cls_dim*2)
-        return self.temporal(feats)                                  # (B, T, 3)
+        parts = [cls, diff]
+        if aux is not None:
+            parts.append(aux.float())
+        feats = torch.cat(parts, dim=-1)                             # (B, T, cls*2[+D_aux])
+        return self.temporal(feats)
 
     # ---------------------------------------------------------- construction
     @classmethod
@@ -115,11 +121,17 @@ class E1Model(nn.Module):
         inject_lora(vit, r=lora_rank)
         temporal = None
         if temporal_args is not None:
-            # 头输入维度由骨干决定(=hidden*2)；ckpt 里的 temporal_args 可能存了
-            # 训练时写死的其它骨干值（如 giant 的 3072），此处一律按当前骨干覆写。
-            # 真实形状不匹配会由后续 load_state_dict(temporal_state) 抛错捕获。
-            temporal_args = dict(temporal_args, input_dim=hidden * 2)
-            temporal = Phase6TernaryModel(**temporal_args)
+            # 头输入维度由骨干(=hidden*2) **加上可选外部特征维数** 决定。
+            # ckpt 里的 temporal_args 可能存了训练时写死的其它骨干值（如 giant 的 3072），
+            # 故按当前骨干覆写；但 Exp-4 的 pose 增量必须**保留**——
+            # 直接覆盖成 hidden*2 会把 3072+12 拍回 3072，报
+            # "mat1 and mat2 shapes cannot be multiplied (128x3084 and 3072x384)"。
+            # aux_dim 由 train_p9e1.build_temporal_args 写入并随 ckpt 保存。
+            aux_dim = int(temporal_args.get("aux_dim", 0) or 0)
+            # aux_dim 是 E1Model 层的簿记，不是 Phase6TernaryModel 的构造参数，须剔除
+            head_kwargs = {k: v for k, v in temporal_args.items() if k != "aux_dim"}
+            head_kwargs["input_dim"] = hidden * 2 + aux_dim
+            temporal = Phase6TernaryModel(**head_kwargs)
         return cls(vit, temporal=temporal, lora_rank=lora_rank, cls_dim=hidden).to(device)
 
     # ---------------------------------------------------------- reload

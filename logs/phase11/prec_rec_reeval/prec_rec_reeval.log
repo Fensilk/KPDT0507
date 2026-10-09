@@ -1,0 +1,56 @@
+===== 前沿曲线重评启动 Wed Sep 30 06:07:45 CST 2026 =====
+== a0_2000 start Wed Sep 30 06:07:45 CST 2026 ==
+/root/miniconda3/lib/python3.10/site-packages/torchvision/io/image.py:13: UserWarning: Failed to load image Python extension: '/root/miniconda3/lib/python3.10/site-packages/torchvision/image.so: undefined symbol: _ZN3c1017RegisterOperatorsD1Ev'If you don't plan on using image functionality from `torchvision.io`, you can ignore this warning. Otherwise, there might be something wrong with your environment. Did you have `libjpeg` or `libpng` installed before building `torchvision` from source?
+  warn(
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights:  68%|██████▊   | 491/727 [00:00<00:00, 4788.94it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 4350.11it/s]
+/root/miniconda3/lib/python3.10/site-packages/torch/nn/modules/transformer.py:379: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 best_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 746 个 = 冻结主干（预期）
+  [200/1200] videos done, skip 0
+  [400/1200] videos done, skip 0
+  [600/1200] videos done, skip 0
+  [800/1200] videos done, skip 0
+  [1000/1200] videos done, skip 0
+  [1200/1200] videos done, skip 0
+Saved: logs/phase11/a0_2000/eval_best_probs.json
+Dumped pv: logs/phase11/a0_2000/pv_best_probs.pt (1200 videos)
+[instance] acc=0.9161 fall_rec=0.7277 fallen_prec=0.7025 fallen_rec=0.5928 avg=0.7600
+[merged] raw ev_f1=0.7643 | canonical=0.7322 | best(K2=3,W=64)=0.7609 fallen_prec=0.7068
+== a0_2000 done rc=0 Wed Sep 30 06:59:03 CST 2026 ==
+== w1_1a start Wed Sep 30 06:59:03 CST 2026 ==
+/root/miniconda3/lib/python3.10/site-packages/torchvision/io/image.py:13: UserWarning: Failed to load image Python extension: '/root/miniconda3/lib/python3.10/site-packages/torchvision/image.so: undefined symbol: _ZN3c1017RegisterOperatorsD1Ev'If you don't plan on using image functionality from `torchvision.io`, you can ignore this warning. Otherwise, there might be something wrong with your environment. Did you have `libjpeg` or `libpng` installed before building `torchvision` from source?
+  warn(
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights:  73%|███████▎  | 529/727 [00:00<00:00, 5289.05it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 4672.42it/s]
+/root/miniconda3/lib/python3.10/site-packages/torch/nn/modules/transformer.py:379: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 best_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 748 个 = 冻结主干（预期）
+  [200/1200] videos done, skip 0
+  [400/1200] videos done, skip 0
+  [600/1200] videos done, skip 0
+  [800/1200] videos done, skip 0
+  [1000/1200] videos done, skip 0
+  [1200/1200] videos done, skip 0
+Saved: logs/phase11/w1_1a/eval_best_probs.json
+Dumped pv: logs/phase11/w1_1a/pv_best_probs.pt (1200 videos)
+[instance] acc=0.9185 fall_rec=0.7973 fallen_prec=0.6312 fallen_rec=0.7492 avg=0.7879
+[merged] raw ev_f1=0.7916 | canonical=0.7828 | best(K2=3,W=32)=0.7894 fallen_prec=0.6221
+== w1_1a done rc=0 Wed Sep 30 07:50:18 CST 2026 ==
+== w1_a0cos start Wed Sep 30 07:50:18 CST 2026 ==
+/root/miniconda3/lib/python3.10/site-packages/torchvision/io/image.py:13: UserWarning: Failed to load image Python extension: '/root/miniconda3/lib/python3.10/site-packages/torchvision/image.so: undefined symbol: _ZN3c1017RegisterOperatorsD1Ev'If you don't plan on using image functionality from `torchvision.io`, you can ignore this warning. Otherwise, there might be something wrong with your environment. Did you have `libjpeg` or `libpng` installed before building `torchvision` from source?
+  warn(
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 10731.76it/s]
+/root/miniconda3/lib/python3.10/site-packages/torch/nn/modules/transformer.py:379: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 best_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 746 个 = 冻结主干（预期）
+  [200/1200] videos done, skip 0
+  [400/1200] videos done, skip 0
+  [600/1200] videos done, skip 0
+  [800/1200] videos done, skip 0
+  [1000/1200] videos done, skip 0
+  [1200/1200] videos done, skip 0
+Saved: logs/phase11/w1_a0cos/eval_best_probs.json
+Dumped pv: logs/phase11/w1_a0cos/pv_best_probs.pt (1200 videos)
+[instance] acc=0.8908 fall_rec=0.6982 fallen_prec=0.4996 fallen_rec=0.8729 avg=0.7485
+[merged] raw ev_f1=0.7400 | canonical=0.6996 | best(K2=3,W=32)=0.7425 fallen_prec=0.4923
+== w1_a0cos done rc=0 Wed Sep 30 08:41:39 CST 2026 ==
+ALL_DONE_PROBS Wed Sep 30 08:41:39 CST 2026

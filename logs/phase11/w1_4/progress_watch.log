@@ -1,0 +1,39 @@
+=== 2026-10-02 10:54:59 ===
+  aux_static loss: 关（λ=0，训练行为与基线一致）
+=== 2026-10-02 11:24:59 ===
+step 350 | loss 1.6123 | fall/fallen/normal acc 0.324/0.233/0.960 | lr 1.00e-04
+=== 2026-10-02 11:54:58 ===
+step 650 | loss 1.1466 | fall/fallen/normal acc 0.560/0.362/0.962 | lr 1.00e-04
+=== 2026-10-02 12:24:58 ===
+step 1000 | loss 0.7100 | fall/fallen/normal acc 0.635/0.353/0.969 | lr 1.00e-04
+=== 2026-10-02 12:54:58 ===
+step 1350 | loss 0.3194 | fall/fallen/normal acc 0.811/0.829/0.951 | lr 1.00e-04
+=== 2026-10-02 13:24:58 ===
+step 1700 | loss 0.3799 | fall/fallen/normal acc 0.732/0.456/0.952 | lr 1.00e-04
+=== 2026-10-02 13:54:58 ===
+step 2050 | loss 0.2601 | fall/fallen/normal acc 0.791/0.852/0.961 | lr 1.00e-04
+=== 2026-10-02 14:24:58 ===
+step 2400 | loss 0.2929 | fall/fallen/normal acc 0.714/0.763/0.986 | lr 1.00e-04
+=== 2026-10-02 14:54:58 ===
+step 2700 | loss 0.2880 | fall/fallen/normal acc 0.863/0.859/0.978 | lr 1.00e-04
+=== 2026-10-02 15:24:58 ===
+step 3050 | loss 0.1237 | fall/fallen/normal acc 0.897/0.867/0.982 | lr 1.00e-04
+=== 2026-10-02 15:54:58 ===
+step 3400 | loss 0.2105 | fall/fallen/normal acc 0.673/0.830/0.986 | lr 1.00e-04
+=== 2026-10-02 16:24:58 ===
+step 3750 | loss 0.1548 | fall/fallen/normal acc 0.714/0.953/0.988 | lr 1.00e-04
+=== 2026-10-02 16:54:58 ===
+step 4100 | loss 0.1155 | fall/fallen/normal acc 0.923/0.900/0.992 | lr 1.00e-04
+=== 2026-10-02 17:24:58 ===
+step 4400 | loss 0.1683 | fall/fallen/normal acc 0.903/0.699/0.974 | lr 1.00e-04
+=== 2026-10-02 17:54:58 ===
+step 4750 | loss 0.2183 | fall/fallen/normal acc 0.859/0.944/0.979 | lr 1.00e-04
+=== 2026-10-02 18:24:58 ===
+step 5100 | loss 0.1115 | fall/fallen/normal acc 0.890/0.901/0.982 | lr 1.00e-04
+=== 2026-10-02 18:54:58 ===
+  [BEST] 新最优 f1=0.8486 → best_model.pt
+=== 2026-10-02 19:24:58 ===
+step 5800 | loss 0.0515 | fall/fallen/normal acc 0.857/0.869/0.996 | lr 1.00e-04
+=== 2026-10-02 19:54:58 ===
+[TOTAL] 6000 步, 31737.6s
+ALL_DONE arm=4 verdict=done rc=0 @ Fri Oct  2 19:44:35 CST 2026

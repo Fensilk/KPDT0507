@@ -1,0 +1,9 @@
+== P2/4 launch Wed Oct  7 19:28:44 CST 2026 ==
+   cmd extra: --pose_npz data/omnifall_pose_semantic_accel.npz
+   CUDA_VISIBLE_DEVICES=<未设=全部可见>  workers=16
+PID=5091
+ARM_DONE arm=4 rc=0 @ Thu Oct  8 11:43:24 CST 2026
+EXT_WATCHDOG_EXIT pid=5091 @ Thu Oct  8 11:43:37 CST 2026
+CHAIN_TRIGGER 训练完成，起离线阶段 @ Thu Oct  8 11:43:53 CST 2026
+STALLWATCH_RETIRED 训练进程 5091 已消失，正常退出（非停滞）@ Thu Oct  8 11:44:12 CST 2026
+CHAIN_OFFLINE_DONE rc=0 @ Fri Oct  9 00:05:11 CST 2026

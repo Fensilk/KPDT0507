@@ -1,0 +1,48 @@
+========== 0) 环境 ==========
+  python      : 3.12.3
+  torch       : 2.8.0+cu128
+  torch CUDA  : 12.8
+  支持算力 sm : ['sm_70', 'sm_75', 'sm_80', 'sm_86', 'sm_90', 'sm_100', 'sm_120']
+  设备        : NVIDIA GeForce RTX 5090  算力 sm_120
+  显存        : 31.4 GB
+  ⚠ 本 torch 构建**包含** sm_120 的 kernel
+
+========== 1) 前向连通性（sm_120 真正的判据）==========
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 8228.14it/s]
+  ✅ DINOv2-giant 前向通过，输出 (1, 257, 1536)
+  → **sm_120 兼容性 = 通过**
+
+========== 2) 真实训练步（测 s/step，同时采 GPU）==========
+[1] 加载 facebook/dinov2-giant(fp16) + LoRA(r=16) + Phase6 bridge 头
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights:  95%|█████████▍| 690/727 [00:00<00:00, 6878.41it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 6890.09it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+  梯度 checkpointing: True
+  可训练参数: 10.82M (LoRA + 时序头；主干冻结 fp16)
+[2] mp4 现解码数据集: smoke_5090_manifest.csv (window=64, stride=16, workers=16)
+  训练视频: 200 | 窗口: 400 | 类权重 fall/fallen/normal: [1.533, 1.332, 0.135]
+  aux_static loss: 关（λ=0，训练行为与基线一致）
+step 10 | loss 3.1080 | fall/fallen/normal acc 0.000/0.000/0.781 | lr 1.00e-04
+step 20 | loss 1.0318 | fall/fallen/normal acc 0.000/0.000/1.000 | lr 1.00e-04
+step 30 | loss 2.3814 | fall/fallen/normal acc 0.000/0.000/1.000 | lr 1.00e-04
+step 40 | loss 3.7588 | fall/fallen/normal acc 0.238/0.016/0.979 | lr 1.00e-04
+[EPOCH 1] 完成，已存 epoch_1_model.pt
+[DONE] 已存 last_model.pt
+[STOP] 原因: max_steps=40 达到
+[TOTAL] 40 步, 80.1s
+  train rc=0
+    step 10 | loss 3.1080 | fall/fallen/normal acc 0.000/0.000/0.781 | lr 1.00e-04
+    step 20 | loss 1.0318 | fall/fallen/normal acc 0.000/0.000/1.000 | lr 1.00e-04
+    step 30 | loss 2.3814 | fall/fallen/normal acc 0.000/0.000/1.000 | lr 1.00e-04
+    step 40 | loss 3.7588 | fall/fallen/normal acc 0.238/0.016/0.979 | lr 1.00e-04
+    [DONE] 已存 last_model.pt
+    [TOTAL] 40 步, 80.1s
+
+========== 3) 结果 ==========
+  s/step = 2.002 s   （40 步 / 80.1s）
+  对照 3090 的 5.380 s/步 → **加速比 2.69×**
+  （参考：A100-40G 的估算加速比是 2.70×）
+  GPU util 中位 100%  P10 0%  显存峰值 11743 MiB
+  → util ≥90%：管线跟得上，**GPU 是瓶颈**，换卡的加速比按算力比兑现
+
+  ⚠ 本冒烟只验兼容性与速度，**不出任何指标**（数据是裁剪过的 200 视频）。

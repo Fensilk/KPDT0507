@@ -1,0 +1,171 @@
+{
+  "global_baseline_rate_fall": 0.019911827747466873,
+  "total_fall_fp_frames": 1635,
+  "per_class": [
+    {
+      "id": 0,
+      "name": "walk",
+      "n_frames": 10893,
+      "n_videos": 175,
+      "rate_fall": 0.007711374277058662,
+      "rate_fallen": 0.0,
+      "fall_fp_frames": 84,
+      "share_of_fall_fp": 0.05137614678899083
+    },
+    {
+      "id": 1,
+      "name": "fall",
+      "n_frames": 6509,
+      "n_videos": 211,
+      "rate_fall": 0.8489783376862805,
+      "rate_fallen": 0.04286372714702719,
+      "fall_fp_frames": 5526,
+      "share_of_fall_fp": 3.379816513761468
+    },
+    {
+      "id": 2,
+      "name": "fallen",
+      "n_frames": 7379,
+      "n_videos": 150,
+      "rate_fall": 0.09527036183764738,
+      "rate_fallen": 0.7576907440032524,
+      "fall_fp_frames": 703,
+      "share_of_fall_fp": 0.42996941896024465
+    },
+    {
+      "id": 3,
+      "name": "sit_down",
+      "n_frames": 4652,
+      "n_videos": 139,
+      "rate_fall": 0.0032244196044711954,
+      "rate_fallen": 0.0,
+      "fall_fp_frames": 15,
+      "share_of_fall_fp": 0.009174311926605505
+    },
+    {
+      "id": 4,
+      "name": "sitting",
+      "n_frames": 15765,
+      "n_videos": 275,
+      "rate_fall": 0.0038693307960672376,
+      "rate_fallen": 0.009578179511576277,
+      "fall_fp_frames": 61,
+      "share_of_fall_fp": 0.03730886850152905
+    },
+    {
+      "id": 5,
+      "name": "lie_down",
+      "n_frames": 4844,
+      "n_videos": 118,
+      "rate_fall": 0.04541701073492981,
+      "rate_fallen": 0.007431874483897605,
+      "fall_fp_frames": 220,
+      "share_of_fall_fp": 0.1345565749235474
+    },
+    {
+      "id": 6,
+      "name": "lying",
+      "n_frames": 15601,
+      "n_videos": 256,
+      "rate_fall": 0.0016024613806807256,
+      "rate_fallen": 0.0684571501826806,
+      "fall_fp_frames": 25,
+      "share_of_fall_fp": 0.01529051987767584
+    },
+    {
+      "id": 7,
+      "name": "stand_up",
+      "n_frames": 6684,
+      "n_videos": 178,
+      "rate_fall": 0.030819868342309993,
+      "rate_fallen": 0.04772591262716936,
+      "fall_fp_frames": 206,
+      "share_of_fall_fp": 0.12599388379204893
+    },
+    {
+      "id": 8,
+      "name": "standing",
+      "n_frames": 12706,
+      "n_videos": 231,
+      "rate_fall": 0.002124980324256257,
+      "rate_fallen": 0.0,
+      "fall_fp_frames": 27,
+      "share_of_fall_fp": 0.01651376146788991
+    },
+    {
+      "id": 9,
+      "name": "other",
+      "n_frames": 9093,
+      "n_videos": 136,
+      "rate_fall": 0.09754756406026614,
+      "rate_fallen": 0.00736830528978335,
+      "fall_fp_frames": 887,
+      "share_of_fall_fp": 0.5425076452599389
+    },
+    {
+      "id": 10,
+      "name": "kneel_down",
+      "n_frames": 31,
+      "n_videos": 1,
+      "rate_fall": 0.0,
+      "rate_fallen": 0.0,
+      "fall_fp_frames": 0,
+      "share_of_fall_fp": 0.0
+    },
+    {
+      "id": 11,
+      "name": "kneeling",
+      "n_frames": 529,
+      "n_videos": 15,
+      "rate_fall": 0.0,
+      "rate_fallen": 0.0,
+      "fall_fp_frames": 0,
+      "share_of_fall_fp": 0.0
+    },
+    {
+      "id": 12,
+      "name": "squat_down",
+      "n_frames": 220,
+      "n_videos": 5,
+      "rate_fall": 0.09545454545454546,
+      "rate_fallen": 0.0,
+      "fall_fp_frames": 21,
+      "share_of_fall_fp": 0.012844036697247707
+    },
+    {
+      "id": 13,
+      "name": "squatting",
+      "n_frames": 152,
+      "n_videos": 5,
+      "rate_fall": 0.039473684210526314,
+      "rate_fallen": 0.0,
+      "fall_fp_frames": 6,
+      "share_of_fall_fp": 0.003669724770642202
+    },
+    {
+      "id": 14,
+      "name": "crawl",
+      "n_frames": 421,
+      "n_videos": 8,
+      "rate_fall": 0.007125890736342043,
+      "rate_fallen": 0.0,
+      "fall_fp_frames": 3,
+      "share_of_fall_fp": 0.001834862385321101
+    },
+    {
+      "id": 15,
+      "name": "jump",
+      "n_frames": 521,
+      "n_videos": 11,
+      "rate_fall": 0.15355086372360843,
+      "rate_fallen": 0.0,
+      "fall_fp_frames": 80,
+      "share_of_fall_fp": 0.04892966360856269
+    }
+  ],
+  "suggested_pool": [
+    "other",
+    "lie_down"
+  ],
+  "pool_criterion": "rate_fall >= 2x baseline AND share_of_fall_fp >= 5%"
+}

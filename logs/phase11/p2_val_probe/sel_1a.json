@@ -1,0 +1,8 @@
+{
+  "1a": "step_12000",
+  "1a_val_avg_f1": 0.8349,
+  "1a_runner_up": "step_19200",
+  "1a_runner_up_val": 0.8317,
+  "1a_n_candidates": 48,
+  "1a_val_spread_top1_top2": 0.0032
+}

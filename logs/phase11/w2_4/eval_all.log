@@ -1,0 +1,50 @@
+== EVAL best (full 1200, dump_pv) start @ Mon Oct  5 15:32:29 CST 2026 ==
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 8257.62it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 best_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 746 个 = 冻结主干（预期）
+  [200/1200] videos done, skip 0
+  [400/1200] videos done, skip 0
+  [600/1200] videos done, skip 0
+  [800/1200] videos done, skip 0
+  [1000/1200] videos done, skip 0
+  [1200/1200] videos done, skip 0
+Saved: logs/phase11/w2_4/eval_best_model.json
+Dumped pv: logs/phase11/w2_4/pv_best.pt (1200 videos)
+[instance] acc=0.9413 fall_rec=0.7668 fallen_prec=0.8071 fallen_rec=0.7017 avg=0.8300
+[merged] raw ev_f1=0.8236 | canonical=0.8150 | best(K2=3,W=64)=0.8203 fallen_prec=0.8048
+== EVAL best done rc=0 @ Mon Oct  5 15:56:24 CST 2026 ==
+== EVAL epoch_1_model (subset 300) start @ Mon Oct  5 15:56:24 CST 2026 ==
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 8908.20it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 epoch_1_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 746 个 = 冻结主干（预期）
+[subset] 从全集随机抽取 300 个视频评测（seed=42，确定性可复现）
+  [200/300] videos done, skip 0
+Saved: logs/phase11/w2_4/eval_epoch_1_model.subset.json
+[instance] acc=0.9359 fall_rec=0.8775 fallen_prec=0.8002 fallen_rec=0.8114 avg=0.8372
+[merged] raw ev_f1=0.8543 | canonical=0.8441 | best(K2=3,W=32)=0.8543 fallen_prec=0.7940
+== EVAL epoch_1_model done rc=0 @ Mon Oct  5 16:02:29 CST 2026 ==
+== EVAL epoch_2_model (subset 300) start @ Mon Oct  5 16:02:29 CST 2026 ==
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 8854.27it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 epoch_2_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 746 个 = 冻结主干（预期）
+[subset] 从全集随机抽取 300 个视频评测（seed=42，确定性可复现）
+  [200/300] videos done, skip 0
+Saved: logs/phase11/w2_4/eval_epoch_2_model.subset.json
+[instance] acc=0.9357 fall_rec=0.8166 fallen_prec=0.6989 fallen_rec=0.8817 avg=0.8425
+[merged] raw ev_f1=0.8395 | canonical=0.8398 | best(K2=5,W=32)=0.8408 fallen_prec=0.6830
+== EVAL epoch_2_model done rc=0 @ Mon Oct  5 16:08:35 CST 2026 ==
+== EVAL epoch_3_model (subset 300) start @ Mon Oct  5 16:08:35 CST 2026 ==
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 8147.11it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 epoch_3_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 746 个 = 冻结主干（预期）
+[subset] 从全集随机抽取 300 个视频评测（seed=42，确定性可复现）
+  [200/300] videos done, skip 0
+Saved: logs/phase11/w2_4/eval_epoch_3_model.subset.json
+[instance] acc=0.9451 fall_rec=0.8342 fallen_prec=0.8033 fallen_rec=0.7578 avg=0.8432
+[merged] raw ev_f1=0.8794 | canonical=0.8689 | best(K2=3,W=32)=0.8802 fallen_prec=0.7932
+== EVAL epoch_3_model done rc=0 @ Mon Oct  5 16:14:42 CST 2026 ==
+ALL_EVAL_DONE @ Mon Oct  5 16:14:42 CST 2026

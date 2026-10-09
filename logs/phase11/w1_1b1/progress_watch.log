@@ -1,0 +1,39 @@
+=== 2026-09-30 23:35:14 ===
+step 50 | loss 2.5178 | fall/fallen/normal acc 0.524/0.524/0.158 | lr 1.00e-04
+=== 2026-10-01 00:05:14 ===
+step 400 | loss 0.6683 | fall/fallen/normal acc 0.827/0.767/0.775 | lr 1.00e-04
+=== 2026-10-01 00:35:14 ===
+step 750 | loss 0.4630 | fall/fallen/normal acc 0.892/0.849/0.869 | lr 1.00e-04
+=== 2026-10-01 01:05:14 ===
+step 1100 | loss 0.2989 | fall/fallen/normal acc 0.912/0.920/0.888 | lr 1.00e-04
+=== 2026-10-01 01:35:14 ===
+step 1400 | loss 0.3488 | fall/fallen/normal acc 0.921/0.940/0.874 | lr 1.00e-04
+=== 2026-10-01 02:05:14 ===
+step 1750 | loss 0.2609 | fall/fallen/normal acc 0.944/0.948/0.819 | lr 1.00e-04
+=== 2026-10-01 02:35:14 ===
+step 2100 | loss 0.1859 | fall/fallen/normal acc 0.945/0.941/0.903 | lr 1.00e-04
+=== 2026-10-01 03:05:14 ===
+step 2450 | loss 0.1775 | fall/fallen/normal acc 0.954/0.937/0.897 | lr 1.00e-04
+=== 2026-10-01 03:35:14 ===
+step 2800 | loss 0.1532 | fall/fallen/normal acc 0.963/0.966/0.930 | lr 1.00e-04
+=== 2026-10-01 04:05:14 ===
+step 3100 | loss 0.3033 | fall/fallen/normal acc 0.948/0.972/0.901 | lr 1.00e-04
+=== 2026-10-01 04:35:14 ===
+step 3450 | loss 0.0976 | fall/fallen/normal acc 0.988/0.988/0.927 | lr 1.00e-04
+=== 2026-10-01 05:05:14 ===
+step 3800 | loss 0.0516 | fall/fallen/normal acc 0.987/0.980/0.951 | lr 1.00e-04
+=== 2026-10-01 05:35:14 ===
+step 4150 | loss 0.0600 | fall/fallen/normal acc 0.988/0.992/0.938 | lr 1.00e-04
+=== 2026-10-01 06:05:14 ===
+step 4500 | loss 0.0394 | fall/fallen/normal acc 0.996/0.994/0.946 | lr 1.00e-04
+=== 2026-10-01 06:35:14 ===
+[VAL] step 4800 | f1 0.8457 | fallen prec 0.8277 rec 0.8866 | train_loss 0.0547
+=== 2026-10-01 07:05:14 ===
+step 5150 | loss 0.0351 | fall/fallen/normal acc 0.988/0.999/0.974 | lr 1.00e-04
+=== 2026-10-01 07:35:14 ===
+step 5500 | loss 0.0103 | fall/fallen/normal acc 0.999/0.997/0.985 | lr 1.00e-04
+=== 2026-10-01 08:05:14 ===
+step 5850 | loss 0.1877 | fall/fallen/normal acc 0.997/0.973/0.954 | lr 1.00e-04
+=== 2026-10-01 08:35:14 ===
+[TOTAL] 6000 步, 31770.4s
+ALL_DONE arm=1b1 verdict=done rc=0 @ Thu Oct  1 08:18:36 CST 2026
