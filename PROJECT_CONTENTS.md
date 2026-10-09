@@ -167,7 +167,7 @@
 
 | 目录 | 体积 | 具体内容 |
 |---|---|---|
-| `ref_frames/` | ~25G（**97.2 万文件**） | Phase 10 全画面抽帧缓存；`experiments/prep_p10_frames.py` 可重生成，故 gitignored。<br>（由 `data/` 总计 103G 减去其余各项反推，2026-10-09 实测） |
+| `ref_frames/` | ~25G（**97.2 万文件**） | Phase 10 全画面抽帧缓存（`<class>/<video>/img_00001..00081.jpg`）。<br>**✅ 已核实可完整重建 → 属纯可弃缓存**：脚本 `experiments/prep_p10_frames.py` 确定性（无 RNG、无外部下载）、可断点续跑；输入全在本地（12,000 源 mp4 + `splits/syn/random/` + `av_decode.py`）。<br>且其**产物已留档** —— `logs/phase10/` 有 116 个文件入库（88 json + 15 log + 10 npz + 3 png），Phase 10 结论不依赖重放。<br>（体积由 `data/` 总计 103G 减其余各项反推，2026-10-09 实测） |
 
 其它：`cifar-10-python.tar.gz`（163M）+ `cifar-10-batches-py/`（178M，与本项目无关的遗留）、
 `tsm_k400_r50_8f.pth`（98M，Phase 10 TSM 预训练权重；`*.pth` 不在 LFS 规则里，故 gitignored）。

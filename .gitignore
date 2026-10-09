@@ -26,7 +26,10 @@ data/p9_features_finetuned/
 data/p9e1_frames/
 data/p9e1_frames_val/
 
-# Phase 10 全画面抽帧缓存（23 GB / 97 万文件；experiments/prep_p10_frames.py 可重生成）
+# Phase 10 全画面抽帧缓存（~25 GB / 97 万文件）—— 已核实可完整重建，属纯可弃缓存：
+#   脚本 experiments/prep_p10_frames.py 确定性、可断点续跑；输入全在本地
+#   （12,000 源 mp4 + splits/syn/random/ + preprocessing/av_decode.py）；无 RNG、无外部下载。
+#   其产物亦已留档：logs/phase10/ 有 116 个文件入库。故本地可随时删除重生成。
 data/ref_frames/
 data/.frames_geometry_squash
 
