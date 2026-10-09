@@ -73,3 +73,10 @@ AGENTS.md
 
 # E1-full 本地日志镜像（内容与 run.log / eval_dump.log 重复）
 logs/phase9/e1_full/*.live.log
+
+# 根目录两份工程备忘 —— 只留本地磁盘，不入库（2026-10-09 定）
+#   autodl_gpu_pricing.md    换卡报价 + 换卡预测式
+#   A100_W2_上机清单.md       A100 实例上机步骤
+/autodl_gpu_pricing.md
+/A100_W2_上机清单.md
+
