@@ -1,0 +1,5 @@
+== valprobe launch Tue Oct  6 22:01:58 CST 2026 ==
+   ckpts: logs/phase9/e1_full/best_model.pt logs/phase9/e1_full/epoch_1_model.pt logs/phase9/e1_full/epoch_2_model.pt logs/phase9/e1_full/epoch_3_model.pt logs/phase11/w2_1a/best_model.pt logs/phase11/w2_1a/epoch_1_model.pt logs/phase11/w2_1a/epoch_2_model.pt logs/phase11/w2_1a/epoch_3_model.pt logs/phase11/w2_4/best_model.pt logs/phase11/w2_4/epoch_1_model.pt logs/phase11/w2_4/epoch_2_model.pt logs/phase11/w2_4/epoch_3_model.pt
+PID=63894
+ALL_DONE rc=0 @ Wed Oct  7 00:38:01 CST 2026
+ALL_DONE_EXT rc=127 @ Wed Oct  7 00:38:13 CST 2026

@@ -1,0 +1,9 @@
+== P2/1a launch Wed Oct  7 19:23:00 CST 2026 ==
+   cmd extra: --use_boundary_head --boundary_lambda 0.3
+   CUDA_VISIBLE_DEVICES=<未设=全部可见>  workers=16
+PID=4860
+EXT_WATCHDOG_EXIT pid=4860 @ Thu Oct  8 11:30:07 CST 2026
+ARM_DONE arm=1a rc=0 @ Thu Oct  8 11:30:10 CST 2026
+CHAIN_TRIGGER 训练完成，起离线阶段 @ Thu Oct  8 11:31:26 CST 2026
+STALLWATCH_RETIRED 训练进程 4860 已消失，正常退出（非停滞）@ Thu Oct  8 11:34:09 CST 2026
+CHAIN_OFFLINE_DONE rc=0 @ Thu Oct  8 23:40:22 CST 2026

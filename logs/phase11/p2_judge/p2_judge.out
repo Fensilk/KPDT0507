@@ -1,0 +1,90 @@
+============================================================================================
+P2 判读（R1 / R3）—— R2 已撤销，见预登记 §2.1
+============================================================================================
+【R1】环境效应：p2_anchor vs 已发表 E1-full（环境 + 一次重训，混合）
+  val 曲线：可比 48/48 点（每 600 步）
+    val_avg_f1 差（新 − 旧）：均值 -0.0012  中位 -0.0028  极差 -0.0458~+0.0638  |差| 中位 0.0137
+    step 9600 (ep1 末)      新 0.8571  旧 0.8512  Δ +0.0060
+    step 19200 (ep2 末)     新 0.8201  旧 0.8327  Δ -0.0126
+    step 28800 (ep3 末)     新 0.8663  旧 0.8500  Δ +0.0163
+  test 逐 ckpt：
+  新 anchor/best              （无评测）
+  旧 E1-full/best             n=1200  avg_f1(inst) 0.8268  fall_prec 0.6951  fallen_prec 0.7551  avg_f1(merged) 0.8296
+  新 anchor/epoch_1           n=1200  avg_f1(inst) 0.8027  fall_prec 0.5778  fallen_prec 0.7506  avg_f1(merged) 0.8072
+  旧 E1-full/epoch_1          （无评测）
+  新 anchor/epoch_2           n=1200  avg_f1(inst) 0.7664  fall_prec 0.5614  fallen_prec 0.8034  avg_f1(merged) 0.7743
+  旧 E1-full/epoch_2          n=1200  avg_f1(inst) 0.7770  fall_prec 0.5840  fallen_prec 0.7656  avg_f1(merged) 0.7809
+  新 anchor/epoch_3           n=1200  avg_f1(inst) 0.8063  fall_prec 0.6311  fallen_prec 0.6860  avg_f1(merged) 0.8077
+  旧 E1-full/epoch_3          n=1200  avg_f1(inst) 0.7649  fall_prec 0.5592  fallen_prec 0.7559  avg_f1(merged) 0.7682
+
+【R3】曲线判定：p2_<臂> vs p2_anchor（调用冻结的 judge_w1_arm.py，与画图同源）
+  ── 1a: 判定：【不确定带 ⚠】
+     fall        0.7187     0.7455   +0.0268   交叉：低召回端（R≈0.50）p2_anchor 更好；高召回端（R≈0.95）本臂 更好；全区间均值 +0.0061（正 = 本臂 更好）
+     fallen      0.5997     0.6884   +0.0887   交叉：低召回端（R≈0.50）本臂 更好；高召回端（R≈0.95）p2_anchor 更好；全区间均值 +0.0531（正 = 本臂 更好）
+  ── 4: 判定：【强通过 ✅】
+     fall        0.7187     0.7642   +0.0454   本臂 支配 p2_anchor（同召回下精度处处不低，均值高 +0.0335）
+     fallen      0.5997     0.7373   +0.1376   交叉：低召回端（R≈0.50）本臂 更好；高召回端（R≈0.95）p2_anchor 更好；全区间均值 +0.0815（正 = 本臂 更好）
+
+【R3】§7.3 五项（阈值取自已发表 E1-full，**冻结**）
+  ── anchor（选中 step_13800）：**2/5**
+    fall_prec          阈值 gt 0.6951   实测 0.7216   ✅
+    fall_rec           阈值 ge 0.8205   实测 0.7777   ❌
+    timeline_fall_f1   阈值 gt 0.7827   实测 0.7558   ❌
+    fallen_prec        阈值 ge 0.7351   实测 0.6240   ❌
+    timeline_avg_f1    阈值 ge 0.7213   实测 0.7287   ✅
+  ── 1a（选中 step_12000）：**3/5**
+    fall_prec          阈值 gt 0.6951   实测 0.6828   ❌
+    fall_rec           阈值 ge 0.8205   实测 0.8414   ✅
+    timeline_fall_f1   阈值 gt 0.7827   实测 0.7944   ✅
+    fallen_prec        阈值 ge 0.7351   实测 0.6689   ❌
+    timeline_avg_f1    阈值 ge 0.7213   实测 0.7622   ✅
+  ── 4（选中 step_13800）：**5/5**
+    fall_prec          阈值 gt 0.6951   实测 0.7274   ✅
+    fall_rec           阈值 ge 0.8205   实测 0.8300   ✅
+    timeline_fall_f1   阈值 gt 0.7827   实测 0.7897   ✅
+    fallen_prec        阈值 ge 0.7351   实测 0.7841   ✅
+    timeline_avg_f1    阈值 ge 0.7213   实测 0.7353   ✅
+
+============================================================================================
+【复跑】同环境换 seed（p2_anchor_seed43）—— 预登记 §4b：**只报描述、不设阈值**
+============================================================================================
+
+  ① 曲线口径值 P@R=0.80（参照 run = p2_anchor）
+    p2_anchor                epoch_1   P@R fall=0.7471 fallen=0.7170   Δ(本run−参照) fall= n/a  fallen= n/a 
+    p2_anchor                epoch_2   P@R fall=0.7500 fallen=0.6982   Δ(本run−参照) fall= n/a  fallen= n/a 
+    p2_anchor                epoch_3   P@R fall=0.7837 fallen=0.6409   Δ(本run−参照) fall= n/a  fallen= n/a 
+    p2_anchor_seed43         epoch_1   P@R fall=0.7460 fallen=0.6959   Δ(本run−参照) fall=-0.0011 fallen=-0.0211
+    p2_anchor_seed43         epoch_2   P@R fall=0.7703 fallen=0.6723   Δ(本run−参照) fall=+0.0202 fallen=-0.0259
+    p2_anchor_seed43         epoch_3   P@R fall=0.6913 fallen=0.5022   Δ(本run−参照) fall=-0.0925 fallen=-0.1387
+    p2_1a                    epoch_1   P@R fall=0.7700 fallen=0.6602   Δ(本run−参照) fall=+0.0229 fallen=-0.0568
+    p2_1a                    epoch_2   P@R fall=0.7552 fallen=0.6076   Δ(本run−参照) fall=+0.0052 fallen=-0.0907
+    p2_1a                    epoch_3   P@R fall=0.6639 fallen=0.5031   Δ(本run−参照) fall=-0.1198 fallen=-0.1378
+    p2_4                     epoch_1   P@R fall=0.7196 fallen=0.7022   Δ(本run−参照) fall=-0.0275 fallen=-0.0148
+    p2_4                     epoch_2   P@R fall=0.7575 fallen=0.6896   Δ(本run−参照) fall=+0.0074 fallen=-0.0086
+    p2_4                     epoch_3   P@R fall=0.7458 fallen=0.6417   Δ(本run−参照) fall=-0.0379 fallen=+0.0008
+
+  ② 协同性（§4b）：A−B₁ 与 A−B₂ 在 3 个网格点上的**符号一致数 k/3**
+     A = 臂 ｜ B₁ = p2_anchor（seed42）｜ B₂ = p2_anchor_seed43（seed43）
+       1a  / fall    k=2/3   [ep1同 ep2异 ep3同]
+       1a  / fallen  k=2/3   [ep1同 ep2同 ep3异]
+       4   / fall    k=1/3   [ep1同 ep2异 ep3异]
+       4   / fallen  k=1/3   [ep1异 ep2异 ep3同]
+
+  ③ §7.3 五项通过数（ep1/2/3）—— 两次 anchor **并列原样**，不下判定
+     ⚠ 阈值冻结自 E1-full（不得重算）；五条余量 0–0.02 ≪ 落点噪声 0.076–0.179
+       → 逐项「过/不过」基本是抽签（与 §7.2 被废同因），故只作模式描述
+     p2_anchor（seed42）            ep1=3/5   ep2=2/5   ep3=2/5  
+     p2_anchor_seed43（seed43）     ep1=1/5   ep2=2/5   ep3=1/5  
+     （R2 已撤销 → 本复跑**不产出阈值判定**，只提供上述描述；见预登记 §4b）
+
+【判据优先级】预登记 §2.2：**曲线为主，§7.3 为辅**（自成一体，不引用任何旧结论）
+  §7.3 五条相对锚点余量： {'fall_prec': '0.00', 'fall_rec': '0.01', 'timeline_fall_f1': '0.00', 'fallen_prec': '0.02', 'timeline_avg_f1': '0.02'}
+  已测落点噪声（同臂换 ckpt 摆幅）： {'单点 (A0)': (0.076, 0.179), '曲线 (1a / 4)': (0.021, 0.135)}
+  → **余量 0–0.02 ≪ 噪声 0.02–0.18**：§7.3 各项的「过/不过」基本是抽签（与 §7.2 被废同因）
+  → 因此 §7.3 **只作辅助读数**，判定以曲线口径为准；两者分歧时**如实并列**并说明是'能力 vs 落点'两个量
+  ⚠ 事件轴的洞照旧登记（总结 §8.2 第 1 条），**不靠 §7.3 假装补上**
+
+⚠ 撤 R2 的后果：本实验**不产出纯 run 间 band**。R3 给的是效应量的**点估计**（同环境单变量，效度好），
+   但**没有误差棒**；R1 **不能**充当 band（R1 ≈ δ环境 + ε重跑，单次实现里两者可反号相消，
+   幅度既非上界也非点估计；只有方差口径才有 Var(R1) ≥ Var(ε)，那是分布参数的界）。
+   → R3 对「效应 vs 噪声」**不作答**（没有误差棒）；该问题由**换 seed 复跑**（§4b）另行描述， 见上【复跑】一节——那里同样**只报描述、不设阈值**。。

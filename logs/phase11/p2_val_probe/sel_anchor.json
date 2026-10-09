@@ -1,0 +1,8 @@
+{
+  "anchor": "step_13800",
+  "anchor_val_avg_f1": 0.8423,
+  "anchor_runner_up": "step_26400",
+  "anchor_runner_up_val": 0.8386,
+  "anchor_n_candidates": 48,
+  "anchor_val_spread_top1_top2": 0.0038
+}

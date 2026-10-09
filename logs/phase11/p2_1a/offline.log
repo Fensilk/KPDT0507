@@ -1,0 +1,689 @@
+[2026-10-08 11:31:26] === 阶段① 开始：1a 的密集 ckpt 全评全量 val ===
+[2026-10-08 11:31:26] step ckpt 数 = 48
+[2026-10-08 11:31:26] RUN: /root/miniconda3/bin/python -u analysis/reeval_val_ckpts.py --out logs/phase11/p2_val_probe/1a.json logs/phase11/p2_1a/step_600_model.pt logs/phase11/p2_1a/step_1200_model.pt logs/phase11/p2_1a/step_1800_model.pt logs/phase11/p2_1a/step_2400_model.pt logs/phase11/p2_1a/step_3000_model.pt logs/phase11/p2_1a/step_3600_model.pt logs/phase11/p2_1a/step_4200_model.pt logs/phase11/p2_1a/step_4800_model.pt logs/phase11/p2_1a/step_5400_model.pt logs/phase11/p2_1a/step_6000_model.pt logs/phase11/p2_1a/step_6600_model.pt logs/phase11/p2_1a/step_7200_model.pt logs/phase11/p2_1a/step_7800_model.pt logs/phase11/p2_1a/step_8400_model.pt logs/phase11/p2_1a/step_9000_model.pt logs/phase11/p2_1a/step_9600_model.pt logs/phase11/p2_1a/step_10200_model.pt logs/phase11/p2_1a/step_10800_model.pt logs/phase11/p2_1a/step_11400_model.pt logs/phase11/p2_1a/step_12000_model.pt logs/phase11/p2_1a/step_12600_model.pt logs/phase11/p2_1a/step_13200_model.pt logs/phase11/p2_1a/step_13800_model.pt logs/phase11/p2_1a/step_14400_model.pt logs/phase11/p2_1a/step_15000_model.pt logs/phase11/p2_1a/step_15600_model.pt logs/phase11/p2_1a/step_16200_model.pt logs/phase11/p2_1a/step_16800_model.pt logs/phase11/p2_1a/step_17400_model.pt logs/phase11/p2_1a/step_18000_model.pt logs/phase11/p2_1a/step_18600_model.pt logs/phase11/p2_1a/step_19200_model.pt logs/phase11/p2_1a/step_19800_model.pt logs/phase11/p2_1a/step_20400_model.pt logs/phase11/p2_1a/step_21000_model.pt logs/phase11/p2_1a/step_21600_model.pt logs/phase11/p2_1a/step_22200_model.pt logs/phase11/p2_1a/step_22800_model.pt logs/phase11/p2_1a/step_23400_model.pt logs/phase11/p2_1a/step_24000_model.pt logs/phase11/p2_1a/step_24600_model.pt logs/phase11/p2_1a/step_25200_model.pt logs/phase11/p2_1a/step_25800_model.pt logs/phase11/p2_1a/step_26400_model.pt logs/phase11/p2_1a/step_27000_model.pt logs/phase11/p2_1a/step_27600_model.pt logs/phase11/p2_1a/step_28200_model.pt logs/phase11/p2_1a/step_28800_model.pt
+device=cuda  val=/root/autodl-tmp/DATASET-omnifall/splits/syn/random/val.csv  stride=16  ckpt 数=48
+窗口总数=2400  视频数=1200  pose=无
+    [decode] 50/1200 视频  17s
+    [decode] 100/1200 视频  34s
+    [decode] 150/1200 视频  49s
+    [decode] 200/1200 视频  64s
+    [decode] 250/1200 视频  80s
+    [decode] 300/1200 视频  95s
+    [decode] 350/1200 视频  111s
+    [decode] 400/1200 视频  124s
+    [decode] 450/1200 视频  137s
+    [decode] 500/1200 视频  153s
+    [decode] 550/1200 视频  169s
+    [decode] 600/1200 视频  186s
+    [decode] 650/1200 视频  201s
+    [decode] 700/1200 视频  218s
+    [decode] 750/1200 视频  230s
+    [decode] 800/1200 视频  243s
+    [decode] 850/1200 视频  258s
+    [decode] 900/1200 视频  272s
+    [decode] 950/1200 视频  288s
+    [decode] 1000/1200 视频  301s
+    [decode] 1050/1200 视频  315s
+    [decode] 1100/1200 视频  331s
+    [decode] 1150/1200 视频  348s
+    [decode] 1200/1200 视频  367s
+  val 解码完成：1200 视频 × 2 窗  367s
+
+=== p2_1a/step_600_model.pt  boundary=True pose=无
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 7943.65it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 step_600_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 748 个 = 冻结主干（预期）
+    [p2_1a] 8/2400 窗  3s
+    [p2_1a] 808/2400 窗  252s
+    [p2_1a] 1608/2400 窗  502s
+  → val_avg_f1=0.6665  帧数=96000  每视频帧数=[80]  耗时=749.2s
+  [checkpoint] 已落盘 1/48 → logs/phase11/p2_val_probe/1a.json
+
+=== p2_1a/step_1200_model.pt  boundary=True pose=无
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 7346.53it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 step_1200_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 748 个 = 冻结主干（预期）
+    [p2_1a] 8/2400 窗  2s
+    [p2_1a] 808/2400 窗  253s
+    [p2_1a] 1608/2400 窗  502s
+  → val_avg_f1=0.5832  帧数=96000  每视频帧数=[80]  耗时=749.8s
+  [checkpoint] 已落盘 2/48 → logs/phase11/p2_val_probe/1a.json
+
+=== p2_1a/step_1800_model.pt  boundary=True pose=无
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 10022.05it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 step_1800_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 748 个 = 冻结主干（预期）
+    [p2_1a] 8/2400 窗  2s
+    [p2_1a] 808/2400 窗  253s
+    [p2_1a] 1608/2400 窗  503s
+  → val_avg_f1=0.6663  帧数=96000  每视频帧数=[80]  耗时=750.2s
+  [checkpoint] 已落盘 3/48 → logs/phase11/p2_val_probe/1a.json
+
+=== p2_1a/step_2400_model.pt  boundary=True pose=无
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 7889.33it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 step_2400_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 748 个 = 冻结主干（预期）
+    [p2_1a] 8/2400 窗  2s
+    [p2_1a] 808/2400 窗  252s
+    [p2_1a] 1608/2400 窗  502s
+  → val_avg_f1=0.7743  帧数=96000  每视频帧数=[80]  耗时=750.1s
+  [checkpoint] 已落盘 4/48 → logs/phase11/p2_val_probe/1a.json
+
+=== p2_1a/step_3000_model.pt  boundary=True pose=无
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 8026.90it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 step_3000_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 748 个 = 冻结主干（预期）
+    [p2_1a] 8/2400 窗  2s
+    [p2_1a] 808/2400 窗  252s
+    [p2_1a] 1608/2400 窗  502s
+  → val_avg_f1=0.7963  帧数=96000  每视频帧数=[80]  耗时=749.9s
+  [checkpoint] 已落盘 5/48 → logs/phase11/p2_val_probe/1a.json
+
+=== p2_1a/step_3600_model.pt  boundary=True pose=无
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 8155.11it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 step_3600_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 748 个 = 冻结主干（预期）
+    [p2_1a] 8/2400 窗  2s
+    [p2_1a] 808/2400 窗  252s
+    [p2_1a] 1608/2400 窗  502s
+  → val_avg_f1=0.7978  帧数=96000  每视频帧数=[80]  耗时=750.0s
+  [checkpoint] 已落盘 6/48 → logs/phase11/p2_val_probe/1a.json
+
+=== p2_1a/step_4200_model.pt  boundary=True pose=无
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 9781.48it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 step_4200_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 748 个 = 冻结主干（预期）
+    [p2_1a] 8/2400 窗  2s
+    [p2_1a] 808/2400 窗  252s
+    [p2_1a] 1608/2400 窗  502s
+  → val_avg_f1=0.8213  帧数=96000  每视频帧数=[80]  耗时=750.0s
+  [checkpoint] 已落盘 7/48 → logs/phase11/p2_val_probe/1a.json
+
+=== p2_1a/step_4800_model.pt  boundary=True pose=无
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 7631.96it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 step_4800_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 748 个 = 冻结主干（预期）
+    [p2_1a] 8/2400 窗  3s
+    [p2_1a] 808/2400 窗  253s
+    [p2_1a] 1608/2400 窗  503s
+  → val_avg_f1=0.7255  帧数=96000  每视频帧数=[80]  耗时=750.2s
+  [checkpoint] 已落盘 8/48 → logs/phase11/p2_val_probe/1a.json
+
+=== p2_1a/step_5400_model.pt  boundary=True pose=无
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 10371.84it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 step_5400_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 748 个 = 冻结主干（预期）
+    [p2_1a] 8/2400 窗  2s
+    [p2_1a] 808/2400 窗  253s
+    [p2_1a] 1608/2400 窗  503s
+  → val_avg_f1=0.8086  帧数=96000  每视频帧数=[80]  耗时=750.1s
+  [checkpoint] 已落盘 9/48 → logs/phase11/p2_val_probe/1a.json
+
+=== p2_1a/step_6000_model.pt  boundary=True pose=无
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 11064.28it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 step_6000_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 748 个 = 冻结主干（预期）
+    [p2_1a] 8/2400 窗  2s
+    [p2_1a] 808/2400 窗  252s
+    [p2_1a] 1608/2400 窗  502s
+  → val_avg_f1=0.8267  帧数=96000  每视频帧数=[80]  耗时=749.8s
+  [checkpoint] 已落盘 10/48 → logs/phase11/p2_val_probe/1a.json
+
+=== p2_1a/step_6600_model.pt  boundary=True pose=无
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights:  97%|█████████▋| 707/727 [00:00<00:00, 7057.08it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 7079.25it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 step_6600_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 748 个 = 冻结主干（预期）
+    [p2_1a] 8/2400 窗  2s
+    [p2_1a] 808/2400 窗  252s
+    [p2_1a] 1608/2400 窗  502s
+  → val_avg_f1=0.8030  帧数=96000  每视频帧数=[80]  耗时=749.8s
+  [checkpoint] 已落盘 11/48 → logs/phase11/p2_val_probe/1a.json
+
+=== p2_1a/step_7200_model.pt  boundary=True pose=无
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 8099.71it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 step_7200_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 748 个 = 冻结主干（预期）
+    [p2_1a] 8/2400 窗  2s
+    [p2_1a] 808/2400 窗  252s
+    [p2_1a] 1608/2400 窗  502s
+  → val_avg_f1=0.7802  帧数=96000  每视频帧数=[80]  耗时=749.7s
+  [checkpoint] 已落盘 12/48 → logs/phase11/p2_val_probe/1a.json
+
+=== p2_1a/step_7800_model.pt  boundary=True pose=无
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights:  97%|█████████▋| 702/727 [00:00<00:00, 6998.38it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 6952.81it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 step_7800_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 748 个 = 冻结主干（预期）
+    [p2_1a] 8/2400 窗  2s
+    [p2_1a] 808/2400 窗  253s
+    [p2_1a] 1608/2400 窗  503s
+  → val_avg_f1=0.8024  帧数=96000  每视频帧数=[80]  耗时=750.4s
+  [checkpoint] 已落盘 13/48 → logs/phase11/p2_val_probe/1a.json
+
+=== p2_1a/step_8400_model.pt  boundary=True pose=无
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 8178.00it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 step_8400_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 748 个 = 冻结主干（预期）
+    [p2_1a] 8/2400 窗  2s
+    [p2_1a] 808/2400 窗  253s
+    [p2_1a] 1608/2400 窗  503s
+  → val_avg_f1=0.8164  帧数=96000  每视频帧数=[80]  耗时=750.2s
+  [checkpoint] 已落盘 14/48 → logs/phase11/p2_val_probe/1a.json
+
+=== p2_1a/step_9000_model.pt  boundary=True pose=无
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 8014.56it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 step_9000_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 748 个 = 冻结主干（预期）
+    [p2_1a] 8/2400 窗  2s
+    [p2_1a] 808/2400 窗  252s
+    [p2_1a] 1608/2400 窗  502s
+  → val_avg_f1=0.8171  帧数=96000  每视频帧数=[80]  耗时=750.0s
+  [checkpoint] 已落盘 15/48 → logs/phase11/p2_val_probe/1a.json
+
+=== p2_1a/step_9600_model.pt  boundary=True pose=无
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights:  88%|████████▊ | 638/727 [00:00<00:00, 6365.48it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 6453.91it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 step_9600_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 748 个 = 冻结主干（预期）
+    [p2_1a] 8/2400 窗  2s
+    [p2_1a] 808/2400 窗  252s
+    [p2_1a] 1608/2400 窗  502s
+  → val_avg_f1=0.8276  帧数=96000  每视频帧数=[80]  耗时=750.0s
+  [checkpoint] 已落盘 16/48 → logs/phase11/p2_val_probe/1a.json
+
+=== p2_1a/step_10200_model.pt  boundary=True pose=无
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 7707.41it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 step_10200_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 748 个 = 冻结主干（预期）
+    [p2_1a] 8/2400 窗  2s
+    [p2_1a] 808/2400 窗  252s
+    [p2_1a] 1608/2400 窗  503s
+  → val_avg_f1=0.8112  帧数=96000  每视频帧数=[80]  耗时=750.1s
+  [checkpoint] 已落盘 17/48 → logs/phase11/p2_val_probe/1a.json
+
+=== p2_1a/step_10800_model.pt  boundary=True pose=无
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights:  93%|█████████▎| 677/727 [00:00<00:00, 6765.62it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 6712.02it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 step_10800_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 748 个 = 冻结主干（预期）
+    [p2_1a] 8/2400 窗  2s
+    [p2_1a] 808/2400 窗  252s
+    [p2_1a] 1608/2400 窗  502s
+  → val_avg_f1=0.8241  帧数=96000  每视频帧数=[80]  耗时=749.8s
+  [checkpoint] 已落盘 18/48 → logs/phase11/p2_val_probe/1a.json
+
+=== p2_1a/step_11400_model.pt  boundary=True pose=无
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights:  95%|█████████▍| 689/727 [00:00<00:00, 6853.67it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 6869.22it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 step_11400_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 748 个 = 冻结主干（预期）
+    [p2_1a] 8/2400 窗  2s
+    [p2_1a] 808/2400 窗  252s
+    [p2_1a] 1608/2400 窗  502s
+  → val_avg_f1=0.8257  帧数=96000  每视频帧数=[80]  耗时=750.0s
+  [checkpoint] 已落盘 19/48 → logs/phase11/p2_val_probe/1a.json
+
+=== p2_1a/step_12000_model.pt  boundary=True pose=无
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 7849.45it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 step_12000_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 748 个 = 冻结主干（预期）
+    [p2_1a] 8/2400 窗  2s
+    [p2_1a] 808/2400 窗  252s
+    [p2_1a] 1608/2400 窗  502s
+  → val_avg_f1=0.8349  帧数=96000  每视频帧数=[80]  耗时=750.1s
+  [checkpoint] 已落盘 20/48 → logs/phase11/p2_val_probe/1a.json
+
+=== p2_1a/step_12600_model.pt  boundary=True pose=无
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 7750.31it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 step_12600_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 748 个 = 冻结主干（预期）
+    [p2_1a] 8/2400 窗  2s
+    [p2_1a] 808/2400 窗  252s
+    [p2_1a] 1608/2400 窗  503s
+  → val_avg_f1=0.7976  帧数=96000  每视频帧数=[80]  耗时=750.2s
+  [checkpoint] 已落盘 21/48 → logs/phase11/p2_val_probe/1a.json
+
+=== p2_1a/step_13200_model.pt  boundary=True pose=无
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights:  95%|█████████▌| 694/727 [00:00<00:00, 6936.80it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 7009.77it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 step_13200_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 748 个 = 冻结主干（预期）
+    [p2_1a] 8/2400 窗  2s
+    [p2_1a] 808/2400 窗  253s
+    [p2_1a] 1608/2400 窗  502s
+  → val_avg_f1=0.8309  帧数=96000  每视频帧数=[80]  耗时=749.8s
+  [checkpoint] 已落盘 22/48 → logs/phase11/p2_val_probe/1a.json
+
+=== p2_1a/step_13800_model.pt  boundary=True pose=无
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 8416.09it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 step_13800_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 748 个 = 冻结主干（预期）
+    [p2_1a] 8/2400 窗  2s
+    [p2_1a] 808/2400 窗  252s
+    [p2_1a] 1608/2400 窗  502s
+  → val_avg_f1=0.8102  帧数=96000  每视频帧数=[80]  耗时=749.7s
+  [checkpoint] 已落盘 23/48 → logs/phase11/p2_val_probe/1a.json
+
+=== p2_1a/step_14400_model.pt  boundary=True pose=无
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 7917.05it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 step_14400_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 748 个 = 冻结主干（预期）
+    [p2_1a] 8/2400 窗  2s
+    [p2_1a] 808/2400 窗  253s
+    [p2_1a] 1608/2400 窗  503s
+  → val_avg_f1=0.7762  帧数=96000  每视频帧数=[80]  耗时=750.2s
+  [checkpoint] 已落盘 24/48 → logs/phase11/p2_val_probe/1a.json
+
+=== p2_1a/step_15000_model.pt  boundary=True pose=无
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights:  92%|█████████▏| 670/727 [00:00<00:00, 6617.09it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 6622.71it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 step_15000_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 748 个 = 冻结主干（预期）
+    [p2_1a] 8/2400 窗  2s
+    [p2_1a] 808/2400 窗  252s
+    [p2_1a] 1608/2400 窗  502s
+  → val_avg_f1=0.7876  帧数=96000  每视频帧数=[80]  耗时=750.0s
+  [checkpoint] 已落盘 25/48 → logs/phase11/p2_val_probe/1a.json
+
+=== p2_1a/step_15600_model.pt  boundary=True pose=无
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights:  98%|█████████▊| 709/727 [00:00<00:00, 7052.49it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 7068.50it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 step_15600_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 748 个 = 冻结主干（预期）
+    [p2_1a] 8/2400 窗  2s
+    [p2_1a] 808/2400 窗  252s
+    [p2_1a] 1608/2400 窗  502s
+  → val_avg_f1=0.7852  帧数=96000  每视频帧数=[80]  耗时=749.9s
+  [checkpoint] 已落盘 26/48 → logs/phase11/p2_val_probe/1a.json
+
+=== p2_1a/step_16200_model.pt  boundary=True pose=无
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights:  11%|█         | 80/727 [00:00<00:00, 796.53it/s]Loading weights:  22%|██▏       | 160/727 [00:00<00:00, 700.37it/s]Loading weights:  32%|███▏      | 231/727 [00:00<00:00, 694.06it/s]Loading weights:  51%|█████     | 371/727 [00:00<00:00, 949.94it/s]Loading weights:  64%|██████▍   | 468/727 [00:00<00:00, 910.89it/s]Loading weights:  77%|███████▋  | 561/727 [00:00<00:00, 912.14it/s]Loading weights:  90%|████████▉ | 653/727 [00:00<00:00, 842.26it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 866.60it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 step_16200_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 748 个 = 冻结主干（预期）
+    [p2_1a] 8/2400 窗  2s
+    [p2_1a] 808/2400 窗  252s
+    [p2_1a] 1608/2400 窗  502s
+  → val_avg_f1=0.8050  帧数=96000  每视频帧数=[80]  耗时=749.9s
+  [checkpoint] 已落盘 27/48 → logs/phase11/p2_val_probe/1a.json
+
+=== p2_1a/step_16800_model.pt  boundary=True pose=无
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights:  94%|█████████▎| 680/727 [00:00<00:00, 6796.30it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 6715.04it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 step_16800_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 748 个 = 冻结主干（预期）
+    [p2_1a] 8/2400 窗  2s
+    [p2_1a] 808/2400 窗  253s
+    [p2_1a] 1608/2400 窗  503s
+  → val_avg_f1=0.7839  帧数=96000  每视频帧数=[80]  耗时=750.2s
+  [checkpoint] 已落盘 28/48 → logs/phase11/p2_val_probe/1a.json
+
+=== p2_1a/step_17400_model.pt  boundary=True pose=无
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights:  94%|█████████▍| 682/727 [00:00<00:00, 6778.87it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 6746.57it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 step_17400_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 748 个 = 冻结主干（预期）
+    [p2_1a] 8/2400 窗  2s
+    [p2_1a] 808/2400 窗  252s
+    [p2_1a] 1608/2400 窗  503s
+  → val_avg_f1=0.7170  帧数=96000  每视频帧数=[80]  耗时=750.2s
+  [checkpoint] 已落盘 29/48 → logs/phase11/p2_val_probe/1a.json
+
+=== p2_1a/step_18000_model.pt  boundary=True pose=无
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights:  99%|█████████▉| 720/727 [00:00<00:00, 7185.07it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 7199.90it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 step_18000_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 748 个 = 冻结主干（预期）
+    [p2_1a] 8/2400 窗  2s
+    [p2_1a] 808/2400 窗  252s
+    [p2_1a] 1608/2400 窗  503s
+  → val_avg_f1=0.8075  帧数=96000  每视频帧数=[80]  耗时=750.2s
+  [checkpoint] 已落盘 30/48 → logs/phase11/p2_val_probe/1a.json
+
+=== p2_1a/step_18600_model.pt  boundary=True pose=无
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights:  95%|█████████▍| 688/727 [00:00<00:00, 6877.63it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 6825.78it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 step_18600_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 748 个 = 冻结主干（预期）
+    [p2_1a] 8/2400 窗  2s
+    [p2_1a] 808/2400 窗  253s
+    [p2_1a] 1608/2400 窗  502s
+  → val_avg_f1=0.8000  帧数=96000  每视频帧数=[80]  耗时=750.0s
+  [checkpoint] 已落盘 31/48 → logs/phase11/p2_val_probe/1a.json
+
+=== p2_1a/step_19200_model.pt  boundary=True pose=无
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 7309.94it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 step_19200_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 748 个 = 冻结主干（预期）
+    [p2_1a] 8/2400 窗  2s
+    [p2_1a] 808/2400 窗  252s
+    [p2_1a] 1608/2400 窗  502s
+  → val_avg_f1=0.8317  帧数=96000  每视频帧数=[80]  耗时=750.0s
+  [checkpoint] 已落盘 32/48 → logs/phase11/p2_val_probe/1a.json
+
+=== p2_1a/step_19800_model.pt  boundary=True pose=无
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 9131.16it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 step_19800_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 748 个 = 冻结主干（预期）
+    [p2_1a] 8/2400 窗  2s
+    [p2_1a] 808/2400 窗  253s
+    [p2_1a] 1608/2400 窗  502s
+  → val_avg_f1=0.8030  帧数=96000  每视频帧数=[80]  耗时=751.5s
+  [checkpoint] 已落盘 33/48 → logs/phase11/p2_val_probe/1a.json
+
+=== p2_1a/step_20400_model.pt  boundary=True pose=无
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 7290.90it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 step_20400_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 748 个 = 冻结主干（预期）
+    [p2_1a] 8/2400 窗  2s
+    [p2_1a] 808/2400 窗  252s
+    [p2_1a] 1608/2400 窗  502s
+  → val_avg_f1=0.7529  帧数=96000  每视频帧数=[80]  耗时=749.9s
+  [checkpoint] 已落盘 34/48 → logs/phase11/p2_val_probe/1a.json
+
+=== p2_1a/step_21000_model.pt  boundary=True pose=无
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 9876.24it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 step_21000_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 748 个 = 冻结主干（预期）
+    [p2_1a] 8/2400 窗  2s
+    [p2_1a] 808/2400 窗  253s
+    [p2_1a] 1608/2400 窗  503s
+  → val_avg_f1=0.8219  帧数=96000  每视频帧数=[80]  耗时=750.3s
+  [checkpoint] 已落盘 35/48 → logs/phase11/p2_val_probe/1a.json
+
+=== p2_1a/step_21600_model.pt  boundary=True pose=无
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 9109.39it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 step_21600_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 748 个 = 冻结主干（预期）
+    [p2_1a] 8/2400 窗  2s
+    [p2_1a] 808/2400 窗  253s
+    [p2_1a] 1608/2400 窗  502s
+  → val_avg_f1=0.8039  帧数=96000  每视频帧数=[80]  耗时=749.5s
+  [checkpoint] 已落盘 36/48 → logs/phase11/p2_val_probe/1a.json
+
+=== p2_1a/step_22200_model.pt  boundary=True pose=无
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 9609.23it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 step_22200_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 748 个 = 冻结主干（预期）
+    [p2_1a] 8/2400 窗  2s
+    [p2_1a] 808/2400 窗  252s
+    [p2_1a] 1608/2400 窗  502s
+  → val_avg_f1=0.7690  帧数=96000  每视频帧数=[80]  耗时=749.5s
+  [checkpoint] 已落盘 37/48 → logs/phase11/p2_val_probe/1a.json
+
+=== p2_1a/step_22800_model.pt  boundary=True pose=无
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights:  95%|█████████▌| 691/727 [00:00<00:00, 6895.95it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 6855.90it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 step_22800_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 748 个 = 冻结主干（预期）
+    [p2_1a] 8/2400 窗  2s
+    [p2_1a] 808/2400 窗  252s
+    [p2_1a] 1608/2400 窗  503s
+  → val_avg_f1=0.3070  帧数=96000  每视频帧数=[80]  耗时=750.2s
+  [checkpoint] 已落盘 38/48 → logs/phase11/p2_val_probe/1a.json
+
+=== p2_1a/step_23400_model.pt  boundary=True pose=无
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights:  96%|█████████▌| 699/727 [00:00<00:00, 6952.41it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 6948.06it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 step_23400_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 748 个 = 冻结主干（预期）
+    [p2_1a] 8/2400 窗  2s
+    [p2_1a] 808/2400 窗  252s
+    [p2_1a] 1608/2400 窗  502s
+  → val_avg_f1=0.3070  帧数=96000  每视频帧数=[80]  耗时=750.0s
+  [checkpoint] 已落盘 39/48 → logs/phase11/p2_val_probe/1a.json
+
+=== p2_1a/step_24000_model.pt  boundary=True pose=无
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 7276.44it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 step_24000_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 748 个 = 冻结主干（预期）
+    [p2_1a] 8/2400 窗  2s
+    [p2_1a] 808/2400 窗  253s
+    [p2_1a] 1608/2400 窗  503s
+  → val_avg_f1=0.3070  帧数=96000  每视频帧数=[80]  耗时=750.3s
+  [checkpoint] 已落盘 40/48 → logs/phase11/p2_val_probe/1a.json
+
+=== p2_1a/step_24600_model.pt  boundary=True pose=无
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 7813.26it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 step_24600_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 748 个 = 冻结主干（预期）
+    [p2_1a] 8/2400 窗  2s
+    [p2_1a] 808/2400 窗  253s
+    [p2_1a] 1608/2400 窗  503s
+  → val_avg_f1=0.3070  帧数=96000  每视频帧数=[80]  耗时=750.4s
+  [checkpoint] 已落盘 41/48 → logs/phase11/p2_val_probe/1a.json
+
+=== p2_1a/step_25200_model.pt  boundary=True pose=无
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 9255.27it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 step_25200_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 748 个 = 冻结主干（预期）
+    [p2_1a] 8/2400 窗  2s
+    [p2_1a] 808/2400 窗  252s
+    [p2_1a] 1608/2400 窗  502s
+  → val_avg_f1=0.7704  帧数=96000  每视频帧数=[80]  耗时=749.9s
+  [checkpoint] 已落盘 42/48 → logs/phase11/p2_val_probe/1a.json
+
+=== p2_1a/step_25800_model.pt  boundary=True pose=无
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 9846.07it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 step_25800_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 748 个 = 冻结主干（预期）
+    [p2_1a] 8/2400 窗  2s
+    [p2_1a] 808/2400 窗  252s
+    [p2_1a] 1608/2400 窗  502s
+  → val_avg_f1=0.8214  帧数=96000  每视频帧数=[80]  耗时=749.9s
+  [checkpoint] 已落盘 43/48 → logs/phase11/p2_val_probe/1a.json
+
+=== p2_1a/step_26400_model.pt  boundary=True pose=无
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights:  90%|████████▉ | 654/727 [00:00<00:00, 6470.02it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 6378.62it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 step_26400_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 748 个 = 冻结主干（预期）
+    [p2_1a] 8/2400 窗  2s
+    [p2_1a] 808/2400 窗  252s
+    [p2_1a] 1608/2400 窗  503s
+  → val_avg_f1=0.7993  帧数=96000  每视频帧数=[80]  耗时=750.1s
+  [checkpoint] 已落盘 44/48 → logs/phase11/p2_val_probe/1a.json
+
+=== p2_1a/step_27000_model.pt  boundary=True pose=无
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights:  89%|████████▉ | 646/727 [00:00<00:00, 6428.10it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 6416.98it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 step_27000_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 748 个 = 冻结主干（预期）
+    [p2_1a] 8/2400 窗  2s
+    [p2_1a] 808/2400 窗  252s
+    [p2_1a] 1608/2400 窗  502s
+  → val_avg_f1=0.8053  帧数=96000  每视频帧数=[80]  耗时=749.8s
+  [checkpoint] 已落盘 45/48 → logs/phase11/p2_val_probe/1a.json
+
+=== p2_1a/step_27600_model.pt  boundary=True pose=无
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 7942.47it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 step_27600_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 748 个 = 冻结主干（预期）
+    [p2_1a] 8/2400 窗  2s
+    [p2_1a] 808/2400 窗  252s
+    [p2_1a] 1608/2400 窗  503s
+  → val_avg_f1=0.8195  帧数=96000  每视频帧数=[80]  耗时=750.3s
+  [checkpoint] 已落盘 46/48 → logs/phase11/p2_val_probe/1a.json
+
+=== p2_1a/step_28200_model.pt  boundary=True pose=无
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 7395.19it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 step_28200_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 748 个 = 冻结主干（预期）
+    [p2_1a] 8/2400 窗  2s
+    [p2_1a] 808/2400 窗  252s
+    [p2_1a] 1608/2400 窗  502s
+  → val_avg_f1=0.4507  帧数=96000  每视频帧数=[80]  耗时=749.9s
+  [checkpoint] 已落盘 47/48 → logs/phase11/p2_val_probe/1a.json
+
+=== p2_1a/step_28800_model.pt  boundary=True pose=无
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 7527.40it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 step_28800_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 748 个 = 冻结主干（预期）
+    [p2_1a] 8/2400 窗  2s
+    [p2_1a] 808/2400 窗  252s
+    [p2_1a] 1608/2400 窗  501s
+  → val_avg_f1=0.7218  帧数=96000  每视频帧数=[80]  耗时=748.9s
+  [checkpoint] 已落盘 48/48 → logs/phase11/p2_val_probe/1a.json
+
+ALL_CKPTS_DONE 已写出 logs/phase11/p2_val_probe/1a.json
+                logs/phase11/p2_val_probe/1a.pv.pt
+[2026-10-08 21:41:15] RUN: /root/miniconda3/bin/python -u - logs/phase11/p2_val_probe/1a.json logs/phase11/p2_val_probe/selection.json 1a
+[select] 1a: step_12000 (val 0.8349), 次优 step_19200 (差 0.0032)
+[2026-10-08 21:41:15] 阶段① 完成，selection.json 已更新
+[2026-10-08 21:41:15] 阶段② 候选：step_12000 epoch_1 epoch_2 epoch_3 step_19200 
+[2026-10-08 21:41:15] RUN: /root/miniconda3/bin/python -u experiments/eval_p9e1_dual.py --ckpt logs/phase11/p2_1a/step_12000_model.pt --out logs/phase11/p2_1a/eval_step_12000.json --dump_pv logs/phase11/p2_1a/pv_step_12000.pt
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 9979.57it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 step_12000_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 748 个 = 冻结主干（预期）
+  [200/1200] videos done, skip 0
+  [400/1200] videos done, skip 0
+  [600/1200] videos done, skip 0
+  [800/1200] videos done, skip 0
+  [1000/1200] videos done, skip 0
+  [1200/1200] videos done, skip 0
+Saved: logs/phase11/p2_1a/eval_step_12000.json
+Dumped pv: logs/phase11/p2_1a/pv_step_12000.pt (1200 videos)
+[instance] acc=0.9281 fall_rec=0.8414 fallen_prec=0.6689 fallen_rec=0.8145 avg=0.8174
+[merged] raw ev_f1=0.8114 | canonical=0.8058 | best(K2=5,W=32)=0.8128 fallen_prec=0.6663
+[2026-10-08 22:05:02] RUN: /root/miniconda3/bin/python -u experiments/eval_p9e1_dual.py --ckpt logs/phase11/p2_1a/epoch_1_model.pt --out logs/phase11/p2_1a/eval_epoch_1.json --dump_pv logs/phase11/p2_1a/pv_epoch_1.pt
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 9286.44it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 epoch_1_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 748 个 = 冻结主干（预期）
+  [200/1200] videos done, skip 0
+  [400/1200] videos done, skip 0
+  [600/1200] videos done, skip 0
+  [800/1200] videos done, skip 0
+  [1000/1200] videos done, skip 0
+  [1200/1200] videos done, skip 0
+Saved: logs/phase11/p2_1a/eval_epoch_1.json
+Dumped pv: logs/phase11/p2_1a/pv_epoch_1.pt (1200 videos)
+[instance] acc=0.9251 fall_rec=0.8390 fallen_prec=0.6408 fallen_rec=0.8190 avg=0.8114
+[merged] raw ev_f1=0.8081 | canonical=0.8153 | best(K2=7,W=32)=0.8156 fallen_prec=0.6562
+[2026-10-08 22:28:51] RUN: /root/miniconda3/bin/python -u experiments/eval_p9e1_dual.py --ckpt logs/phase11/p2_1a/epoch_2_model.pt --out logs/phase11/p2_1a/eval_epoch_2.json --dump_pv logs/phase11/p2_1a/pv_epoch_2.pt
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 9890.37it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 epoch_2_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 748 个 = 冻结主干（预期）
+  [200/1200] videos done, skip 0
+  [400/1200] videos done, skip 0
+  [600/1200] videos done, skip 0
+  [800/1200] videos done, skip 0
+  [1000/1200] videos done, skip 0
+  [1200/1200] videos done, skip 0
+Saved: logs/phase11/p2_1a/eval_epoch_2.json
+Dumped pv: logs/phase11/p2_1a/pv_epoch_2.pt (1200 videos)
+[instance] acc=0.9250 fall_rec=0.7950 fallen_prec=0.6357 fallen_rec=0.7698 avg=0.8070
+[merged] raw ev_f1=0.7955 | canonical=0.7872 | best(K2=5,W=32)=0.7903 fallen_prec=0.6323
+[2026-10-08 22:52:38] RUN: /root/miniconda3/bin/python -u experiments/eval_p9e1_dual.py --ckpt logs/phase11/p2_1a/epoch_3_model.pt --out logs/phase11/p2_1a/eval_epoch_3.json --dump_pv logs/phase11/p2_1a/pv_epoch_3.pt
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 7867.55it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 epoch_3_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 748 个 = 冻结主干（预期）
+  [200/1200] videos done, skip 0
+  [400/1200] videos done, skip 0
+  [600/1200] videos done, skip 0
+  [800/1200] videos done, skip 0
+  [1000/1200] videos done, skip 0
+  [1200/1200] videos done, skip 0
+Saved: logs/phase11/p2_1a/eval_epoch_3.json
+Dumped pv: logs/phase11/p2_1a/pv_epoch_3.pt (1200 videos)
+[instance] acc=0.9140 fall_rec=0.7462 fallen_prec=0.8499 fallen_rec=0.3104 avg=0.7097
+[merged] raw ev_f1=0.7098 | canonical=0.7096 | best(K2=3,W=64)=0.7096 fallen_prec=0.8434
+[2026-10-08 23:16:21] RUN: /root/miniconda3/bin/python -u experiments/eval_p9e1_dual.py --ckpt logs/phase11/p2_1a/step_19200_model.pt --out logs/phase11/p2_1a/eval_step_19200.json --dump_pv logs/phase11/p2_1a/pv_step_19200.pt
+Loading weights:   0%|          | 0/727 [00:00<?, ?it/s]Loading weights: 100%|██████████| 727/727 [00:00<00:00, 10799.76it/s]
+/root/miniconda3/lib/python3.12/site-packages/torch/nn/modules/transformer.py:392: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+[E1Model.from_checkpoint] 已从 step_19200_model.pt 恢复 7.86M LoRA 参数 (rank=16) + 时序头；缺失键 748 个 = 冻结主干（预期）
+  [200/1200] videos done, skip 0
+  [400/1200] videos done, skip 0
+  [600/1200] videos done, skip 0
+  [800/1200] videos done, skip 0
+  [1000/1200] videos done, skip 0
+  [1200/1200] videos done, skip 0
+Saved: logs/phase11/p2_1a/eval_step_19200.json
+Dumped pv: logs/phase11/p2_1a/pv_step_19200.pt (1200 videos)
+[instance] acc=0.9250 fall_rec=0.7950 fallen_prec=0.6357 fallen_rec=0.7698 avg=0.8070
+[merged] raw ev_f1=0.7955 | canonical=0.7872 | best(K2=5,W=32)=0.7903 fallen_prec=0.6323
+[2026-10-08 23:40:07] 已复制 pv_step_12000.pt → pv_best.pt（供 judge_w1_arm 的 find_pv）
+[2026-10-08 23:40:07] RUN: /root/miniconda3/bin/python -u experiments/eval_timeline_metrics.py step_12000=logs/phase11/p2_1a/pv_step_12000.pt --out logs/phase11/p2_1a/timeline_step_12000.json
+模型                    n事件  fall_f1 fallen_f1   avg_f1    覆盖率F/N     误报率F/N      延迟中位   翻转(video)    order      满分比
+------------------------------------------------------------------------------------------------------------------
+step_12000            211   0.7944    0.7267   0.7622 0.972/0.880 0.028/0.059       0.0        0.65    0.993   19/211
+
+== 逐视频 fall_f1 分布（事件视频内）==
+  step_12000         n=211 | =1.0: 19  0.8-1.0:137  0.5-0.8: 55  0-0.5: 13  =0:  6
+
+Saved: logs/phase11/p2_1a/timeline_step_12000.json
+[2026-10-08 23:40:10] RUN: /root/miniconda3/bin/python -u experiments/eval_timeline_metrics.py epoch_1=logs/phase11/p2_1a/pv_epoch_1.pt --out logs/phase11/p2_1a/timeline_epoch_1.json
+模型                    n事件  fall_f1 fallen_f1   avg_f1    覆盖率F/N     误报率F/N      延迟中位   翻转(video)    order      满分比
+------------------------------------------------------------------------------------------------------------------
+epoch_1               211   0.7603    0.7477   0.7519 0.948/0.900 0.036/0.065       0.0        0.70    1.000   19/211
+
+== 逐视频 fall_f1 分布（事件视频内）==
+  epoch_1            n=211 | =1.0: 19  0.8-1.0:124  0.5-0.8: 64  0-0.5: 12  =0: 11
+
+Saved: logs/phase11/p2_1a/timeline_epoch_1.json
+[2026-10-08 23:40:13] RUN: /root/miniconda3/bin/python -u experiments/eval_timeline_metrics.py epoch_2=logs/phase11/p2_1a/pv_epoch_2.pt --out logs/phase11/p2_1a/timeline_epoch_2.json
+模型                    n事件  fall_f1 fallen_f1   avg_f1    覆盖率F/N     误报率F/N      延迟中位   翻转(video)    order      满分比
+------------------------------------------------------------------------------------------------------------------
+epoch_2               211   0.7725    0.6784   0.7302 0.934/0.827 0.019/0.061       0.0        0.60    0.993   16/211
+
+== 逐视频 fall_f1 分布（事件视频内）==
+  epoch_2            n=211 | =1.0: 16  0.8-1.0:129  0.5-0.8: 61  0-0.5:  7  =0: 14
+
+Saved: logs/phase11/p2_1a/timeline_epoch_2.json
+[2026-10-08 23:40:16] RUN: /root/miniconda3/bin/python -u experiments/eval_timeline_metrics.py epoch_3=logs/phase11/p2_1a/pv_epoch_3.pt --out logs/phase11/p2_1a/timeline_epoch_3.json
+模型                    n事件  fall_f1 fallen_f1   avg_f1    覆盖率F/N     误报率F/N      延迟中位   翻转(video)    order      满分比
+------------------------------------------------------------------------------------------------------------------
+epoch_3               211   0.6353    0.3097   0.5176 0.839/0.473 0.011/0.009       0.0        0.53    1.000   15/211
+
+== 逐视频 fall_f1 分布（事件视频内）==
+  epoch_3            n=211 | =1.0: 15  0.8-1.0: 88  0.5-0.8: 71  0-0.5: 18  =0: 34
+
+Saved: logs/phase11/p2_1a/timeline_epoch_3.json
+[2026-10-08 23:40:19] RUN: /root/miniconda3/bin/python -u experiments/eval_timeline_metrics.py step_19200=logs/phase11/p2_1a/pv_step_19200.pt --out logs/phase11/p2_1a/timeline_step_19200.json
+模型                    n事件  fall_f1 fallen_f1   avg_f1    覆盖率F/N     误报率F/N      延迟中位   翻转(video)    order      满分比
+------------------------------------------------------------------------------------------------------------------
+step_19200            211   0.7725    0.6784   0.7302 0.934/0.827 0.019/0.061       0.0        0.60    0.993   16/211
+
+== 逐视频 fall_f1 分布（事件视频内）==
+  step_19200         n=211 | =1.0: 16  0.8-1.0:129  0.5-0.8: 61  0-0.5:  7  =0: 14
+
+Saved: logs/phase11/p2_1a/timeline_step_19200.json
+[2026-10-08 23:40:22] === 阶段② 完成 rc=0 ===
+[2026-10-08 23:40:22] 产物：logs/phase11/p2_1a/eval_*.json, pv_best.pt, timeline_*.json；选点：logs/phase11/p2_val_probe/selection.json
+[2026-10-08 23:40:22] 下一步（本地）：python -u analysis/p2_judge.py
