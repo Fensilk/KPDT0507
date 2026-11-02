@@ -135,6 +135,26 @@ class HFVivitWrapper(nn.Module):
         return self.net(pixel_values=x).logits
 
 
+VIDEOMAE_REPO = "MCG-NJU/videomae-base-finetuned-kinetics"
+
+
+class HFVideoMAEWrapper(nn.Module):
+    """HuggingFace VideoMAE-B (official Kinetics-400 checkpoint, 16 frames x 224^2).
+
+    `VideoMAEForVideoClassification` consumes `pixel_values` as (B, T, C, H, W) — exactly the
+    layout our dataset already yields — and the checkpoint's preprocessor uses ImageNet
+    mean/std, which is also what `OmniFallClipDataset` applies. Hence no permute and no
+    re-normalisation are needed.
+    """
+
+    def __init__(self, net):
+        super().__init__()
+        self.net = net
+
+    def forward(self, x):
+        return self.net(pixel_values=x).logits
+
+
 class SlowFastWrapper(nn.Module):
     """Build the two pathways from one clip: slow = every `alpha`-th frame, fast = all frames."""
 
@@ -204,6 +224,31 @@ def build_model(name: str, dropout: float = 0.5):
               % (len(missing), len(unexpected), len(head_keys)), flush=True)
         return HFVivitWrapper(net)
 
+    if name == "videomae_k400":
+        os.environ.setdefault("HF_ENDPOINT", "https://hf-mirror.com")
+        from huggingface_hub import hf_hub_download
+        from safetensors.torch import load_file
+        from transformers import VideoMAEConfig, VideoMAEForVideoClassification
+
+        # The repo ships safetensors, so no `torch.load` workaround is needed. We still load the
+        # state dict by hand (rather than `from_pretrained`) to get explicit missing/unexpected
+        # counts: a silent partial match would leave the ViT backbone randomly initialised
+        # (the exact failure mode that bit the ViViT baseline).
+        cfg = VideoMAEConfig.from_pretrained(VIDEOMAE_REPO)
+        cfg.num_labels = 3
+        net = VideoMAEForVideoClassification(cfg)
+        state = load_file(hf_hub_download(VIDEOMAE_REPO, "model.safetensors"))
+        state = {k: v for k, v in state.items() if not k.startswith("classifier.")}
+        missing, unexpected = net.load_state_dict(state, strict=False)
+        head_missing = [k for k in missing if k.startswith("classifier.")]
+        print("[videomae_k400] K400 weights loaded (missing=%d, unexpected=%d, head re-init=%d)"
+              % (len(missing), len(unexpected), len(head_missing)), flush=True)
+        if unexpected or len(head_missing) != len(missing):
+            raise RuntimeError(
+                "videomae weight mismatch: missing=%s unexpected=%s"
+                % (missing[:5], unexpected[:5]))
+        return HFVideoMAEWrapper(net)
+
     import pytorchvideo.models.hub as hub
 
     if name == "x3d_s":
@@ -227,7 +272,7 @@ def main():
     ap = argparse.ArgumentParser(description="Phase 10 pytorchvideo baseline (X3D / I3D / SlowFast)")
     ap.add_argument("--model", required=True,
                     choices=["x3d_s", "x3d_m", "i3d_r50", "slowfast_r50", "c3d", "timesformer",
-                             "vivit"])
+                             "vivit", "videomae_k400"])
     ap.add_argument("--tag", required=True)
     ap.add_argument("--frames_root", default=DEFAULT_FRAMES_ROOT)
     ap.add_argument("--num_frames", type=int, default=None, help="default: 16 (x3d/i3d) or 32 (slowfast)")
@@ -266,6 +311,8 @@ def main():
             args.num_frames = 8          # matches the K400 checkpoint's num_frames
         elif args.model == "vivit":
             args.num_frames = 32         # matches the K400 checkpoint's num_frames
+        elif args.model == "videomae_k400":
+            args.num_frames = 16         # matches the K400 checkpoint's num_frames
         elif args.model == "c3d":
             args.num_frames = 16
         else:
@@ -277,7 +324,12 @@ def main():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     out_dir = os.path.join(args.log_root, args.tag)
     os.makedirs(out_dir, exist_ok=True)
-    with open(os.path.join(out_dir, "args.json"), "w", encoding="utf-8") as fh:
+    # An eval-only invocation omits the training flags, so writing ``args.json`` here would
+    # overwrite the real training recipe with CLI defaults (this happened to the VideoMAE run:
+    # the checkpoint said AdamW/lr 1e-4 while args.json said SGD/lr 0.005). Keep the training
+    # args under args.json and record eval invocations separately.
+    args_name = "args_eval.json" if args.eval_only_ckpt else "args.json"
+    with open(os.path.join(out_dir, args_name), "w", encoding="utf-8") as fh:
         json.dump(vars(args), fh, ensure_ascii=False, indent=2)
 
     frame_labels = load_frame_labels()
