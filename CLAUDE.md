@@ -13,7 +13,7 @@ fallen(倒地状态) / normal(正常，含故意躺下 lying)。最难点是 fal
 ## Environment
 
 - Windows 11 (local) + conda env `py310` (Python 3.10)；无 requirements.txt，依赖由 conda 管理
-- **GPU (main compute)**: Autodl RTX 3090 (24GB) 云服务器，SSH 别名 `autodl` 免密直连——主力训练/评估在 autodl
+- **GPU (main compute)**: Autodl 云 GPU 服务器（**卡型不固定**，按当前租用；历史用过 3090/5090/A100，选卡依据见 `reference/autodl_gpu_pricing.md`），SSH 别名 `autodl` 免密直连——主力训练/评估在 autodl
 - **GPU (local)**: RTX 4060 (8GB)——本地只做无需 GPU 的事（抽帧、分析、冻结特征时序训练、小脚本/冒烟）
 - Data: OmniFall OF-Syn，AV1 编码（详见 `DATASET-omnifall/README.md`）
 
@@ -25,24 +25,25 @@ fallen(倒地状态) / normal(正常，含故意躺下 lying)。最难点是 fal
 
 | 目录 | 里面有什么 / 去哪找细节 |
 |------|------------------------|
-| `docs/` | **阶段文档**，按 `MMDD实验第N阶段{规划\|总结\|报告}.md` 命名（如 `0902实验第九阶段总结.md`）。最新实验结论看最新的文件；`docs/superpowers/` 放实现计划。 |
+| `docs/` | **阶段文档**，命名 `MMDD实验第N阶段{规划\|进度\|总结\|增补}.md`（四类职责见「阶段文档」约定；如 `0902实验第九阶段总结.md`）。最新实验结论看最新的文件；`docs/superpowers/` 放实现计划。 |
 | `models/` | 模型定义，**每个文件 docstring 即架构说明**（`phase6_model.py` 的 `Phase6TernaryModel`+各 decoder 是跨阶段主体；`phase9_e1_model.py` 是 E1 端到端；`dataset.py` 含滑动窗口数据集）。 |
 | `experiments/` | 训练/评估/数据准备/批处理脚本，按阶段命名：`train_*.py`（如 `train_phase6.py` 主时序入口、`train_p9e1.py`）、`eval_*.py`、`run_p*.sh`、`prep_*.py`、`extract_*.py`；共享模块 `lora.py`。结果与配置见 `logs/`。 |
 | `preprocessing/` | 数据管线 step1-10，自带 `README.md` + `数据预处理流程说明.md`。**`av_decode.py`：AV1 视频解码，PyAV 优先——autodl 的 cv2 解不了 AV1，必须经它读帧**。 |
 | `DATASET-omnifall/` | 数据集根，**自带 `README.md`/`STRUCTURE.md`/`LABELS.md`/`CONFIGS.md`**（标签体系、结构、配置以它们为准）；`data_files/extracted/` 视频；`splits/syn/random/`（train/val/test，另有 `e1_2000` 等受控子集）；`labels/`、`parquet/`。 |
-| `data/` | 特征 NPZ 与各实验缓存（gitignored）。主源 `omnifall_dinov2_giant_frame.npz`（keys: features/labels_16/fall_labels/fallen_labels/video_paths/video_start_indices，12000×80 帧）；`omnifall_dinov2_finetuned_frame.npz`(E3)、`p9e1_frames*/`(E1 缓存) 等按实验。 |
+| `data/` | 特征 NPZ 与各实验缓存（gitignored）。主源 `omnifall_dinov2_giant_frame.npz`（keys: features/labels_16/fall_labels/fallen_labels/video_paths/video_clip_counts/video_start_indices，12000×80 帧）；`omnifall_dinov2_finetuned_frame.npz`(E3)、`p9e1_frames*/`(E1 缓存) 等按实验。 |
 | `logs/` | 训练产物，按 `logs/{phase}/{exp_tag}/` 组织（training_history.json / test_results.json / TensorBoard / ckpt）。 |
 | `utils/` | `metrics.py`(F1/prec/rec)、`losses.py`(Focal)、`visualization.py`、`timeline_metrics.py`。 |
 | `analysis/` | 诊断/可视化脚本（`review_errors/` 等）。 |
+| `reference/` | **本地留存区（整目录 gitignored）**：上游参考实现（C3D/SlowFast/TimeSformer 等，约 1.1 GB）+ 只留本地不入库的文档（两份导师汇报、E1 报告、换卡报价、A100 上机清单）。引用时写 `reference/<名>`；清单见 `PROJECT_CONTENTS.md`。 |
 
 ## 稳定约定（跨阶段不变）
 
 - **三元标签**：0=fall、1=fallen、2=normal（由 16 类派生，完整 16 类映射见 `DATASET-omnifall/LABELS.md`）
 - **读帧**：AV1 视频一律走 `preprocessing/av_decode.py`（PyAV 优先，cv2 兜底）；帧均值 <20 = 解码失败金丝雀
-- **运行方式**：脚本从项目根运行，靠 `sys.path.insert(0, ...)` 导入；shell runner 用 `cd "$(dirname "$0")/.."`
+- **运行方式**：脚本从项目根运行，靠 `sys.path.insert(0, ...)` 导入；shell runner **本地**用 `cd "$(dirname "$0")/.."`，**autodl 上**固定 `cd /root/autodl-tmp`
 - **无 pytest**：任务的"测试"= 小规模冒烟运行验证输出
 - **NPZ**：`mmap_mode='r'` 载入；Windows 上 DataLoader 用 `num_workers=0`
-- **缓存纪律**：`data/` 下大体积 .pt/.npz 缓存 gitignored，不提交
+- **缓存纪律**：`data/` 下大体积 .pt/.npz 缓存、`logs/` 下训练 ckpt 均 gitignored，不提交（ckpt 留存细则见下条「git push 与 logs 同步」）
 - **远程实例关机：代理可自主执行，但"先验后关、关后即报"**（2026-10-09 定）
   某台机器**全部作业已结束**、且其产物已 scp 回本地并**逐文件校验通过**后，代理**无需逐次征询**
   即可关机省机时，**关机后立即报告**：关了哪台、依据（作业计数全 0 + 校验结果）、大致省下的机时、
@@ -55,10 +56,22 @@ fallen(倒地状态) / normal(正常，含故意躺下 lying)。最难点是 fal
 - **git push 与 logs 同步**：`logs/` 是**日志，原则上应随代码同步提交/推送**（保可复现）。**若体积过大**，
   按本阶段研究进展**只维护"最优模型"的那一份训练日志**（其 ckpt + 关键 `json`/日志），其余实验产物留在本地
   不入库——取舍原则是**优先照顾最优模型的可复现性**，而非把每个实验目录都推上去。
-- **汇报文档不入库**：`docs/视觉跌倒检测研究进展汇报（YYYYMM）.md` 一类**写给导师的汇报**一律**不提交 git**——
+  **ckpt 留存规则必须通用、不得按 phase 写死**：`.gitignore` 里一条 `logs/**/*.pt` 盖全部 phase；
+  要入库的那份"最优 ckpt"用 `git add -f` 显式加（tracked 文件不受 ignore 影响，无需改 .gitignore）。
+  json/log/脚本/图片照常提交。（教训：曾逐 phase 写死 phase9/10/6，p11 漏列 → 11 GB 中间 ckpt 挂满更改页。）
+  **`.gitattributes` 已把 `logs/**/*.pt` 与 `data/*.npz` 路由到 LFS**——`git add -f` 加入的 ckpt 会自动走 LFS，
+  不会变成普通大对象；新增需入库的大文件类型时，先补 `.gitattributes` 再 `git add`。
+- **汇报文档不入库**：`reference/视觉跌倒检测研究进展汇报（YYYYMM）.md` 一类**写给导师的汇报**一律**不提交 git**——
   它是交付物而非仓库留痕，入库还会把内部文档之间的派生关系暴露在版本历史里。**注意此约定只针对"汇报"**：
-  同目录的实验阶段文档（`MMDD实验第N阶段{规划|总结|报告}.md`）仍照常提交。
+  `docs/` 下的实验阶段文档（`MMDD实验第N阶段{规划|进度|总结|增补}.md`）仍照常提交。
 - **实验阶段文档优先**：新增实验结论/阶段性总结写 `docs/`，不反哺进本文件
+- **阶段文档四类，各司其职**（`docs/MMDD实验第N阶段*.md`，必须能描述清楚本阶段实验的全过程）：
+  - **规划**（阶段开端）：归纳**实验目的与实验方案**，是本阶段的预登记。
+  - **进度**（实验过程中）：记录**实验细节与结果**——做了什么、还有什么没做、发现了什么问题。
+  - **总结**（宣告阶段结束）：归纳实验结果，须包含**反映的问题、取得的成果、与规划相比未做的内容**。
+  - **增补**（总结之后、下一阶段开启前）：对复盘发现的**上一阶段缺失的关键问题**做解释与实验。
+  - **不再使用「报告」**：原 `*阶段报告.md` 一律更名为 `*阶段总结.md`，保持命名一致。
+    `交接` 单是会话交接用，不属于阶段主文档。
 
 ### 指标定义与验收约定（强制，任何情况适用；教训：`event_f1` 是逐帧二值 F1 却被当"事件级"用了整个阶段，2026-09）
 
@@ -80,7 +93,7 @@ fallen(倒地状态) / normal(正常，含故意躺下 lying)。最难点是 fal
 "真的每时每刻在看"：agent 处理其他任务时同样不会持续盯日志。任何长任务启动后立即配齐以下四项：
 
 1. **启动前先写终止预案**：预估总时长；提前决定"若提前终止（早停/崩溃/OOM/NaN 发散）应自动做什么"，并把预案固化成可执行命令/脚本——**不依赖人工发现后再补救**。例如 E1 早停的自动响应是 `--early_stop_patience 0` 跑满轮重训；训练 loss=nan 应立即停、诊断（降 lr / 查数据）后重启，绝不带病跑完污染下游。
-2. **进程级退出监视，而非只盯里程碑**：训练可能"正常完成 / 早停 / 崩溃 / 发散"，除正常完成外都算异常。监视器必须以进程消失（`pgrep`）为信号，进程一退立即判断终止类型并执行预案；**loss=nan 这类"进程还活着但已在产出垃圾"的情况要靠定时检查及早抓**，不能等 epoch 结束。
+2. **进程级退出监视，而非只盯里程碑**：训练可能"正常完成 / 早停 / 崩溃 / 发散"，除正常完成外都算异常。监视器必须以进程消失为信号（判活用 `ps aux | awk` 等不会自匹配的判据；**不要用 `pgrep -f <名字>`**，命令行里出现该字符串就会自匹配），进程一退立即判断终止类型并执行预案；**loss=nan 这类"进程还活着但已在产出垃圾"的情况要靠定时检查及早抓**，不能等 epoch 结束。
 3. **定时进度检查是强制项**，且**不得只依赖"会话内 + 仅 REPL 空闲才触发"的机制**（如 Claude 会话 cron，它会因会话忙/关而失效）：须由可靠调度承担——服务器端 cron / 启动脚本自带 watchdog / 或显式把"几点出结果、跑完自动执行 X、异常找谁"交接给用户。
 4. **结束/异常即时可见**：每个运行给出日志路径 + 现成 tail 命令（Git Bash 与 PowerShell 双版本）+ 本地日志镜像；进程退出即汇报，杜绝数小时空转或发散无人察觉。
 

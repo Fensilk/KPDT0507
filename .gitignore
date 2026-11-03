@@ -36,14 +36,15 @@ data/.frames_geometry_squash
 # 预训练权重（可重新下载；*.pth 不在 LFS 规则里，入库会变成 93 MB 普通对象）
 data/*.pth
 
-# 参考基线的 checkpoint 只保留在本地磁盘（约 5 GB，各阶段 runner 可重训）：
-#   phase 10 全部模型 + 本次回填的 phase 6 运行 + phase 9 的其余实验；
-#   主模型 E1-full 的 checkpoint 已于 Phase 9 收官走 LFS 入库（tracked 文件不受本规则影响）。
-# 若要像 phase1–8 那样把它们也走 LFS 入库，删掉下面几行再 `git add -f` 即可。
-logs/phase9/**/*.pt
-logs/phase10/**/*.pt
-logs/phase6/p6d_bt_*/**/*.pt
-logs/phase6/p6e_bilstm_*/**/*.pt
+# 训练 checkpoint（*.pt）体积大，默认一律留在本地不入库（各阶段 runner 可重训）。
+# 用一条通用规则盖住所有 phase，不再逐 phase 单列——教训：p11 收尾漏列 `logs/phase11/**/*.pt`，
+# 11 GB 中间 ckpt 以未跟踪形式挂满更改页（详见 CLAUDE.md「git push 与 logs 同步」）。
+# 需要入库的"最优模型"那份 ckpt：直接 `git add -f`（tracked 文件不受本 ignore 规则影响），
+# 如 Phase 9 的 E1-full 已走 LFS 入库。json/log/脚本/图片等日志产物仍照常提交。
+logs/**/*.pt
+
+# 阶段收尾的打包/归档目录（如 _w2_pkg/，内含大 tar.gz，留本地不入库）
+logs/**/_*_pkg/
 
 # Dataset
 DATASET-omnifall/
@@ -81,8 +82,8 @@ reference/
 .agents/
 AGENTS.md
 
-# E1-full 本地日志镜像（内容与 run.log / eval_dump.log 重复）
-logs/phase9/e1_full/*.live.log
+# 远程任务的本地 live 日志镜像（内容与最终 run.log / eval_dump.log 重复，留本地即可）
+logs/**/*.live.log
 
 # （两份工程备忘已移入 reference/，由上面的 `reference/` 规则覆盖，无需单列）
 
